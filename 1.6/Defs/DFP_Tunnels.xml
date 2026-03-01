@@ -19,4 +19,150 @@
         <order>280</order>
         <color>(0.545, 0.27, 0.074)</color>
     </DwarfFlavourPack.TunnelWorldLayerDef>
+
+    <PrefabDef>
+        <defName>DFP_TunnelEntrancePrefab</defName>
+        <size>(4,3)</size>
+        <things>
+            <AncientLargeMechGestator>
+                <position>(1, 0, 1)</position>
+            </AncientLargeMechGestator>
+        </things>
+    </PrefabDef>
+    
+    <StructureLayoutDef>
+        <defName>DFP_TunnelEntranceStructure</defName>
+        <workerClass>LayoutWorker_AncientRuins</workerClass>
+        <canHaveMultipleLayoutsInRoom>true</canHaveMultipleLayoutsInRoom>
+        <prefabs>
+            <DFP_TunnelEntrancePrefab>
+                <countRange>1~1</countRange>
+                <minMaxRange>1~1</minMaxRange>
+                <ensureNoBlocks>true</ensureNoBlocks>
+            </DFP_TunnelEntrancePrefab>
+        </prefabs>
+        <roomDefs>
+            <!-- Decorative -->
+            <AncientRuinsRubble>3</AncientRuinsRubble>
+            <AncientRuinsIndustrialStorage>1</AncientRuinsIndustrialStorage>
+            <AncientRuinsStorage>1</AncientRuinsStorage>
+            <AncientRuinsBarracks>1</AncientRuinsBarracks>
+            <AncientRuinsKitchen>1</AncientRuinsKitchen>
+            <AncientRuinsDiningHall>1</AncientRuinsDiningHall>
+            <AncientRuinsShelfRoom>1</AncientRuinsShelfRoom>
+
+            <!-- Smaller threats -->
+            <AncientRuinsShelfRoomWithLoot>0.1</AncientRuinsShelfRoomWithLoot>
+
+            <!-- Threats -->
+            <AncientRuinsInsectHive>0.2</AncientRuinsInsectHive>
+        </roomDefs>
+        <junkScaterrers>
+            <RubblePile>
+                <groupsPerHundredCells>1~3</groupsPerHundredCells>
+                <itemsPerGroup>2~4</itemsPerGroup>
+                <groupDistRange>3~5</groupDistRange>
+            </RubblePile>
+            <Filth_RubbleRock>
+                <groupsPerHundredCells>1~3</groupsPerHundredCells>
+                <itemsPerGroup>3~8</itemsPerGroup>
+                <groupDistRange>3~5</groupDistRange>
+            </Filth_RubbleRock>
+        </junkScaterrers>
+        <scatteredPrefabs>
+            <li>
+                <countPer10kCellsRange>0.5~0.7</countPer10kCellsRange>
+                <minSpacing>10</minSpacing>
+                <maxDistFromStructure>50</maxDistFromStructure>
+                <prefabs>
+                    <Exterior_AncientRoad_Long>
+                        <weight>1.0</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>2</max>
+                    </Exterior_AncientRoad_Long>
+                    <Exterior_ChemtruckParkingLot_Long>
+                        <weight>1.0</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>2</max>
+                    </Exterior_ChemtruckParkingLot_Long>
+                    <Exterior_ChembarrelStorage>
+                        <weight>1.0</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>2</max>
+                    </Exterior_ChembarrelStorage>
+                    <Exterior_ChemtruckParkingLot>
+                        <weight>1.0</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>2</max>
+                    </Exterior_ChemtruckParkingLot>
+                    <Exterior_ContainerSite>
+                        <weight>1.0</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>2</max>
+                    </Exterior_ContainerSite>
+                    <Exterior_FourSmallBuildings>
+                        <weight>0.2</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>1</max>
+                    </Exterior_FourSmallBuildings>
+                    <Exterior_CrashedCrane>
+                        <weight>1.0</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>1</max>
+                    </Exterior_CrashedCrane>
+                    <Exterior_AncientContainerForklift>
+                        <weight>1.0</weight>
+                        <indoorRuin>false</indoorRuin>
+                        <filthDef>Filth_RubbleRock</filthDef>
+                        <filthExpandBy>1</filthExpandBy>
+                        <filthChance>0.4</filthChance>
+                        <max>1</max>
+                    </Exterior_AncientContainerForklift>
+                </prefabs>
+            </li>
+        </scatteredPrefabs>
+    </StructureLayoutDef>
+    
+    <GenStepDef>
+        <defName>DFP_TunnelEntrance</defName>
+        <order>201</order>
+        <genStep Class="DwarfFlavourPack.GenStep_TunnelEntrance">
+            <layoutDef>DFP_TunnelEntranceStructure</layoutDef>
+        </genStep>
+    </GenStepDef>
+    
+    <MapGeneratorDef ParentName="MapCommonBase">
+        <defName>DFP_TunnelEntrance</defName>
+        <genSteps>
+            <li>DFP_TunnelEntrance</li> 
+            <li>RocksFromGrid_NoMinerals</li> <!-- This is ignored if we are landing via gravship -->
+        </genSteps>
+    </MapGeneratorDef>
+    
+    <WorldObjectDef ParentName="Site">
+        <defName>DFP_TunnelEntranceSite</defName>
+        <label>tunnel access</label> <!-- hidden -->
+        <mapGenerator>DFP_TunnelEntrance</mapGenerator>
+    </WorldObjectDef>
 </Defs>
