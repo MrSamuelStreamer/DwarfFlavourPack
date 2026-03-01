@@ -17,14 +17,14 @@ namespace DwarfFlavourPack;
 public class WorldGenStep_Tunnels : WorldGenStep
 {
   // Controls how many extra endpoints get sprinkled in, scaled by world size (tiles / 100k).
-  private static readonly FloatRange ExtraRoadNodesPer100kTiles = new FloatRange(30f, 50f);
+  private static readonly FloatRange ExtraTunnelNodesPer100kTiles = new FloatRange(50f, 100f);
 
   // Offsets endpoints away from settlements by a few neighbor-steps, so links aren't always settlement-to-settlement.
   // Negative values are clamped to 0 by Mathf.Max below (so "towards" isn't really used).
-  private static readonly IntRange RoadDistanceFromSettlement = new IntRange(-4, 4);
+  private static readonly IntRange TunnelistanceFromSettlement = new IntRange(-1, 1);
 
   // Probability of allowing an extra connection even if it would create a cycle (i.e., not needed for spanning tree).
-  private const float ChanceExtraNonSpanningTreeLink = 0.015f;
+  private const float ChanceExtraNonSpanningTreeLink = 0.05f;
 
   // Probability of *not* adding a prospective link even if we decided it's eligible.
   // (This creates some missing connections so the network isn't too dense/regular.)
@@ -37,7 +37,7 @@ public class WorldGenStep_Tunnels : WorldGenStep
   private const int PotentialSpanningTreeLinksPerSettlement = 8;
 
   // SeedPart must be stable so this step has deterministic randomness relative to other steps.
-  public override int SeedPart => 1538475135;
+  public override int SeedPart => 1538472345;
 
   public override void GenerateFresh(string seed, PlanetLayer layer)
   {
@@ -46,7 +46,8 @@ public class WorldGenStep_Tunnels : WorldGenStep
 
     // ...then we build the network with deterministic randomness derived from the world seed.
     Rand.PushState();
-    Rand.Seed = GenText.StableStringHash(seed);
+    int seedFromSeedString = GenText.StableStringHash(seed);
+    Rand.Seed = Gen.HashCombineInt(seedFromSeedString, SeedPart);
     GenerateTunnelNetwork(layer);
     Rand.PopState();
   }
@@ -54,9 +55,10 @@ public class WorldGenStep_Tunnels : WorldGenStep
   public override void GenerateWithoutWorldData(string seed, PlanetLayer layer)
   {
     // When world data isn't available, we skip endpoint selection and only generate links
-    // using whatever roadNodes were already set up elsewhere.
+    // using whatever tunnelNodes were already set up elsewhere.
     Rand.PushState();
-    Rand.Seed = GenText.StableStringHash(seed);
+    int seedFromSeedString = GenText.StableStringHash(seed);
+    Rand.Seed = Gen.HashCombineInt(seedFromSeedString, SeedPart);
     GenerateTunnelNetwork(layer);
     Rand.PopState();
   }
@@ -66,13 +68,13 @@ public class WorldGenStep_Tunnels : WorldGenStep
     // Start with a subset of existing world objects' tiles as candidate nodes.
     // The Rand.Value > 0.05f check randomly filters out ~5% of objects, to reduce clustering/density.
     List<PlanetTile> candidateNodes = Find.WorldObjects.AllWorldObjects
-      .Where(wo => Rand.Value > 0.05f && wo.Tile.Layer == layer)
+      .Where(wo => Rand.Value > ChanceWorldObjectReclusive && wo.Tile.Layer == layer)
       .Select(wo => wo.Tile)
       .ToList();
 
     // Add additional random "settlement-like" tiles to increase network complexity with world size.
     // TilesCount/100000 scales the extra count for small vs huge worlds.
-    int num1 = GenMath.RoundRandom(Find.WorldGrid.TilesCount / 100000f * ExtraRoadNodesPer100kTiles.RandomInRange);
+    int num1 = GenMath.RoundRandom(Find.WorldGrid.TilesCount / 100000f * ExtraTunnelNodesPer100kTiles.RandomInRange);
     for (int index = 0; index < num1; ++index)
       candidateNodes.Add(TileFinder.RandomSettlementTileFor(layer, null));
 
@@ -84,7 +86,7 @@ public class WorldGenStep_Tunnels : WorldGenStep
     for (int index1 = 0; index1 < candidateNodes.Count; ++index1)
     {
       // Negative values are clamped out, so we effectively walk 0..4 tiles.
-      int num2 = Mathf.Max(0, RoadDistanceFromSettlement.RandomInRange);
+      int num2 = Mathf.Max(0, TunnelistanceFromSettlement.RandomInRange);
 
       PlanetTile planetTile = candidateNodes[index1];
       for (int index2 = 0; index2 < num2; ++index2)
@@ -236,7 +238,7 @@ public class WorldGenStep_Tunnels : WorldGenStep
     List<Link> linkFinal,
     List<PlanetTile> indexToTile)
   {
-    // For each final link, compute an actual path and lay road overlays along each step.
+    // For each final link, compute an actual path and lay tunnel overlays along each step.
     foreach (Link link in linkFinal)
     {
       // Find the best path between the endpoints using the layer's pather.
@@ -245,15 +247,13 @@ public class WorldGenStep_Tunnels : WorldGenStep
       // NodesReversed is a sequence of tiles along the path.
       List<PlanetTile> nodesReversed = path.NodesReversed;
 
-      // Pick a non-ancient RoadDef to draw with.
-      // (If your mod wants a specific "tunnel" def, this is the place to swap it.)
-      RoadDef roadDef = DefDatabase<RoadDef>.AllDefsListForReading
-        .Where(rd => !rd.ancientOnly)
+      // Pick a TunnelDef to draw with.
+      TunnelDef tunnelDef = DefDatabase<TunnelDef>.AllDefsListForReading
         .RandomElementWithFallback();
 
       // Lay the overlay for each edge along the path (tile i -> tile i+1).
       for (int index = 0; index < nodesReversed.Count - 1; ++index)
-        Find.WorldGrid.OverlayRoad(nodesReversed[index], nodesReversed[index + 1], roadDef);
+        TunnelGenData.Instance.OverlayTunnel(nodesReversed[index], nodesReversed[index + 1], tunnelDef);
 
       // Return the path object to the pool to avoid allocations/leaks.
       path.ReleaseToPool();

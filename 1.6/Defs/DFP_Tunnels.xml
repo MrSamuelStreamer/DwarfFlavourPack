@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorldGenStepDef>
+        <defName>DFP_Tunnels</defName>
+        <order>601</order>
+        <worldGenStep Class="DwarfFlavourPack.WorldGenStep_Tunnels"/>
+    </WorldGenStepDef>
+    
+    <DwarfFlavourPack.TunnelDef>
+        <defName>DFP_Tunnel</defName>
+        <label>tunnel</label>
+        <priority>20</priority>
+        <movementCostMultiplier>0.5</movementCostMultiplier>
+        <tilesPerSegment>15</tilesPerSegment>
+        <pathingMode>Avoid</pathingMode>
+        <roadGenSteps>
+            <li Class="RoadDefGenStep_Place">
+                <chancePerPositionCurve>
+                    <points>
+                        <li>(1.4, 1)</li>
+                        <li>(1.4, 0)</li>
+                    </points>
+                </chancePerPositionCurve>
+                <place>Bridge</place>
+                <antialiasingMultiplier>0</antialiasingMultiplier>
+                <onlyIfOriginAllows>true</onlyIfOriginAllows> <!-- only if bridge also at the center -->
+            </li>
+            <li Class="RoadDefGenStep_Place">
+                <chancePerPositionCurve>
+                    <points>
+                        <li>(0, 0.9)</li>
+                        <li>(1.2, 0.8)</li>
+                        <li>(1.4, 0)</li>
+                    </points>
+                </chancePerPositionCurve>
+                <place>PackedDirt</place>
+            </li>
+        </roadGenSteps>
+        <distortionFrequency>0.5</distortionFrequency>
+        <distortionIntensity>0.2</distortionIntensity>
+        <worldRenderSteps>
+            <li>
+                <layer>Outline</layer>
+                <width>0.55</width>
+            </li>
+            <li>
+                <layer>Dirt</layer>
+                <width>0.4</width>
+            </li>
+        </worldRenderSteps>
+        <worldTransitionGroup>Dirt</worldTransitionGroup>
+    </DwarfFlavourPack.TunnelDef>
+    
+    <DwarfFlavourPack.TunnelWorldLayerDef>
+        <defName>Stone</defName>
+        <order>280</order>
+        <color>(1, 0, 0)</color>
+    </DwarfFlavourPack.TunnelWorldLayerDef>
+</Defs>

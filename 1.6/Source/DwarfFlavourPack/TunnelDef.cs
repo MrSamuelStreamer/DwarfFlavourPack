@@ -20,7 +20,7 @@ public class TunnelDef : Def
     [Unsaved(false)]
     private float[] cachedLayerWidth;
 
-    public float GetLayerWidth(RoadWorldLayerDef def)
+    public float GetLayerWidth(TunnelWorldLayerDef def)
     {
         if (this.cachedLayerWidth == null)
         {

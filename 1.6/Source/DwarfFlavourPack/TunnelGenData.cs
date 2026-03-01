@@ -16,49 +16,54 @@ public class TunnelGenData(World world) : WorldComponent(world)
     public static TunnelGenData Instance => Find.World.GetComponent<TunnelGenData>();
     public Dictionary<PlanetLayer, List<PlanetTile>> tunnelNodes = new Dictionary<PlanetLayer, List<PlanetTile>>();
     public Dictionary<SurfaceTile, List<TunnelLink>> potentialTunnels = new Dictionary<SurfaceTile, List<TunnelLink>>();
-    
-    
-    public void OverlayTunnel(PlanetTile fromTile, PlanetTile toTile, TunnelDef tunnelDef)
+
+    public TunnelDef GetTunnelDef(PlanetTile fromTile, PlanetTile toTile)
     {
+        return DwarfFlavourPackDefOf.DFP_Tunnel;
+    }
+    
+    public void OverlayTunnel(PlanetTile fromPlanetTile, PlanetTile toPlanetTile, TunnelDef tunnelDef)
+    {
+        PlanetLayer layer = fromPlanetTile.Layer;
+        
         if (tunnelDef == null)
         {
             Log.ErrorOnce("Attempted to remove tunnel with overlayTunnel; not supported", 90292249);
         }
         else
         {
-            RoadDef roadDef1 = this.GetRoadDef(fromTile, toTile, false);
-            if (roadDef1 == tunnelDef)
+            tunnelDef = GetTunnelDef(fromPlanetTile, toPlanetTile);
+            
+            Tile fromTile = layer.Tiles[fromPlanetTile];;
+            Tile toTole = layer.Tiles[toPlanetTile];
+            
+            if (fromTile.Isnt(out SurfaceTile fromSurfaceTile) || toTole.Isnt(out SurfaceTile toSurfaceTile))
                 return;
-            Tile tile1 = this[fromTile];
-            Tile tile2 = this[toTile];
-            SurfaceTile surfaceTile;
-            ref SurfaceTile local = ref surfaceTile;
-            SurfaceTile casted;
-            if (tile1.Isnt<SurfaceTile>(out local) || tile2.Isnt<SurfaceTile>(out casted))
-                return;
-            if (roadDef1 != null)
+            
+            if (!potentialTunnels.ContainsKey(fromSurfaceTile))
+                potentialTunnels.Add(fromSurfaceTile, []);
+            if (!potentialTunnels.ContainsKey(toSurfaceTile))
+                potentialTunnels.Add(toSurfaceTile, []);
+            
+            if (tunnelDef != null)
             {
-                if (roadDef1.priority >= tunnelDef.priority)
-                    return;
-                surfaceTile.potentialRoads.RemoveAll((Predicate<SurfaceTile.RoadLink>) (rl => rl.neighbor == toTile));
-                casted.potentialRoads.RemoveAll((Predicate<SurfaceTile.RoadLink>) (rl => rl.neighbor == fromTile));
+                potentialTunnels[fromSurfaceTile].RemoveAll((tile) => tile.neighbor == toPlanetTile);
+                potentialTunnels[toSurfaceTile].RemoveAll(((tile)=> tile.neighbor == fromPlanetTile));
             }
-            if (surfaceTile.potentialRoads == null)
-                surfaceTile.potentialRoads = new List<SurfaceTile.RoadLink>();
-            if (casted.potentialRoads == null)
-                casted.potentialRoads = new List<SurfaceTile.RoadLink>();
-            List<SurfaceTile.RoadLink> potentialRoads1 = surfaceTile.potentialRoads;
-            SurfaceTile.RoadLink roadLink1 = new SurfaceTile.RoadLink();
-            roadLink1.neighbor = toTile;
-            roadLink1.road = tunnelDef;
-            SurfaceTile.RoadLink roadLink2 = roadLink1;
-            potentialRoads1.Add(roadLink2);
-            List<SurfaceTile.RoadLink> potentialRoads2 = casted.potentialRoads;
-            roadLink1 = new SurfaceTile.RoadLink();
-            roadLink1.neighbor = fromTile;
-            roadLink1.road = tunnelDef;
-            SurfaceTile.RoadLink roadLink3 = roadLink1;
-            potentialRoads2.Add(roadLink3);
+            
+            TunnelLink toTunnelLink = new TunnelLink
+            {
+                neighbor = toPlanetTile,
+                tunnel = tunnelDef
+            };
+            potentialTunnels[fromSurfaceTile].Add(toTunnelLink);
+            
+            TunnelLink fromTunnelLink = new TunnelLink
+            {
+                neighbor = fromPlanetTile,
+                tunnel = tunnelDef
+            };
+            potentialTunnels[toSurfaceTile].Add(fromTunnelLink);
         }
     }
 }
