@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net48</TargetFramework>
         <OutputType>Library</OutputType>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
         <RootNamespace>DwarfFlavourPack</RootNamespace>
         <AssemblyName>DwarfFlavourPack</AssemblyName>
         <OutputPath>../../Assemblies/</OutputPath>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <SteamModsPath>$(RIMWORLD_STEAM_MODS_PATH)</SteamModsPath>
+        <TargetFramework>net48</TargetFramework>
     </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <Optimize>false</Optimize>

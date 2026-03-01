@@ -7,6 +7,15 @@ namespace DwarfFlavourPack;
 
 public class TunnelGenData(World world) : WorldComponent(world)
 {
+    public WorldPathing Pather
+    {
+        get
+        {
+            field ??= new WorldPathing(Find.WorldGrid.Surface);
+            return field;
+        }
+    }
+
     public struct TunnelLink
     {
         public PlanetTile neighbor;

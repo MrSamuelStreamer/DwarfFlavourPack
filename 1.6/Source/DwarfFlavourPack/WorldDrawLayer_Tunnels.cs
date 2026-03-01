@@ -9,34 +9,20 @@ using Verse.Noise;
 
 namespace DwarfFlavourPack;
 
-public static class SurfaceTileExtensions
-{
-  extension(SurfaceTile tile)
-  {
-    public List<TunnelGenData.TunnelLink> potentialTunnels
-    {
-      get
-      {
-        if (!TunnelGenData.Instance.potentialTunnels.ContainsKey(tile))
-        {
-          TunnelGenData.Instance.potentialTunnels.Add(tile, []);
-        }
-
-        return TunnelGenData.Instance.potentialTunnels[tile];
-      }
-    }
-  }
-}
-
 public class WorldDrawLayer_Tunnels: WorldDrawLayer_Paths
 {
-  private readonly ModuleBase tunnelDisplacementX = new Perlin(1.0, 2.0, 0.5, 3, 74173887, QualityMode.Medium);
-  private readonly ModuleBase tunnelDisplacementY = new Perlin(1.0, 2.0, 0.5, 3, 67515931, QualityMode.Medium);
-  private readonly ModuleBase tunnelDisplacementZ = new Perlin(1.0, 2.0, 0.5, 3, 87116801, QualityMode.Medium);
+  private readonly ModuleBase _tunnelDisplacementX = new Perlin(1.3, 2.2, 0.5, 3, 55235233, QualityMode.Medium);
+  private readonly ModuleBase _tunnelDisplacementY = new Perlin(1.2, 2.1, 0.5, 3, 64982348, QualityMode.Medium);
+  private readonly ModuleBase _tunnelDisplacementZ = new Perlin(1.7, 1.9, 0.5, 3, 23475833, QualityMode.Medium);
 
   public override bool VisibleWhenLayerNotSelected => false;
 
   public override bool VisibleInBackground => false;
+
+  public static bool TunnelsVisible = false;
+  
+  public override bool Visible => base.Visible && TunnelsVisible;
+
 
   public override IEnumerable Regenerate()
   {
@@ -97,7 +83,7 @@ public class WorldDrawLayer_Tunnels: WorldDrawLayer_Paths
   {
     Vector3 coordinate = inp * distortionFrequency;
     float magnitude = inp.magnitude;
-    Vector3 vector3 = new Vector3(tunnelDisplacementX.GetValue(coordinate), tunnelDisplacementY.GetValue(coordinate), tunnelDisplacementZ.GetValue(coordinate));
+    Vector3 vector3 = new Vector3(_tunnelDisplacementX.GetValue(coordinate), _tunnelDisplacementY.GetValue(coordinate), _tunnelDisplacementZ.GetValue(coordinate));
     if (vector3.magnitude > 0.0001)
     {
       float num = (float) ((1.0 / (1.0 + Mathf.Exp((float) (-(double) vector3.magnitude / 1.0 * 2.0))) * 2.0 - 1.0) * 1.0);

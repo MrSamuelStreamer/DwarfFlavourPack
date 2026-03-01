@@ -17,24 +17,24 @@ namespace DwarfFlavourPack;
 public class WorldGenStep_Tunnels : WorldGenStep
 {
   // Controls how many extra endpoints get sprinkled in, scaled by world size (tiles / 100k).
-  private static readonly FloatRange ExtraTunnelNodesPer100kTiles = new FloatRange(50f, 100f);
+  private static readonly FloatRange ExtraTunnelNodesPer100kTiles = new FloatRange(75f, 150f);
 
   // Offsets endpoints away from settlements by a few neighbor-steps, so links aren't always settlement-to-settlement.
   // Negative values are clamped to 0 by Mathf.Max below (so "towards" isn't really used).
   private static readonly IntRange TunnelistanceFromSettlement = new IntRange(-1, 1);
 
   // Probability of allowing an extra connection even if it would create a cycle (i.e., not needed for spanning tree).
-  private const float ChanceExtraNonSpanningTreeLink = 0.05f;
+  private const float ChanceExtraNonSpanningTreeLink = 0.15f;
 
   // Probability of *not* adding a prospective link even if we decided it's eligible.
   // (This creates some missing connections so the network isn't too dense/regular.)
-  private const float ChanceHideSpanningTreeLink = 0.1f;
+  private const float ChanceHideSpanningTreeLink = 0.05f;
 
   // Kept from the original constants set; not used by this implementation.
-  private const float ChanceWorldObjectReclusive = 0.05f;
+  private const float ChanceWorldObjectReclusive = 0.07f;
 
   // For each endpoint, we look for up to this many nearby endpoints to propose links to.
-  private const int PotentialSpanningTreeLinksPerSettlement = 8;
+  private const int PotentialSpanningTreeLinksPerSettlement = 12;
 
   // SeedPart must be stable so this step has deterministic randomness relative to other steps.
   public override int SeedPart => 1538472345;
@@ -152,10 +152,12 @@ public class WorldGenStep_Tunnels : WorldGenStep
       // Counts how many endpoints we've found from this source so we can early-stop.
       int found = 0;
 
-      layer.Pather.FloodPathsWithCost(
+      TunnelGenData.Instance.Pather.FloodPathsWithCost(
         startTiles,
         // Movement cost function (higher cost => "further" in our link distance metric).
-        (src, dst) => Caravan_PathFollower.CostToMove(3300, src, dst, perceivedStatic: true),
+        // (src, dst) => Caravan_PathFollower.CostToMove(3300, src, dst, perceivedStatic: true),
+        (src, dst) => src == dst ? 0 : 1,
+        (_) => false,
         terminator: (tile, distance) =>
         {
           // If the flood reaches another endpoint tile, record a prospective link.
@@ -218,7 +220,6 @@ public class WorldGenStep_Tunnels : WorldGenStep
           list.Add(prospective);
 
         // If this link would connect two components, union them (regardless of whether we hid the visual link).
-        // Note: This means the connectivity structure can become "more connected" than what gets drawn.
         if (differentGroups)
         {
           Connectedness connectedness = new Connectedness();
@@ -242,12 +243,9 @@ public class WorldGenStep_Tunnels : WorldGenStep
     foreach (Link link in linkFinal)
     {
       // Find the best path between the endpoints using the layer's pather.
-      WorldPath path = layer.Pather.FindPath(indexToTile[link.indexA], indexToTile[link.indexB], null);
+      WorldPath path = TunnelGenData.Instance.Pather.FindPath(indexToTile[link.indexA], indexToTile[link.indexB], null);
 
-      // NodesReversed is a sequence of tiles along the path.
       List<PlanetTile> nodesReversed = path.NodesReversed;
-
-      // Pick a TunnelDef to draw with.
       TunnelDef tunnelDef = DefDatabase<TunnelDef>.AllDefsListForReading
         .RandomElementWithFallback();
 
@@ -255,14 +253,10 @@ public class WorldGenStep_Tunnels : WorldGenStep
       for (int index = 0; index < nodesReversed.Count - 1; ++index)
         TunnelGenData.Instance.OverlayTunnel(nodesReversed[index], nodesReversed[index + 1], tunnelDef);
 
-      // Return the path object to the pool to avoid allocations/leaks.
       path.ReleaseToPool();
     }
   }
 
-  /// <summary>
-  /// Represents a potential or final connection between two endpoint indices.
-  /// </summary>
   private struct Link
   {
     // Path cost between endpoints (used as a "distance" metric for sorting).
@@ -273,9 +267,6 @@ public class WorldGenStep_Tunnels : WorldGenStep
     public int indexB;
   }
 
-  /// <summary>
-  /// Tiny union-find node: parent pointers define components; Group() returns the root.
-  /// </summary>
   private class Connectedness
   {
     public Connectedness parent;
@@ -283,7 +274,6 @@ public class WorldGenStep_Tunnels : WorldGenStep
     public Connectedness Group()
     {
       // If no parent, this node is the root; otherwise walk upward.
-      // (No path compression here; it's still fine for these small counts.)
       return parent == null ? this : parent.Group();
     }
   }
