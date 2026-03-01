@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <WorldGenStepDef>
+        <defName>DFP_Tunnels</defName>
+        <order>601</order>
+        <worldGenStep Class="DwarfFlavourPack.WorldGenStep_Tunnels"/>
+    </WorldGenStepDef>
+    
+    <DwarfFlavourPack.TunnelDef>
+        <defName>DFP_Tunnel</defName>
+        <label>tunnel</label>
+        <distortionFrequency>0.5</distortionFrequency>
+        <distortionIntensity>0.2</distortionIntensity>
+        <worldTransitionGroup>Dirt</worldTransitionGroup>
+    </DwarfFlavourPack.TunnelDef>
+    
+    <DwarfFlavourPack.TunnelWorldLayerDef>
+        <defName>Stone</defName>
+        <order>280</order>
+        <color>(0.545, 0.27, 0.074)</color>
+    </DwarfFlavourPack.TunnelWorldLayerDef>
+</Defs>
