@@ -11,5 +11,9 @@ public static class DwarfFlavourPackDefOf
     // public static GeneDef YourPrefix_YourGeneDefName;
     public static TunnelDef DFP_Tunnel;
     
+    public static JobDef DFP_HaulToTunnel;
+    public static JobDef DFP_EnterTunnel;
+
+    
     static DwarfFlavourPackDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(DwarfFlavourPackDefOf));
 }

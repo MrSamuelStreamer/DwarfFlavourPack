@@ -24,9 +24,9 @@
         <defName>DFP_TunnelEntrancePrefab</defName>
         <size>(4,3)</size>
         <things>
-            <AncientLargeMechGestator>
+            <DFP_TunnelEntrance>
                 <position>(1, 0, 1)</position>
-            </AncientLargeMechGestator>
+            </DFP_TunnelEntrance>
         </things>
     </PrefabDef>
     

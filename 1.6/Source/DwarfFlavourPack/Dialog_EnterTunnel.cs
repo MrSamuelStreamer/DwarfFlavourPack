@@ -14,7 +14,7 @@ public class Dialog_EnterTunnel : Window
   private const float TitleRectHeight = 35f;
   private const float BottomAreaHeight = 55f;
   private readonly Vector2 BottomButtonSize = new Vector2(160f, 40f);
-  private MapPortal portal;
+  private Building_Tunnel tunnel;
   private List<TransferableOneWay> transferables;
   private TransferableOneWayWidget pawnsTransfer;
   private TransferableOneWayWidget itemsTransfer;
@@ -25,9 +25,9 @@ public class Dialog_EnterTunnel : Window
 
   protected override float Margin => 0.0f;
 
-  public Dialog_EnterTunnel(MapPortal portal)
+  public Dialog_EnterTunnel(Building_Tunnel tunnel)
   {
-    this.portal = portal;
+    this.tunnel = tunnel;
     forcePause = true;
     absorbInputAroundWindow = true;
   }
@@ -42,7 +42,7 @@ public class Dialog_EnterTunnel : Window
   {
     Rect rect1 = new Rect(0.0f, 0.0f, inRect.width, 35f);
     using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter))
-      Widgets.Label(rect1, portal.EnterString);
+      Widgets.Label(rect1, tunnel.EnterString);
     tabsList.Clear();
     tabsList.Add(new TabRecord("PawnsTab".Translate(), () => tab = Tab.Pawns, tab == Tab.Pawns));
     tabsList.Add(new TabRecord("ItemsTab".Translate(), () => tab = Tab.Items, tab == Tab.Items));
@@ -86,33 +86,33 @@ public class Dialog_EnterTunnel : Window
   private bool TryAccept()
   {
     List<Pawn> fromTransferables = TransferableUtility.GetPawnsFromTransferables(transferables);
-    portal.leftToLoad = new List<TransferableOneWay>();
+    tunnel.leftToLoad = new List<TransferableOneWay>();
     foreach (TransferableOneWay transferable in transferables)
-      portal.AddToTheToLoadList(transferable, transferable.CountToTransfer);
-    EnterPortalUtility.MakeLordsAsAppropriate(fromTransferables, portal);
+      tunnel.AddToTheToLoadList(transferable, transferable.CountToTransfer);
+    TunnelUtilities.MakeLordsAsAppropriate(fromTransferables, tunnel);
     return true;
   }
 
   private void CalculateAndRecacheTransferables()
   {
     transferables = new List<TransferableOneWay>();
-    if (portal.LoadInProgress)
+    if (tunnel.LoadInProgress)
     {
-      foreach (TransferableOneWay transferableOneWay in portal.leftToLoad)
+      foreach (TransferableOneWay transferableOneWay in tunnel.leftToLoad)
         transferables.Add(transferableOneWay);
     }
     AddPawnsToTransferables();
     AddItemsToTransferables();
-    foreach (Thing t in EnterPortalUtility.ThingsBeingHauledTo(portal))
+    foreach (Thing t in TunnelUtilities.ThingsBeingHauledTo(tunnel))
       AddToTransferables(t);
-    pawnsTransfer = new TransferableOneWayWidget(null, null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: portal.Map.Tile, drawEquippedWeapon: true);
+    pawnsTransfer = new TransferableOneWayWidget(null, null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: tunnel.Map.Tile, drawEquippedWeapon: true);
     CaravanUIUtility.AddPawnsSections(pawnsTransfer, transferables);
-    itemsTransfer = new TransferableOneWayWidget(transferables.Where(x => x.ThingDef.category != ThingCategory.Pawn), null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: portal.Map.Tile);
+    itemsTransfer = new TransferableOneWayWidget(transferables.Where(x => x.ThingDef.category != ThingCategory.Pawn), null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: tunnel.Map.Tile);
   }
 
   private void AddToTransferables(Thing t)
   {
-    if (portal.LoadInProgress && portal.leftToLoad.Any(trans => trans.things.Contains(t)))
+    if (tunnel.LoadInProgress && tunnel.leftToLoad.Any(trans => trans.things.Contains(t)))
       return;
     TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatching(t, transferables, TransferAsOneMode.PodsOrCaravanPacking);
     if (transferableOneWay == null)
@@ -128,14 +128,14 @@ public class Dialog_EnterTunnel : Window
 
   private void AddPawnsToTransferables()
   {
-    foreach (Thing allSendablePawn in CaravanFormingUtility.AllSendablePawns(portal.Map, true, allowLodgers: true))
+    foreach (Thing allSendablePawn in CaravanFormingUtility.AllSendablePawns(tunnel.Map, true, allowLodgers: true))
       AddToTransferables(allSendablePawn);
   }
 
   private void AddItemsToTransferables()
   {
-    bool isPocketMap = portal.Map.IsPocketMap;
-    foreach (Thing reachableColonyItem in CaravanFormingUtility.AllReachableColonyItems(portal.Map, isPocketMap, isPocketMap))
+    bool isPocketMap = tunnel.Map.IsPocketMap;
+    foreach (Thing reachableColonyItem in CaravanFormingUtility.AllReachableColonyItems(tunnel.Map, isPocketMap, isPocketMap))
       AddToTransferables(reachableColonyItem);
   }
 

@@ -161,44 +161,26 @@ public class Building_Tunnel: Building, IThingHolder
     return true;
   }
 
-  public virtual void OnEntered(Pawn pawn)
-  {
-    Notify_ThingAdded(pawn);
-    
-    if (Find.CurrentMap == Map)
-    {
-      SoundDef traverseSound = def.portal.traverseSound;
-      if (traverseSound == null)
-        return;
-      traverseSound.PlayOneShot((SoundInfo) (Thing) this);
-    }
-    else
-    {
-      if (Find.CurrentMap != this.exit.Map)
-        return;
-      SoundDef traverseSound = def.portal.traverseSound;
-      if (traverseSound == null)
-        return;
-      traverseSound.PlayOneShot((SoundInfo) (Thing) this.exit);
-    }
-  }
-
   public override IEnumerable<Gizmo> GetGizmos()
   {
     Building_Tunnel mapPortal = this;
-    // ISSUE: reference to a compiler-generated method
     foreach (Gizmo gizmo in base.GetGizmos())
       yield return gizmo;
     Command_Action gizmo1 = new Command_Action();
-    // ISSUE: reference to a compiler-generated method
-    gizmo1.action = mapPortal.\u003CGetGizmos\u003Eb__40_0;
-    gizmo1.icon = mapPortal.EnterTex;
-    gizmo1.defaultLabel = mapPortal.EnterString + "...";
-    gizmo1.defaultDesc = "CommandEnterPortalDesc".Translate((NamedArgument) mapPortal.Label);
-    string reason;
-    gizmo1.Disabled = !mapPortal.IsEnterable(out reason);
-    gizmo1.disabledReason = reason;
-    yield return gizmo1;
+    yield return new Command_Action
+    {
+      action = delegate
+      {
+        Dialog_EnterTunnel dialog_EnterPortal = new Dialog_EnterTunnel(this);
+        Find.WindowStack.Add(dialog_EnterPortal);
+      },
+      icon = this.EnterTex,
+      defaultLabel = this.EnterString + "...",
+      defaultDesc = "CommandEnterPortalDesc".Translate(this.Label),
+      Disabled = !this.IsEnterable(out string text),
+      disabledReason = text
+    };
+    
     if (mapPortal.LoadInProgress)
     {
       Command_Action gizmo2 = new Command_Action();

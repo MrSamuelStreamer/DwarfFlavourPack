@@ -15,10 +15,10 @@ public class LordToil_LoadAndEnterTunnel: LordToil
 
     public override void UpdateAllDuties()
     {
-        for (int index = 0; index < this.lord.ownedPawns.Count; ++index)
-            this.lord.ownedPawns[index].mindState.duty = new PawnDuty(DutyDefOf.LoadAndEnterPortal)
+        foreach (var t in lord.ownedPawns)
+            t.mindState.duty = new PawnDuty(DutyDefOf.LoadAndEnterPortal)
             {
-                focus = new LocalTargetInfo((Thing) this.tunnel)
+                focus = new LocalTargetInfo(tunnel)
             };
     }
 }
