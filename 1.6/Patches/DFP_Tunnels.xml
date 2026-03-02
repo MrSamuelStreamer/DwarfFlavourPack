@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps</xpath>
+        <value><li>DFP_Tunnels</li></value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/PlanetLayerDef[defName="Surface"]/worldDrawLayers</xpath>
+        <value><li>DwarfFlavourPack.WorldDrawLayer_Tunnels</li></value>
+    </Operation>
+</Patch>
