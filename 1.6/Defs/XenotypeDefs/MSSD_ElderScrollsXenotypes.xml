@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Orc -->
+  <XenotypeDef>
+    <defName>MSSD_Orsimer</defName>
+    <label>Orsimer</label>
+    <description>Orsimer fluff</description>
+    <descriptionShort>Orsimer fluff</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Neanderthal_7</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li MayRequire="sarg.alphagenes">AG_LargerBodySize</li>
+      <li>PsychicAbility_Dull</li>
+      <li>Aggression_Aggressive</li>
+      <li>MeleeDamage_Strong</li>
+      <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li MayRequire="escp.orsimer">ESCP_GeneInheritedBonus_Orsimer</li>
+      <li>Ears_Pointed</li>
+      <li MayRequire="sarg.alphagenes">AG_Tusks</li>
+      <li>Hair_MidBlack</li>
+      <li>Hair_DarkBlack</li>
+      <li>Hair_InkBlack</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_DeepGreen</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_PlantGreen</li>
+      <li MayRequire="redmattis.bigsmall.core">VU_ZombieSkin</li>
+      <li>AptitudeStrong_Shooting</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Nord -->
+  <XenotypeDef>
+    <defName>MSSD_Nord</defName>
+    <label>Nord</label>
+    <description>Nord</description>
+    <descriptionShort>Nord</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Baseliner_3</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>PsychicAbility_Dull</li>
+      <li>MinTemp_SmallDecrease</li>
+      <li MayRequire="det.stoneborn">DV_Aggression_Irascible</li>
+      <li MayRequire="sarg.alphagenes">AG_Rowdy</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_BorealSkin</li>
+      <li>AptitudeStrong_Melee</li>
+      <li MayRequire="void.charactereditor">SZBodySize_11</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Dark Elf -->
+  <XenotypeDef>
+    <defName>MSSD_Dunmer</defName>
+    <label>Dunmer</label>
+    <description>Dunmer Fluff</description>
+    <descriptionShort>Dunmer Fluff</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Piker_2</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>PsychicAbility_Enhanced</li>
+      <li>FireResistant</li>
+      <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li MayRequire="escp.dunmer">ESCP_GeneInheritedBonus_Dunmer</li>
+      <li>Ears_Pointed</li>
+      <li>Eyes_Red</li>
+      <li>Hair_DarkBlack</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_DeepPurple</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_PaleBlueFish</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_BlueFish</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_DeepBlueFish</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Dwarf -->
+  <XenotypeDef>
+    <defName>MSSD_Dwemer</defName>
+    <label>Dwemer</label>
+    <description>Dwemer Fluff</description>
+    <descriptionShort>Dwemer Fluff</descriptionShort>
+    <iconPath>Xenotypes/BS_Dvergr_2</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li MayRequire="redmattis.bigsmall.core">BS_Bloodlust</li>
+      <li MayRequire="sarg.alphagenes">AG_Enforcer</li>
+      <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li MayRequire="escp.dwemer">ESCP_GeneInheritedBonus_Dwemer</li>
+      <li>Ears_Pointed</li>
+      <li>Beard_BushyOnly</li>
+      <li>Hair_DarkBlack</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_CreamSkin</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_SkinFrostWhite</li>
+      <li MayRequire="redmattis.bigsmall.core">VU_LightPallorSkin</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_VeryLightOrange</li>
+      <li MayRequire="det.stoneborn">DV_Undergrounder</li>
+      <li MayRequire="det.stoneborn">DV_ExtendedMemory</li>
+      <li MayRequire="sarg.alphagenes">AG_BioluminescentEyes</li>
+      <li>AptitudePoor_Plants</li>
+      <li>AptitudeTerrible_Animals</li>
+      <li>AptitudeRemarkable_Crafting</li>
+      <li>AptitudePoor_Social</li>
+      <li>AptitudeStrong_Intellectual</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Breton -->
+  <XenotypeDef>
+    <defName>MSSD_Breton</defName>
+    <label>Breton</label>
+    <description>Breton</description>
+    <descriptionShort>Breton</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Baseliner_5</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>PsychicAbility_Enhanced</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li>Ears_Human</li>
+      <li>Ears_Pointed</li>
+      <li>AptitudeStrong_Social</li>
+    </genes>
+  </XenotypeDef>
+  <!-- High Elf -->
+  <XenotypeDef>
+    <defName>MSSD_Altmer</defName>
+    <label>Altmer</label>
+    <description>Altmer fluff</description>
+    <descriptionShort>Altmer fluff</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Sanguophage_4</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>PsychicAbility_Extreme</li>
+      <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li MayRequire="escp.altmer">ESCP_GeneInheritedBonus_Altmer</li>
+      <li>Ears_Pointed</li>
+      <li>Hair_Blonde</li>
+      <li>Hair_SandyBlonde</li>
+      <li>Hair_LightOrange</li>
+      <li>Hair_ReddishBrown</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_CreamHair</li>
+      <li MayRequire="sarg.alphagenes">AG_Hair_Golden</li>
+      <li>Skin_DeepYellow</li>
+      <li>Skin_PaleYellow</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_Gold</li>
+      <li MayRequire="void.charactereditor">SZBodySize_13</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Wood Elf -->
+  <XenotypeDef>
+    <defName>MSSD_Bosmer</defName>
+    <label>Bosmer</label>
+    <description>Bosmer fluff</description>
+    <descriptionShort>Bosmer fluff</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Piker_5</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li MayRequire="redmattis.bigsmall.core">BS_TrollHorns</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_Diet_Carnivore</li>
+      <li MayRequire="redmattis.bigsmall.core">Cannibal</li>
+      <li>RobustDigestion</li>
+      <li MayRequire="sarg.alphagenes">AG_SurvivalInstinct_High</li>
+      <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li MayRequire="escp.bosmer">ESCP_GeneInheritedBonus_Bosmer</li>
+      <li>Ears_Pointed</li>
+      <li>Headbone_Human</li>
+      <li>Hair_ReddishBrown</li>
+      <li>Hair_DarkBrown</li>
+      <li>Hair_DarkSaturatedReddish</li>
+      <li>Hair_DarkReddish</li>
+      <li>Skin_DeepYellow</li>
+      <li>Skin_PaleYellow</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_Gold</li>
+      <li>AptitudeStrong_Shooting</li>
+      <li MayRequire="void.charactereditor">SZBodySize_09</li>
+    </genes>
+  </XenotypeDef>
+</Defs>
