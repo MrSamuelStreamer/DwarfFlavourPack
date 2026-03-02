@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- Baseliner Reflavour -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/XenotypeDef[defName="Baseliner"]/label</xpath>
+        <value>
+            <label>Imperial</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/XenotypeDef[defName="Baseliner"]/description</xpath>
+        <value>
+            <description>A standard human without any particular adaptions or regional characteristics.</description>
+        </value>
+    </Operation>
+</Patch>

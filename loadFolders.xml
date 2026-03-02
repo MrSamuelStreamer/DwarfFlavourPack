@@ -5,5 +5,9 @@
 		<li>1.6</li>
 		<li IfModActive="Ludeon.RimWorld.Royalty">Compatibility/Ludeon.RimWorld.Royalty</li>
 		<li IfModActive="vanillaexpanded.helixiengas">Compatibility/vanillaexpanded.helixiengas</li>
+		<li IfModActive="cixwow.helixienboiler">Compatibility/cixwow.helixienboiler</li>
+		<li IfModActive="cixwow.helixienbrazier">Compatibility/cixwow.helixienbrazier</li>
+		<li IfModActive="cixwow.helixiengasproduction">Compatibility/cixwow.helixiengasproduction</li>
+		<li IfModActive="bart.magmarefinery">Compatibility/bart.magmarefinery</li>
 	</v1.6>
 </loadFolders>

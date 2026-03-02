@@ -171,4 +171,120 @@
       <li MayRequire="void.charactereditor">SZBodySize_09</li>
     </genes>
   </XenotypeDef>
+  <!-- Maomer -->
+  <XenotypeDef>
+    <defName>MSSD_Maomer</defName>
+    <label>Maomer</label>
+    <description>Maomer</description>
+    <descriptionShort>Maomer</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/VBE_CustomXenotypeIcon59</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>PsychicAbility_Enhanced</li>
+      <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li MayRequire="escp.maormer">ESCP_GeneInheritedBonus_Maormer</li>
+      <li>Ears_Pointed</li>
+      <li>Eyes_Gray</li>
+      <li>Hair_LightBlue</li>
+      <li>Hair_LightTeal</li>
+      <li MayRequire="redmattis.bigsmall.core">Hair_MediumBlue</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_HairFrostWhite</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_HairPermafrost</li>
+      <li>Skin_Blue</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_Drakonori_PaleBlue</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_SkinFrostWhite</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_SkinPermafrost</li>
+      <li MayRequire="sarg.alphagenes">AG_BioluminescentEyes</li>
+      <li>AptitudePoor_Social</li>
+      <li MayRequire="void.charactereditor">SZBodySize_13</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Chimer -->
+  <XenotypeDef>
+    <defName>MSSD_Chimer</defName>
+    <label>Chimer</label>
+    <description>Chimer</description>
+    <descriptionShort>Chimer</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Baseliner_7</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>PsychicAbility_Enhanced</li>
+      <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+      <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+      <li MayRequire="escp.chimer">ESCP_GeneInheritedBonus_Chimer</li>
+      <li>Ears_Pointed</li>
+      <li>Hair_Blonde</li>
+      <li>Hair_SandyBlonde</li>
+      <li>Hair_LightOrange</li>
+      <li>Hair_ReddishBrown</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_CreamHair</li>
+      <li MayRequire="sarg.alphagenes">AG_Hair_Golden</li>
+      <li>Skin_DeepYellow</li>
+      <li>Skin_PaleYellow</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_Gold</li>
+      <li MayRequire="void.charactereditor">SZBodySize_13</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Redguard -->
+   <XenotypeDef>
+    <defName>MSSD_Redguard</defName>
+    <label>Redguard</label>
+    <description>Redguard</description>
+    <descriptionShort>Redguard</descriptionShort>
+    <iconPath>UI/Icons/Xenotypes/Custom/Baseliner_2</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>Immunity_Strong</li>
+      <li>PsychicAbility_Dull</li>
+      <li>Hair_DarkSaturatedReddish</li>
+      <li>Hair_DarkReddish</li>
+      <li>Hair_DarkBlack</li>
+      <li>Hair_InkBlack</li>
+      <li MayRequire="settlerking.mo.zahir">SK_Skin_Zahir_Light</li>
+      <li MayRequire="settlerking.mo.zahir">SK_Skin_Zahir_Dark</li>
+      <li>AptitudeStrong_Melee</li>
+    </genes>
+  </XenotypeDef>
+  <!-- Khajit -->
+   <XenotypeDef>
+    <defName>MSSD_Khajit</defName>
+    <label>Khajit</label>
+    <description>Khajit</description>
+    <descriptionShort>Khajit</descriptionShort>
+    <iconPath>Xenotypes/BS_Lycanthrope_2</iconPath>
+    <inheritable>true</inheritable>
+    <genes>
+      <li>MoveSpeed_Quick</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_Unarmed_Strong</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_Unpretentious</li>
+      <li MayRequire="theo.escp.khajiit">ESCP_Khajiit_InheritedBonus</li>
+      <li>Tail_Furry</li>
+      <li MayRequire="sarg.alphagenes">AG_AnimusEars</li>
+      <li>Ears_Cat</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_FoxEars</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_AnimalEars</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_AlienApperanceStandards_Lesser</li>
+      <li>Beard_NoBeardOnly</li>
+      <li MayRequire="sarg.alphagenes">AG_Digitigrade</li>
+      <li>Hair_SandyBlonde</li>
+      <li>Hair_LightOrange</li>
+      <li>Hair_ReddishBrown</li>
+      <li>Hair_DarkBrown</li>
+      <li>Hair_DarkSaturatedReddish</li>
+      <li>Hair_DarkReddish</li>
+      <li>Skin_PaleYellow</li>
+      <li MayRequire="settlerking.mo.zahir">SK_Skin_Zahir_Light</li>
+      <li MayRequire="settlerking.mo.zahir">SK_Skin_Zahir_Dark</li>
+      <li MayRequire="sarg.alphagenes">AG_Skin_Gold</li>
+      <li MayRequire="redmattis.bigsmall.core">BS_BorealSkin</li>
+      <li>Learning_Slow</li>
+      <li MayRequire="sarg.alphagenes">AG_ClawedHands</li>
+      <li>Furskin</li>
+      <li>AptitudeTerrible_Construction</li>
+      <li>AptitudeTerrible_Mining</li>
+      <li>AptitudeTerrible_Crafting</li>
+      <li>AddictionResistant_MorrowRim_MoonSugar</li>
+    </genes>
+  </XenotypeDef>
 </Defs>

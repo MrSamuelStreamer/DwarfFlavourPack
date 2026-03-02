@@ -217,4 +217,12 @@
             <description>Switches magmatic flow on/off.</description>
         </value>
     </Operation>
+
+    <!-- Research -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VHGE_GasExtraction"]/techLevel</xpath>
+        <value>
+            <techLevel>Medieval</techLevel>
+        </value>
+    </Operation>
 </Patch>
