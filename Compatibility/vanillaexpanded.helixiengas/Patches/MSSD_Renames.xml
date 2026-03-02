@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- VHGE_GasSunLamp -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasSunLamp"]/label</xpath>
+        <value>
+            <label>Magmatic Sun Lamp</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasSunLamp"]/description</xpath>
+        <value>
+            <description>An industrial lamp which lights an area brightly enough to grow crops, but consumes a medium amount of magmatic gas. Automatically turns itself off at night.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasLamp -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasLamp"]/label</xpath>
+        <value>
+            <label>Magmatic Lamp</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasLamp"]/description</xpath>
+        <value>
+            <description>A magmatic gas-powered standing lamp that lights an area. People need light to move and work at full speed. Needs to be connected to the magmatic network. Can be safely placed outdoors.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasWallLamp -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasWallLamp"]/label</xpath>
+        <value>
+            <label>Magmatic Wall Lamp</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasWallLamp"]/description</xpath>
+        <value>
+            <description>A magmatic gas-powered wall light that lights an area. People need light to move and work at full speed. Needs to be connected to the magmatic gas network. Can be safely placed outdoors.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasFloodlight -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasFloodlight"]/label</xpath>
+        <value>
+            <label>Magmatic Floodlight</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasFloodlight"]/description</xpath>
+        <value>
+            <description>A magmatic gas-powered tall floodlight that lights a massive area. People need light to move and work at full speed. It doesn't shine bright enough to grow crops. Needs to be connected to the magmatic gas network. Can be safely placed outdoors.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasOperatedPodLauncher -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasOperatedPodLauncher"]/label</xpath>
+        <value>
+            <label>Magmatic Pod Launcher</label> <!-- Probably unused due to tech level -->
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasOperatedPodLauncher"]/description</xpath>
+        <value>
+            <description>A fueling port for launching one transport pod. Pod launchers can launch as a group - but the launchers must be placed adjacent to each other. Requires connection to a magmatic gas system.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasGeyser -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasGeyser"]/label</xpath>
+        <value>
+            <label>Magmatic Geyser</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasGeyser"]/description</xpath>
+        <value>
+            <description>A natural source of high-pressure magmatic gas. Pumps can be built on top to extract the magmatic gasses.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasPoweredCrematorium -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredCrematorium"]/label</xpath>
+        <value>
+            <label>Magmatic Crematorium</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredCrematorium"]/description</xpath>
+        <value>
+            <description>A huge stone crematorium which vaporizes corpses with extremely high temperatures. Operates on magmatic gas.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasPoweredSmelter -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredSmelter"]/label</xpath>
+        <value>
+            <label>Magmatic Smelter</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredSmelter"]/description</xpath>
+        <value>
+            <description>Extracts usable metal from slag chunks and other mixed metal items. Operates on magmatic gas.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasPoweredStove -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredStove"]/label</xpath>
+        <value>
+            <label>Magmatic Stove</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredStove"]/description</xpath>
+        <value>
+            <description>A magmatic gas-powered stove with an attached countertop for preparing meals.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasPoweredSmithy -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredSmithy"]/label</xpath>
+        <value>
+            <label>Magmatic Smithy</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredSmithy"]/description</xpath>
+        <value>
+            <description>A magmatic gas-powered station for smithing non-mechanical weapons and tools.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasPoweredRefinery -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredRefinery"]/label</xpath>
+        <value>
+            <label>Magmatic-Powered Refinery</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPoweredRefinery"]/description</xpath>
+        <value>
+            <description>Refines biological matter like wood or plant matter into chemfuel. Needs to be connected to the magmatic gasnetwork.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasCooler -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasCooler"]/label</xpath>
+        <value>
+            <label>Magmatic Cooler</label>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasHeater -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasHeater"]/label</xpath>
+        <value>
+            <label>Magmatic Heater</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasHeater"]/description</xpath>
+        <value>
+            <description>A device that converts magmatic gasses into radiated heat. It can automatically turn itself on or off to reach a specific target temperature.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasTank -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasTank"]/label</xpath>
+        <value>
+            <label>Magmatic Tank</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasTank"]/description</xpath>
+        <value>
+            <description>A large steel tank for magmatic gas storage. Will explode if damaged.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_GasPipeValve -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPipeValve"]/label</xpath>
+        <value>
+            <label>Magmatic Valve</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_GasPipeValve"]/description</xpath>
+        <value>
+            <description>Switches magmatic flow on/off.</description>
+        </value>
+    </Operation>
+</Patch>
