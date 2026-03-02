@@ -154,14 +154,14 @@
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="VHGE_GasPoweredRefinery"]/label</xpath>
         <value>
-            <label>Magmatic-Powered Refinery</label>
+            <label>Magmatic Refinery</label>
         </value>
     </Operation>
 
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="VHGE_GasPoweredRefinery"]/description</xpath>
         <value>
-            <description>Refines biological matter like wood or plant matter into chemfuel. Needs to be connected to the magmatic gasnetwork.</description>
+            <description>Refines biological matter like wood or plant matter into chemfuel. Needs to be connected to the magmatic gas network.</description>
         </value>
     </Operation>
 
@@ -218,11 +218,79 @@
         </value>
     </Operation>
 
+    <!-- VHGE_HelixienPump -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_HelixienPump"]/label</xpath>
+        <value>
+            <label>Magmatic Pump</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_HelixienPump"]/description</xpath>
+        <value>
+            <description>An extractor machine mounted on a geothermal pocket of magmatic gas. This machine pumps out valuable gas and needs to be connected to other gas-based utilities using the pipe network.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_HelixienGenerator -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_HelixienGenerator"]/label</xpath>
+        <value>
+            <label>Magmatic Charge Generator</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_HelixienGenerator"]/description</xpath>
+        <value>
+            <description>Produces charged power by consuming magmatic gas. Must be connected to a gas pipe network.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_HelixienPipe -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_HelixienPipe"]/label</xpath>
+        <value>
+            <label>Magmatic Gas Pipe</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_HelixienPipe"]/description</xpath>
+        <value>
+            <description>A reinforced pipe capable of transmitting superheated magmatic gas.</description>
+        </value>
+    </Operation>
+
+    <!-- VHGE_SubterraneanHelixienPipe -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_SubterraneanHelixienPipe"]/label</xpath>
+        <value>
+            <label>Subterranean Magmatic Gas Pipe</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VHGE_SubterraneanHelixienPipe"]/description</xpath>
+        <value>
+            <description>A reinforced subterranean pipe capable of transmitting superheated magmatic gas.</description>
+        </value>
+    </Operation>
+
     <!-- Research -->
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ResearchProjectDef[defName="VHGE_GasExtraction"]/techLevel</xpath>
         <value>
             <techLevel>Medieval</techLevel>
+        </value>
+    </Operation>
+
+    <!-- Category -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/DesignationCategoryDef[defName="VCHE_PipeNetworks"]/label</xpath>
+        <value>
+            <label>magmatic network</label>
         </value>
     </Operation>
 </Patch>

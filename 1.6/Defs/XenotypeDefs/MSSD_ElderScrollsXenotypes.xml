@@ -243,6 +243,9 @@
       <li>Hair_InkBlack</li>
       <li MayRequire="settlerking.mo.zahir">SK_Skin_Zahir_Light</li>
       <li MayRequire="settlerking.mo.zahir">SK_Skin_Zahir_Dark</li>
+      <li MayRequire="zahawk84.genes">VSTG_Skin_7</li>
+      <li MayRequire="zahawk84.genes">VSTG_Skin_8</li>
+      <li MayRequire="zahawk84.genes">VSTG_Skin_9</li>
       <li>AptitudeStrong_Melee</li>
     </genes>
   </XenotypeDef>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- HelixienGasBoiler -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="HelixienGasBoiler"]/label</xpath>
+        <value>
+            <label>Magmatic Boiler</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="HelixienGasBoiler"]/description</xpath>
+        <value>
+            <description>Produces a variable amount of heating units for radiators and hot water tanks. Manually controlled power setting. Can be controlled by thermostats.</description>
+        </value>
+    </Operation>
+
+</Patch>

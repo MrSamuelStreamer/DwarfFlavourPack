@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- VFE_TableSmithyLargeGas -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VFE_TableSmithyLargeGas"]/label</xpath>
+        <value>
+            <label>Large Magmatic Smithy</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VFE_TableSmithyLargeGas"]/description</xpath>
+        <value>
+            <description>A magmatic gas-powered work center for smithing non-mechanical weapons and tools. Consumes a lot of gas.</description>
+        </value>
+    </Operation>
+
+    <!-- VFE_TableStoveLargeGas -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VFE_TableStoveLargeGas"]/label</xpath>
+        <value>
+            <label>Large Magmatic Stove</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VFE_TableStoveLargeGas"]/description</xpath>
+        <value>
+            <description>A large size magmatic gas-powered manufacturing stove as well as multiple ovens to prepare meals and cook significantly faster.</description>
+        </value>
+    </Operation>
+
+    <!-- VFE_TableStoveLargeGas -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VFE_TableStoveLargeGas"]/label</xpath>
+        <value>
+            <label>Large Magmatic Stove</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VFE_TableStoveLargeGas"]/description</xpath>
+        <value>
+            <description>A large size magmatic gas-powered manufacturing stove as well as multiple ovens to prepare meals and cook significantly faster.</description>
+        </value>
+    </Operation>
+</Patch>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- HelixienGasBrazier -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="HelixienGasBrazier"]/label</xpath>
+        <value>
+            <label>Magmatic Brazier</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="HelixienGasBrazier"]/description</xpath>
+        <value>
+            <description>An octagonal basin used to hold a fire which is powered by magmatic gas. Can be toggled on and off. Will light the surroundings and create heat.</description>
+        </value>
+    </Operation>
+
+    <!-- HelixienGasDarklightBrazier -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="HelixienGasDarklightBrazier"]/label</xpath>
+        <value>
+            <label>Magmatic Darklight Brazier</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="HelixienGasDarklightBrazier"]/description</xpath>
+        <value>
+            <description>A specially mixed magmatic gas brazier that illuminates its surroundings with darklight and creates heat. Can be toggled on and off. These satisfy royal brazier requirements.</description>
+        </value>
+    </Operation>
+</Patch>
