@@ -5,8 +5,11 @@ using Verse;
 
 namespace DwarfFlavourPack;
 
-public class TunnelGenData(World world) : WorldComponent(world)
+public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
 {
+    // ReSharper disable once InconsistentNaming
+    private ThingOwner<TunnelCaravan> innerContainer;
+    
     public WorldPathing Pather
     {
         get
@@ -74,5 +77,21 @@ public class TunnelGenData(World world) : WorldComponent(world)
             };
             potentialTunnels[toSurfaceTile].Add(fromTunnelLink);
         }
+    }
+
+    public void GetChildHolders(List<IThingHolder> outChildren)
+    {
+        ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+    }
+
+    public ThingOwner GetDirectlyHeldThings() => innerContainer;
+    public IThingHolder ParentHolder => null;
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
+
+        if (innerContainer == null) innerContainer = new ThingOwner<TunnelCaravan>(this);
     }
 }

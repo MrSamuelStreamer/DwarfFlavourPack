@@ -1,0 +1,155 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using RimWorld.Planet;
+using UnityEngine;
+using Verse;
+using Verse.Sound;
+
+namespace DwarfFlavourPack;
+
+public class Dialog_EnterTunnel : Window
+{
+  private const float TitleRectHeight = 35f;
+  private const float BottomAreaHeight = 55f;
+  private readonly Vector2 BottomButtonSize = new Vector2(160f, 40f);
+  private MapPortal portal;
+  private List<TransferableOneWay> transferables;
+  private TransferableOneWayWidget pawnsTransfer;
+  private TransferableOneWayWidget itemsTransfer;
+  private Tab tab;
+  private static List<TabRecord> tabsList = new List<TabRecord>();
+
+  public override Vector2 InitialSize => new Vector2(1024f, UI.screenHeight);
+
+  protected override float Margin => 0.0f;
+
+  public Dialog_EnterTunnel(MapPortal portal)
+  {
+    this.portal = portal;
+    forcePause = true;
+    absorbInputAroundWindow = true;
+  }
+
+  public override void PostOpen()
+  {
+    base.PostOpen();
+    CalculateAndRecacheTransferables();
+  }
+
+  public override void DoWindowContents(Rect inRect)
+  {
+    Rect rect1 = new Rect(0.0f, 0.0f, inRect.width, 35f);
+    using (new TextBlock(GameFont.Medium, TextAnchor.MiddleCenter))
+      Widgets.Label(rect1, portal.EnterString);
+    tabsList.Clear();
+    tabsList.Add(new TabRecord("PawnsTab".Translate(), () => tab = Tab.Pawns, tab == Tab.Pawns));
+    tabsList.Add(new TabRecord("ItemsTab".Translate(), () => tab = Tab.Items, tab == Tab.Items));
+    inRect.yMin += 67f;
+    Widgets.DrawMenuSection(inRect);
+    TabDrawer.DrawTabs(inRect, tabsList);
+    inRect = inRect.ContractedBy(17f);
+    Widgets.BeginGroup(inRect);
+    Rect rect2 = inRect.AtZero();
+    DoBottomButtons(rect2);
+    Rect inRect1 = rect2;
+    inRect1.yMax -= 76f;
+    bool anythingChanged = false;
+    switch (tab)
+    {
+      case Tab.Pawns:
+        pawnsTransfer.OnGUI(inRect1, out anythingChanged);
+        break;
+      case Tab.Items:
+        itemsTransfer.OnGUI(inRect1, out anythingChanged);
+        break;
+    }
+    Widgets.EndGroup();
+  }
+
+  private void DoBottomButtons(Rect rect)
+  {
+    if (Widgets.ButtonText(new Rect((float) (rect.width / 2.0 - BottomButtonSize.x / 2.0), (float) (rect.height - 55.0 - 17.0), BottomButtonSize.x, BottomButtonSize.y), "ResetButton".Translate()))
+    {
+      SoundDefOf.Tick_Low.PlayOneShotOnCamera();
+      CalculateAndRecacheTransferables();
+    }
+    if (Widgets.ButtonText(new Rect(0.0f, (float) (rect.height - 55.0 - 17.0), BottomButtonSize.x, BottomButtonSize.y), "CancelButton".Translate()))
+      Close();
+    if (!Widgets.ButtonText(new Rect(rect.width - BottomButtonSize.x, (float) (rect.height - 55.0 - 17.0), BottomButtonSize.x, BottomButtonSize.y), "AcceptButton".Translate()) || !TryAccept())
+      return;
+    SoundDefOf.Tick_High.PlayOneShotOnCamera();
+    Close(false);
+  }
+
+  private bool TryAccept()
+  {
+    List<Pawn> fromTransferables = TransferableUtility.GetPawnsFromTransferables(transferables);
+    portal.leftToLoad = new List<TransferableOneWay>();
+    foreach (TransferableOneWay transferable in transferables)
+      portal.AddToTheToLoadList(transferable, transferable.CountToTransfer);
+    EnterPortalUtility.MakeLordsAsAppropriate(fromTransferables, portal);
+    return true;
+  }
+
+  private void CalculateAndRecacheTransferables()
+  {
+    transferables = new List<TransferableOneWay>();
+    if (portal.LoadInProgress)
+    {
+      foreach (TransferableOneWay transferableOneWay in portal.leftToLoad)
+        transferables.Add(transferableOneWay);
+    }
+    AddPawnsToTransferables();
+    AddItemsToTransferables();
+    foreach (Thing t in EnterPortalUtility.ThingsBeingHauledTo(portal))
+      AddToTransferables(t);
+    pawnsTransfer = new TransferableOneWayWidget(null, null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: portal.Map.Tile, drawEquippedWeapon: true);
+    CaravanUIUtility.AddPawnsSections(pawnsTransfer, transferables);
+    itemsTransfer = new TransferableOneWayWidget(transferables.Where(x => x.ThingDef.category != ThingCategory.Pawn), null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: portal.Map.Tile);
+  }
+
+  private void AddToTransferables(Thing t)
+  {
+    if (portal.LoadInProgress && portal.leftToLoad.Any(trans => trans.things.Contains(t)))
+      return;
+    TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatching(t, transferables, TransferAsOneMode.PodsOrCaravanPacking);
+    if (transferableOneWay == null)
+    {
+      transferableOneWay = new TransferableOneWay();
+      transferables.Add(transferableOneWay);
+    }
+    if (transferableOneWay.things.Contains(t))
+      Log.Error("Tried to add the same thing twice to TransferableOneWay: " + t);
+    else
+      transferableOneWay.things.Add(t);
+  }
+
+  private void AddPawnsToTransferables()
+  {
+    foreach (Thing allSendablePawn in CaravanFormingUtility.AllSendablePawns(portal.Map, true, allowLodgers: true))
+      AddToTransferables(allSendablePawn);
+  }
+
+  private void AddItemsToTransferables()
+  {
+    bool isPocketMap = portal.Map.IsPocketMap;
+    foreach (Thing reachableColonyItem in CaravanFormingUtility.AllReachableColonyItems(portal.Map, isPocketMap, isPocketMap))
+      AddToTransferables(reachableColonyItem);
+  }
+
+  public override void OnAcceptKeyPressed()
+  {
+    if (!TryAccept())
+      return;
+    SoundDefOf.Tick_High.PlayOneShotOnCamera();
+    Close(false);
+  }
+
+  private enum Tab
+  {
+    Pawns,
+    Items,
+  }
+}
