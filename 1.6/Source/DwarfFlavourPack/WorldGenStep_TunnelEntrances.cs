@@ -33,7 +33,7 @@ public class WorldGenStep_TunnelEntrances : WorldGenStep
             worldObject.SetFaction(faction);
             worldObject.Tile = TileFinder.RandomSettlementTileFor(layer, faction);
             if (worldObject is INameableWorldObject nameableWorldObject)
-                nameableWorldObject.Name = SettlementNameGenerator.GenerateSettlementName(worldObject);
+                nameableWorldObject.Name = SettlementNameGenerator.GenerateSettlementName(worldObject, DwarfFlavourPackDefOf.DFP_TunnelEntranceSite.nameMaker);
             Find.WorldObjects.Add(worldObject);
         }
     }

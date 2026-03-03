@@ -168,11 +168,20 @@
         </genSteps>
     </MapGeneratorDef>
     
+    <IncidentTargetTagDef>
+        <defName>DFP_TunnelEntrance</defName>
+    </IncidentTargetTagDef>
+    
     <WorldObjectDef ParentName="Site">
         <defName>DFP_TunnelEntranceSite</defName>
         <label>tunnel access</label> <!-- hidden -->
         <mapGenerator>DFP_TunnelEntrance</mapGenerator>
         <expandingIconTexture>UI/DFP_TunnelIcon</expandingIconTexture>
         <siteTexture>UI/DFP_TunnelIcon</siteTexture>
+        <IncidentTargetTags>
+            <li>DFP_TunnelEntrance</li>
+        </IncidentTargetTags>
+        <mapGenerator>DFP_TunnelEntrance</mapGenerator>
+        <nameMaker>DFP_TunnelEntranceNamer</nameMaker>
     </WorldObjectDef>
 </Defs>
