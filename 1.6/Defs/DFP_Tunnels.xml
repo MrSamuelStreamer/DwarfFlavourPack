@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
     <WorldGenStepDef>
+        <defName>DFP_TunnelEntrances</defName>
+        <order>551</order>
+        <worldGenStep Class="DwarfFlavourPack.WorldGenStep_TunnelEntrances">
+            <tunnelSitesPer100kTiles>2~8</tunnelSitesPer100kTiles>
+        </worldGenStep>
+    </WorldGenStepDef>
+    
+    <WorldGenStepDef>
         <defName>DFP_Tunnels</defName>
-        <order>601</order>
-        <worldGenStep Class="DwarfFlavourPack.WorldGenStep_Tunnels"/>
+        <order>651</order>
+        <worldGenStep Class="DwarfFlavourPack.WorldGenStep_Tunnels" />
     </WorldGenStepDef>
     
     <DwarfFlavourPack.TunnelDef>
@@ -164,5 +172,7 @@
         <defName>DFP_TunnelEntranceSite</defName>
         <label>tunnel access</label> <!-- hidden -->
         <mapGenerator>DFP_TunnelEntrance</mapGenerator>
+        <expandingIconTexture>UI/DFP_TunnelIcon</expandingIconTexture>
+        <siteTexture>UI/DFP_TunnelIcon</siteTexture>
     </WorldObjectDef>
 </Defs>

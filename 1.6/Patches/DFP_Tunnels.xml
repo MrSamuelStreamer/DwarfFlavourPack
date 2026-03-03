@@ -2,6 +2,10 @@
 <Patch>
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps</xpath>
+        <value><li>DFP_TunnelEntrances</li></value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/PlanetLayerDef[defName="Surface"]/worldGenSteps</xpath>
         <value><li>DFP_Tunnels</li></value>
     </Operation>
     <Operation Class="PatchOperationAdd">

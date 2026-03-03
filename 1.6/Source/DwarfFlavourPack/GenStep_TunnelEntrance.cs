@@ -5,7 +5,9 @@ namespace DwarfFlavourPack;
 
 public class GenStep_TunnelEntrance : GenStep_BaseRuins
 {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
     private LayoutDef layoutDef;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
     private static readonly FloatRange BlastMarksPer10K = new(1f, 10f);
     private static readonly FloatRange RubblePilesPer10K = new(6f, 14f);
     private static readonly IntRange RubblePileCountRange = new(3, 7);

@@ -14,6 +14,8 @@ public static class DwarfFlavourPackDefOf
     public static JobDef DFP_HaulToTunnel;
     public static JobDef DFP_EnterTunnel;
 
+    public static WorldObjectDef DFP_TunnelEntranceSite;
+
     
     static DwarfFlavourPackDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(DwarfFlavourPackDefOf));
 }
