@@ -6,11 +6,15 @@
         <description>tunnel network entrance</description>
         <size>(2,2)</size>
         <useHitPoints>false</useHitPoints>
-        <thingClass>Building_Tunnel</thingClass>
+        <thingClass>DwarfFlavourPack.Building_Tunnel</thingClass>
         <tickerType>Normal</tickerType>
         <rotatable>false</rotatable>
         <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
         <canOverlapZones>false</canOverlapZones>
+        <designationCategory>Structure</designationCategory>
+        <costList>
+            <WoodLog>200</WoodLog>
+        </costList>
         <graphicData>
             <graphicClass>Graphic_Single</graphicClass>
             <texPath>Things/Buildings/DFP_TunnelEntrance</texPath>
@@ -30,6 +34,7 @@
         </building>
         <statBases>
             <Flammability>0</Flammability>
+            <WorkToMake>3000</WorkToMake>
         </statBases>
         <inspectorTabs>
             <li>DwarfFlavourPack.ITab_ContentsTunnel</li>

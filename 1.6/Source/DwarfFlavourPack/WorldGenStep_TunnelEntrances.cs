@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -23,18 +21,27 @@ public class WorldGenStep_TunnelEntrances : WorldGenStep
         Faction faction = Faction.OfAncients;
         
         float viewAngleFactor = layer.Def.viewAngleSettlementsFactorCurve.Evaluate(Mathf.Clamp01(layer.ViewAngle / 180f));
-        float randomInRange = tunnelSitesPer100kTiles.RandomInRange;
         float scaleFactor = Find.World.info.overallPopulation.GetScaleFactor();
-        int settlementsToGenerateCount = GenMath.RoundRandom(layer.TilesCount / 100000f * randomInRange * scaleFactor * viewAngleFactor) - Find.WorldObjects.AllSettlementsOnLayer(layer).Count;
+        int settlementsToGenerateCount = GenMath.RoundRandom(layer.TilesCount / 100000f * tunnelSitesPer100kTiles.RandomInRange * scaleFactor * viewAngleFactor);
         
         for (int index = 0; index < settlementsToGenerateCount; ++index)
         {
-            WorldObject worldObject = WorldObjectMaker.MakeWorldObject(DwarfFlavourPackDefOf.DFP_TunnelEntranceSite);
-            worldObject.SetFaction(faction);
-            worldObject.Tile = TileFinder.RandomSettlementTileFor(layer, faction);
-            if (worldObject is INameableWorldObject nameableWorldObject)
-                nameableWorldObject.Name = SettlementNameGenerator.GenerateSettlementName(worldObject, DwarfFlavourPackDefOf.DFP_TunnelEntranceSite.nameMaker);
-            Find.WorldObjects.Add(worldObject);
+            PlanetTile tile = TileFinder.RandomSettlementTileFor(layer, faction);
+            SpawnTunnelEntrance(tile, layer, faction);
         }
+    }
+
+    public static void SpawnTunnelEntrance(PlanetTile tile, PlanetLayer layer, Faction faction)
+    {
+        TunnelEntrance worldObject = (TunnelEntrance)WorldObjectMaker.MakeWorldObject(DwarfFlavourPackDefOf.DFP_TunnelEntranceSite);
+        worldObject.SetFaction(faction);
+        worldObject.Tile = tile;
+        SiteMakerHelper.GenerateDefaultParams(StorytellerUtility.DefaultSiteThreatPointsNow(), worldObject.Tile, faction, [DwarfFlavourPackDefOf.DFP_TunnelEntranceSitePart], out var sitePartDefsWithParams);
+        worldObject.AddPart(new SitePart(worldObject, sitePartDefsWithParams[0].def, sitePartDefsWithParams[0].parms));
+            
+        worldObject.Name = SettlementNameGenerator.GenerateSettlementName(worldObject, DwarfFlavourPackDefOf.DFP_TunnelEntranceSite.nameMaker);
+            
+        Find.World.landmarks.AddLandmark(LandmarkDefOf.Chasm, worldObject.Tile, layer, true);
+        Find.WorldObjects.Add(worldObject);
     }
 }

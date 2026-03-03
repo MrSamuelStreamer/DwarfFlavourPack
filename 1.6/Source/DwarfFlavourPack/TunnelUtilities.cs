@@ -11,14 +11,14 @@ namespace DwarfFlavourPack;
 public static class TunnelUtilities
 {
   
-  public static bool HasJobOnTunnel(Pawn pawn, Building_Tunnel portal)
+  public static bool HasJobOnTunnel(Pawn pawn, Building_Tunnel tunnel)
   {
-    return portal != null && !portal.leftToLoad.NullOrEmpty() && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReach((LocalTargetInfo) (Thing) portal, PathEndMode.Touch, pawn.NormalMaxDanger()) && FindThingToLoad(pawn, portal).Thing != null;
+    return tunnel != null && !tunnel.leftToLoad.NullOrEmpty() && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.Touch, pawn.NormalMaxDanger()) && FindThingToLoad(pawn, tunnel).Thing != null;
   }
   
-  public static Job JobOnTunnel(Pawn p, Building_Tunnel portal)
+  public static Job JobOnTunnel(Pawn p, Building_Tunnel tunnel)
   {
-    Job job = JobMaker.MakeJob(DwarfFlavourPackDefOf.DFP_HaulToTunnel, LocalTargetInfo.Invalid, (LocalTargetInfo) (Thing) portal);
+    Job job = JobMaker.MakeJob(DwarfFlavourPackDefOf.DFP_HaulToTunnel, LocalTargetInfo.Invalid, (LocalTargetInfo) (Thing) tunnel);
     job.ignoreForbidden = true;
     return job;
   }
@@ -26,20 +26,20 @@ public static class TunnelUtilities
   private static HashSet<Thing> neededThings = new HashSet<Thing>();
   private static Dictionary<TransferableOneWay, int> tmpAlreadyLoading = new Dictionary<TransferableOneWay, int>();
   
-  public static ThingCount FindThingToLoad(Pawn p, Building_Tunnel portal)
+  public static ThingCount FindThingToLoad(Pawn p, Building_Tunnel tunnel)
   {
     neededThings.Clear();
-    List<TransferableOneWay> leftToLoad = portal.leftToLoad;
+    List<TransferableOneWay> leftToLoad = tunnel.leftToLoad;
     tmpAlreadyLoading.Clear();
     if (leftToLoad != null)
     {
-      List<Pawn> pawnList = portal.Map.mapPawns.PawnsInFaction(Faction.OfPlayer);
+      List<Pawn> pawnList = tunnel.Map.mapPawns.PawnsInFaction(Faction.OfPlayer);
       for (int index = 0; index < pawnList.Count; ++index)
       {
-        if (pawnList[index] != p && pawnList[index].CurJobDef == JobDefOf.HaulToPortal)
+        if (pawnList[index] != p && pawnList[index].CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel)
         {
-          JobDriver_HaulToPortal curDriver = (JobDriver_HaulToPortal) pawnList[index].jobs.curDriver;
-          if (curDriver.Container == portal)
+          JobDriver_HaulToTunnel curDriver = (JobDriver_HaulToTunnel) pawnList[index].jobs.curDriver;
+          if (curDriver.Container == tunnel)
           {
             TransferableOneWay key = TransferableUtility.TransferableMatchingDesperate(curDriver.ThingToCarry, leftToLoad, TransferAsOneMode.PodsOrCaravanPacking);
             if (key != null)
@@ -112,7 +112,7 @@ public static class TunnelUtilities
     IReadOnlyList<Pawn> pawns = tunnel.Map.mapPawns.AllPawnsSpawned;
     foreach (var t in pawns)
     {
-      if (t.CurJobDef == JobDefOf.HaulToPortal && ((JobDriver_HaulToTunnel) t.jobs.curDriver).Tunnel == tunnel && t.carryTracker.CarriedThing != null)
+      if (t.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) t.jobs.curDriver).Tunnel == tunnel && t.carryTracker.CarriedThing != null)
         yield return t.carryTracker.CarriedThing;
     }
   }
@@ -122,14 +122,10 @@ public static class TunnelUtilities
     Lord lord = null;
     List<Pawn> source = pawns.Where(x =>
     {
-      if ((x.IsColonist || x.IsColonyMechPlayerControlled) && !x.Downed)
-      {
-        if (x.needs == null || (x.needs.energy?.IsSelfShutdown ?? false))
-        {
-          return x.Spawned;
-        }
-      }
-      return false;
+      if (!((x.IsColonist || x.IsColonyMechPlayerControlled) && !x.Downed))
+        return false;
+
+      return x.needs?.energy?.IsSelfShutdown != true && x.Spawned;
     }).ToList();
     if (source.Any())
     {

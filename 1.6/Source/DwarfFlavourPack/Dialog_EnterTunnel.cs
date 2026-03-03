@@ -15,6 +15,7 @@ public class Dialog_EnterTunnel : Window
   private const float BottomAreaHeight = 55f;
   private readonly Vector2 BottomButtonSize = new Vector2(160f, 40f);
   private Building_Tunnel tunnel;
+  private TunnelEntrance destination;
   private List<TransferableOneWay> transferables;
   private TransferableOneWayWidget pawnsTransfer;
   private TransferableOneWayWidget itemsTransfer;
@@ -25,9 +26,10 @@ public class Dialog_EnterTunnel : Window
 
   protected override float Margin => 0.0f;
 
-  public Dialog_EnterTunnel(Building_Tunnel tunnel)
+  public Dialog_EnterTunnel(Building_Tunnel tunnel, TunnelEntrance destination)
   {
     this.tunnel = tunnel;
+    this.destination = destination;
     forcePause = true;
     absorbInputAroundWindow = true;
   }
@@ -90,6 +92,7 @@ public class Dialog_EnterTunnel : Window
     foreach (TransferableOneWay transferable in transferables)
       tunnel.AddToTheToLoadList(transferable, transferable.CountToTransfer);
     TunnelUtilities.MakeLordsAsAppropriate(fromTransferables, tunnel);
+    tunnel.Caravan.destination = destination.Tile;
     return true;
   }
 

@@ -8,6 +8,9 @@ public class TunnelCaravan: Thing, IThingHolder
 {
     // ReSharper disable once InconsistentNaming
     private ThingOwner<Thing> innerContainer;
+    
+    public PlanetTile destination;
+    public PlanetTile origin;
 
     public Building_Tunnel tunnel;
     
@@ -23,8 +26,8 @@ public class TunnelCaravan: Thing, IThingHolder
         Scribe_Values.Look(ref surfaceTile, "surfaceTile");
         Scribe_Values.Look(ref travelStartsAtTick, "travelStartsAtTick");
         Scribe_Values.Look(ref travelEndsAtTick, "travelEndsAtTick");
-
-        if (innerContainer == null) innerContainer = new ThingOwner<Thing>(this);
+        Scribe_Values.Look(ref origin, "origin");
+        Scribe_Values.Look(ref destination, "destination");
     }
 
     public void GetChildHolders(List<IThingHolder> outChildren)
@@ -34,6 +37,9 @@ public class TunnelCaravan: Thing, IThingHolder
 
     public ThingOwner GetDirectlyHeldThings()
     {
+        innerContainer ??= new ThingOwner<Thing>(this);
         return innerContainer;
     }
+
+    public IThingHolder ParentHolder => tunnel;
 }

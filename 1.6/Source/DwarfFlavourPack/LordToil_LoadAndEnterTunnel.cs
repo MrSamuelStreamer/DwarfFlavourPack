@@ -16,7 +16,7 @@ public class LordToil_LoadAndEnterTunnel: LordToil
     public override void UpdateAllDuties()
     {
         foreach (var t in lord.ownedPawns)
-            t.mindState.duty = new PawnDuty(DutyDefOf.LoadAndEnterPortal)
+            t.mindState.duty = new PawnDuty(DwarfFlavourPackDefOf.DFP_LoadAndEnterTunnel)
             {
                 focus = new LocalTargetInfo(tunnel)
             };

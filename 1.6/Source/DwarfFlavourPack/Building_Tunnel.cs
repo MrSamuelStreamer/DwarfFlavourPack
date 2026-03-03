@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -7,7 +6,6 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
-using Verse.Sound;
 
 namespace DwarfFlavourPack;
 
@@ -21,7 +19,8 @@ public class Building_Tunnel: Building, IThingHolder
   public SurfaceTile target;
   
   public List<TransferableOneWay> leftToLoad;
-  public TunnelCaravan caravan;
+  private ThingOwner<TunnelCaravan> innerContainer;
+  
   public bool notifiedCantLoadMore;
 
   protected virtual Texture2D EnterTex => DefaultEnterTex;
@@ -40,6 +39,22 @@ public class Building_Tunnel: Building, IThingHolder
     get => leftToLoad != null && leftToLoad.Any();
   }
 
+  public TunnelCaravan Caravan
+  {
+    get
+    {
+      if (innerContainer.Count <= 0)
+      {
+        TunnelCaravan caravan = (TunnelCaravan)ThingMaker.MakeThing(DwarfFlavourPackDefOf.DFP_TunnelCaravan);
+        caravan.tunnel = this;
+        caravan.origin = Tile;
+        innerContainer.TryAdd(caravan);
+      }
+
+      return innerContainer[0];
+    }
+  }
+  
   public bool AnyPawnCanLoadAnythingNow
   {
     get
@@ -47,17 +62,23 @@ public class Building_Tunnel: Building, IThingHolder
       if (!LoadInProgress || !Spawned)
         return false;
       IReadOnlyList<Pawn> allPawnsSpawned = Map.mapPawns.AllPawnsSpawned;
-      foreach (var t in allPawnsSpawned)
+      for (int index = 0; index < allPawnsSpawned.Count; ++index)
       {
-        if (t.CurJobDef == JobDefOf.HaulToPortal && ((JobDriver_HaulToTunnel) t.jobs.curDriver).Tunnel == this || t.CurJobDef == JobDefOf.EnterPortal && ((JobDriver_EnterTunnel) t.jobs.curDriver).Tunnel == this)
+        if (allPawnsSpawned[index].CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) allPawnsSpawned[index].jobs.curDriver).Tunnel == this || allPawnsSpawned[index].CurJobDef == DwarfFlavourPackDefOf.DFP_EnterTunnel && ((JobDriver_EnterTunnel) allPawnsSpawned[index].jobs.curDriver).Tunnel == this)
           return true;
       }
-      if ((from t in allPawnsSpawned let thing = t.mindState?.duty?.focus.Thing where thing != null && thing == this && t.CanReach((LocalTargetInfo) thing, PathEndMode.Touch, Danger.Deadly) select t).Any())
+      for (int index = 0; index < allPawnsSpawned.Count; ++index)
       {
-        return true;
+        Thing thing = allPawnsSpawned[index].mindState?.duty?.focus.Thing;
+        if (thing != null && thing == this && allPawnsSpawned[index].CanReach((LocalTargetInfo) thing, PathEndMode.Touch, Danger.Deadly))
+          return true;
       }
-
-      return allPawnsSpawned.Any(t => t.IsColonist && TunnelUtilities.HasJobOnTunnel(t, this));
+      for (int index = 0; index < allPawnsSpawned.Count; ++index)
+      {
+        if (allPawnsSpawned[index].IsColonist && TunnelUtilities.HasJobOnTunnel(allPawnsSpawned[index], this))
+          return true;
+      }
+      return false;
     }
   }
 
@@ -73,26 +94,44 @@ public class Building_Tunnel: Building, IThingHolder
   public override void SpawnSetup(Map map, bool respawningAfterLoad)
   {
     base.SpawnSetup(map, respawningAfterLoad);
-    caravan = new TunnelCaravan
-    {
-      tunnel = this
-    };
+    innerContainer = new ThingOwner<TunnelCaravan>();
   }
 
   protected override void Tick()
   {
     base.Tick();
-    if (!this.IsHashIntervalTick(60) || !Spawned || !LoadInProgress || notifiedCantLoadMore || AnyPawnCanLoadAnythingNow || leftToLoad[0]?.AnyThing == null)
+    if (!this.IsHashIntervalTick(60)) 
       return;
+    if(!Spawned)
+      return;
+    if(!LoadInProgress)
+      return;
+    if(notifiedCantLoadMore)
+      return;
+    if(AnyPawnCanLoadAnythingNow)
+      return;
+    if (leftToLoad[0]?.AnyThing == null)
+    {
+      if (Caravan.destination != null)
+      {
+        TunnelGenData.Instance.SendCaravan(Caravan, this);
+        notifiedCantLoadMore = false;
+        leftToLoad = null;
+      }
+    }
     notifiedCantLoadMore = true;
     Messages.Message("MessageCantLoadMoreIntoPortal".Translate((NamedArgument) Label, (NamedArgument) Faction.OfPlayer.def.pawnsPlural, (NamedArgument) leftToLoad[0].AnyThing), (Thing) this, MessageTypeDefOf.CautionInput);
   }
 
   public void GetChildHolders(List<IThingHolder> outChildren)
   {
+    ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
   }
 
-  public ThingOwner GetDirectlyHeldThings() => caravan.GetDirectlyHeldThings();
+  public ThingOwner GetDirectlyHeldThings()
+  {
+    return innerContainer;
+  }
 
   public void Notify_ThingAdded(Thing t) => SubtractFromToLoadList(t, t.stackCount);
 
@@ -140,10 +179,11 @@ public class Building_Tunnel: Building, IThingHolder
 
   public void CancelLoad()
   {
-    Lord oldLord = Map.lordManager.lords.FirstOrDefault((Predicate<Lord>) (l => l.LordJob is LordJob_LoadAndEnterTunnel lordJob && lordJob.tunnel == this));
+    Lord oldLord = Map.lordManager.lords.FirstOrDefault(l => l.LordJob is LordJob_LoadAndEnterTunnel lordJob && lordJob.tunnel == this);
     if (oldLord != null)
       Map.lordManager.RemoveLord(oldLord);
     leftToLoad.Clear();
+    Caravan.GetDirectlyHeldThings().TryDropAll(Position, Map, ThingPlaceMode.Near);
   }
 
   public virtual bool IsEnterable(out string reason)
@@ -163,30 +203,37 @@ public class Building_Tunnel: Building, IThingHolder
 
   public override IEnumerable<Gizmo> GetGizmos()
   {
-    Building_Tunnel mapPortal = this;
     foreach (Gizmo gizmo in base.GetGizmos())
       yield return gizmo;
-    Command_Action gizmo1 = new Command_Action();
     yield return new Command_Action
     {
       action = delegate
       {
-        Dialog_EnterTunnel dialog_EnterPortal = new Dialog_EnterTunnel(this);
-        Find.WindowStack.Add(dialog_EnterPortal);
+        FloatMenuUtility.MakeMenu(
+          Find.WorldObjects.AllWorldObjects.OfType<TunnelEntrance>(),
+          entrance => entrance.Label,
+          entrance =>
+          {
+            return ()=>
+            {
+              Find.WindowStack.Add(new Dialog_EnterTunnel(this, entrance));
+            };
+          }
+        );
       },
-      icon = this.EnterTex,
-      defaultLabel = this.EnterString + "...",
-      defaultDesc = "CommandEnterPortalDesc".Translate(this.Label),
-      Disabled = !this.IsEnterable(out string text),
+      icon = EnterTex,
+      defaultLabel = EnterString + "...",
+      defaultDesc = "CommandEnterPortalDesc".Translate(Label),
+      Disabled = !IsEnterable(out string text),
       disabledReason = text
     };
     
-    if (mapPortal.LoadInProgress)
+    if (LoadInProgress)
     {
       Command_Action gizmo2 = new Command_Action();
-      gizmo2.action = mapPortal.CancelLoad;
+      gizmo2.action = CancelLoad;
       gizmo2.icon = CancelEnterTex;
-      gizmo2.defaultLabel = mapPortal.CancelEnterString;
+      gizmo2.defaultLabel = CancelEnterString;
       gizmo2.defaultDesc = "CommandCancelEnterPortalDesc".Translate();
       yield return gizmo2;
     }

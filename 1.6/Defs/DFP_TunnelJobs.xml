@@ -22,15 +22,6 @@
         </thinkNode>
     </DutyDef>
 
-    <JobDef>
-        <defName>DFP_HaulToTunnel</defName>
-        <driverClass>DwarfFlavourPack.JobDriver_HaulToTunnel</driverClass>
-        <reportString>hauling TargetA.</reportString>
-        <suspendable>false</suspendable>
-        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
-        <dropThingBeforeJob>false</dropThingBeforeJob>
-    </JobDef>
-
     <WorkGiverDef>
         <defName>DFP_HaulToTunnel</defName>
         <label>haul to map</label>
@@ -45,6 +36,15 @@
     </WorkGiverDef>
     
     <JobDef>
+        <defName>DFP_HaulToTunnel</defName>
+        <driverClass>DwarfFlavourPack.JobDriver_HaulToTunnel</driverClass>
+        <reportString>hauling TargetA.</reportString>
+        <suspendable>false</suspendable>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+        <dropThingBeforeJob>false</dropThingBeforeJob>
+    </JobDef>
+    
+    <JobDef>
         <defName>DFP_EnterTunnel</defName>
         <driverClass>DwarfFlavourPack.JobDriver_EnterTunnel</driverClass>
         <dropThingBeforeJob>false</dropThingBeforeJob>
@@ -53,7 +53,7 @@
     </JobDef>
 
     <JobDef>
-        <defName>CarryDownedPawnToPortal</defName>
+        <defName>DFP_CarryDownedPawnToPortal</defName>
         <driverClass>DwarfFlavourPack.JobDriver_TakeAndEnterTunnel</driverClass>
         <reportString>carrying TargetA.</reportString>
         <casualInterruptible>false</casualInterruptible>

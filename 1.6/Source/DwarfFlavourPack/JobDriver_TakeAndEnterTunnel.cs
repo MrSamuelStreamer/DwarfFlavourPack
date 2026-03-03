@@ -5,7 +5,7 @@ using Verse.AI;
 
 namespace DwarfFlavourPack;
 
-public class JobDriver_TakeAndEnterTunnel : JobDriver_EnterPortal
+public class JobDriver_TakeAndEnterTunnel : JobDriver_EnterTunnel
 {
     private Thing ThingToTake => job.GetTarget(TargetIndex.B).Thing;
     private Pawn PawnToTake => ThingToTake as Pawn;

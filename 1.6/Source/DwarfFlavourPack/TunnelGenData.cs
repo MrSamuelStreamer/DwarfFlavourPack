@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using LudeonTK;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -26,9 +28,20 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
     }
     
     public static TunnelGenData Instance => Find.World.GetComponent<TunnelGenData>();
-    public Dictionary<PlanetLayer, List<PlanetTile>> tunnelNodes = new Dictionary<PlanetLayer, List<PlanetTile>>();
-    public Dictionary<SurfaceTile, List<TunnelLink>> potentialTunnels = new Dictionary<SurfaceTile, List<TunnelLink>>();
+    public Dictionary<PlanetLayer, List<PlanetTile>> tunnelNodes = new();
+    public Dictionary<SurfaceTile, List<TunnelLink>> potentialTunnels = new();
 
+    public void SendCaravan(TunnelCaravan caravan, Building_Tunnel tunnel)
+    {
+        if(innerContainer == null) innerContainer = new ThingOwner<TunnelCaravan>(this);
+        innerContainer.TryTransferToContainer(caravan, tunnel.GetDirectlyHeldThings());
+    }
+    public void Clear()
+    {
+        tunnelNodes.Clear();
+        potentialTunnels.Clear();
+    }
+    
     public TunnelDef GetTunnelDef(PlanetTile fromTile, PlanetTile toTile)
     {
         return DwarfFlavourPackDefOf.DFP_Tunnel;
@@ -59,8 +72,8 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
             
             if (tunnelDef != null)
             {
-                potentialTunnels[fromSurfaceTile].RemoveAll((tile) => tile.neighbor == toPlanetTile);
-                potentialTunnels[toSurfaceTile].RemoveAll(((tile)=> tile.neighbor == fromPlanetTile));
+                potentialTunnels[fromSurfaceTile].RemoveAll(tile => tile.neighbor == toPlanetTile);
+                potentialTunnels[toSurfaceTile].RemoveAll((tile=> tile.neighbor == fromPlanetTile));
             }
             
             TunnelLink toTunnelLink = new TunnelLink
@@ -93,5 +106,32 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
         Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
 
         if (innerContainer == null) innerContainer = new ThingOwner<TunnelCaravan>(this);
+    }
+    
+    
+    [DebugAction("Spawning", "Spawn Tunnel Entrance", actionType = DebugActionType.ToolWorld, allowedGameStates = AllowedGameStates.PlayingOnWorld)]
+    private static void SpawnTunnelEntrance()
+    {
+        PlanetTile tile = GenWorld.MouseTile();
+        if (!tile.Valid || Find.World.Impassable(tile))
+        {
+            Messages.Message("Impassable", MessageTypeDefOf.RejectInput, false);
+        }
+        else
+        {
+            WorldGenStep_TunnelEntrances.SpawnTunnelEntrance(tile, tile.Layer, Faction.OfAncients);
+            
+        }
+    }
+    
+    [DebugAction("Spawning", "Regenerate Tunnels", allowedGameStates = AllowedGameStates.PlayingOnWorld)]
+    private static void RegenerateTunnels()
+    {
+        LongEventHandler.QueueLongEvent(() =>
+        {
+            new WorldGenStep_Tunnels().GenerateFresh(Find.World.info.seedString, Find.World.grid.Surface);
+            Find.World.renderer.AllDrawLayers.First(layer => layer is WorldDrawLayer_Tunnels).SetDirty();
+        }, "Regenerating Tunnel Network", false, exception => {ModLog.Error(exception.ToString());});
+
     }
 }

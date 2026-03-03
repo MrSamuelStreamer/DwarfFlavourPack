@@ -43,11 +43,16 @@ public class WorldGenStep_Tunnels : WorldGenStep
 
   private void GenerateTunnelEndpoints(PlanetLayer layer)
   {
+    TunnelGenData.Instance.Clear();
+    
     List<PlanetTile> candidateNodes = Find.WorldObjects.AllWorldObjects
       .Where(wo=>wo.def == DwarfFlavourPackDefOf.DFP_TunnelEntranceSite)
       .Select(wo => wo.Tile)
       .ToList();
 
+    // Add player home tiles.
+    candidateNodes.AddRange(Current.Game.Maps.Where(map => map.IsPlayerHome).Select(map => map.Tile));
+    
     // Add additional random "settlement-like" tiles to increase network complexity with world size.
     int randomCandidates = GenMath.RoundRandom(Find.WorldGrid.TilesCount / 100000f * ExtraTunnelNodesPer100KTiles.RandomInRange);
     for (int index = 0; index < randomCandidates; ++index)
@@ -106,7 +111,7 @@ public class WorldGenStep_Tunnels : WorldGenStep
         // Movement cost function (higher cost => "further" in our link distance metric).
         // (src, dst) => Caravan_PathFollower.CostToMove(3300, src, dst, perceivedStatic: true),
         (src, dst) => src == dst ? 0 : 1,
-        (_) => false,
+        _ => false,
         terminator: (tile, distance) =>
         {
           // If the flood reaches another endpoint tile, record a prospective link.

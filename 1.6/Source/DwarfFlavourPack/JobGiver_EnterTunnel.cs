@@ -9,7 +9,7 @@ public class JobGiver_EnterTunnel : ThinkNode_JobGiver
     protected override Job TryGiveJob(Pawn pawn)
     {
         Building_Tunnel tunnel = pawn.mindState.duty.focus.Thing as Building_Tunnel;
-        if (tunnel == null || tunnel.Map != pawn.Map || !pawn.CanReach(tunnel, PathEndMode.Touch, Danger.Deadly, false, false, TraverseMode.ByPawn))
+        if (tunnel == null || tunnel.Map != pawn.Map || !pawn.CanReach(tunnel, PathEndMode.Touch, Danger.Deadly))
         {
             return null;
         }
