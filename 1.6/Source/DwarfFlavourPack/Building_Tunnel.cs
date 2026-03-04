@@ -221,6 +221,9 @@ public class Building_Tunnel: Building, IThingHolder
 
   public void ClearCaravan()
   {
+    Lord oldLord = Map.lordManager.lords.FirstOrDefault(l => l.LordJob is LordJob_LoadAndEnterTunnel lordJob && lordJob.tunnel == this);
+    if (oldLord != null)
+      Map.lordManager.RemoveLord(oldLord);
     // If the caravan was transferred out (to the world component ThingOwner),
     // make sure we don't keep a stale reference in this building's container.
     if (innerContainer != null)

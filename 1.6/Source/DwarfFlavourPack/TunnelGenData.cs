@@ -153,9 +153,14 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
         {
             if(Find.TickManager.TicksGame < caravan.travelEndsAtTick) continue;
             
-            Site site = Find.WorldObjects.SiteAt(caravan.destination);
+            WorldObject wo = Find.WorldObjects.WorldObjectAt<WorldObject>(caravan.destination);
             LongEventHandler.QueueLongEvent(()=>{
-                Map map = GetOrGenerateMapUtility.GetOrGenerateMap(site.Tile, site.PreferredMapSize, null);
+                Map map = Current.Game.FindMap(wo.Tile);
+                if (map == null)
+                {
+                    map = GetOrGenerateMapUtility.GetOrGenerateMap(wo.Tile, wo.def, null);
+                }
+
                 ModLog.Debug("Generated map for caravan");
                 caravan.SpawnToMap(map);
                 ModLog.Debug("Spawned to map");

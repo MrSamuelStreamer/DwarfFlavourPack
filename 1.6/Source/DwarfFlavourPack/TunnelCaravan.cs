@@ -46,18 +46,31 @@ public class TunnelCaravan: Thing, IThingHolder
 
     public override void ExposeData()
     {
+        // CRITICAL: without this, Thing.def / thingIDNumber won't be saved/loaded correctly.
+        base.ExposeData();
+
         if (Scribe.mode == LoadSaveMode.Saving)
         {
-            tmpThings.Clear();
-            tmpThings.AddRange(innerContainer);
-            tmpSavedPawns.Clear();
-            foreach (var t in tmpThings.OfType<Pawn>())
+            if (innerContainer != null)
             {
-                innerContainer.Remove(t);
-                tmpSavedPawns.Add(t);
+                tmpThings.Clear();
+                tmpThings.AddRange(innerContainer);
+
+                tmpSavedPawns.Clear();
+                foreach (var t in tmpThings.OfType<Pawn>())
+                {
+                    innerContainer.Remove(t);
+                    tmpSavedPawns.Add(t);
+                }
+
+                tmpThings.Clear();
             }
-            tmpThings.Clear();
+            else
+            {
+                tmpSavedPawns.Clear();
+            }
         }
+
         Scribe_Collections.Look(ref tmpSavedPawns, "tmpSavedPawns", LookMode.Deep);
         Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
         Scribe_References.Look(ref tunnel, "tunnel");
@@ -67,10 +80,15 @@ public class TunnelCaravan: Thing, IThingHolder
         Scribe_Values.Look(ref origin, "origin");
         Scribe_Values.Look(ref destination, "destination");
         Scribe_Values.Look(ref ReadyToSend, "ReadyToSend");
+
         if (Scribe.mode != LoadSaveMode.PostLoadInit && Scribe.mode != LoadSaveMode.Saving)
             return;
+
+        // Ensure container exists before re-adding saved pawns
+        innerContainer ??= new ThingOwnerProxy(this);
+
         foreach (var t in tmpSavedPawns)
-            innerContainer.TryAdd(t);
+            innerContainer.TryAddOrTransfer(t);
 
         tmpSavedPawns.Clear();
     }
