@@ -155,10 +155,18 @@ public class Building_Tunnel: Building, IThingHolder
 
   public void GetChildHolders(List<IThingHolder> outChildren)
   {
-    ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+    // The tunnel holds the caravan Thing (innerContainer),
+    // and the caravan holds the actual loaded items/pawns.
+    ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, innerContainer);
   }
 
-  public ThingOwner GetDirectlyHeldThings() => innerContainer;
+  public ThingOwner GetDirectlyHeldThings()
+  {
+    // IMPORTANT:
+    // Haul-to-container jobs will deposit into this ThingOwner.
+    // That must be the caravan's ThingOwner<Thing>, not ThingOwner<TunnelCaravan>.
+    return Caravan.GetDirectlyHeldThings();
+  }
   
   public void Notify_ThingAdded(Thing t) => SubtractFromToLoadList(t, t.stackCount);
 

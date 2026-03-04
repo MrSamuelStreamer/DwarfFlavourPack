@@ -32,6 +32,13 @@ public static class WorldInterface_Patch
             if (Mouse.IsOver(rect))
             {
                 Widgets.DrawHighlight(rect);
+                if (Event.current.type == EventType.MouseDown)
+                {
+                    Event.current.Use();
+                    Find.WorldInterface.SelectedTile = caravan.destination;
+                    Find.WorldCameraDriver.JumpTo(Find.WorldGrid.GetTileCenter(Find.WorldInterface.SelectedTile));
+
+                }
                 // TooltipHandler.TipRegion(rect, new TipSignal("Memory usage may not be accurate in optimized builds.", 5670913));
             }
 
