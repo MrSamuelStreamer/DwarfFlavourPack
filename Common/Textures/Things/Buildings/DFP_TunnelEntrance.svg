@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733333"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   sodipodi:docname="DFP_TunnelEntrance.svg"
+   inkscape:export-filename="DFP_TunnelEntrance.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.41041557"
+     inkscape:cx="1.2182774"
+     inkscape:cy="191.26955"
+     inkscape:window-width="1728"
+     inkscape:window-height="1084"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect10"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,6.7563707,0,1 @ F,0,0,1,0,6.2554762,0,1 @ F,0,0,1,0,6.6465112,0,1 @ F,0,0,1,0,7.46393,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect9"
+       is_visible="true"
+       lpeversion="1"
+       nodesatellites_param="F,0,0,1,0,5.7475397,0,1 @ F,0,0,1,0,5.0701198,0,1 @ F,0,0,1,0,5.8573991,0,1 @ F,0,0,1,0,5.8391358,0,1"
+       radius="0"
+       unit="px"
+       method="auto"
+       mode="F"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <linearGradient
+       id="linearGradient8"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#734d0f;stop-opacity:1;"
+         offset="0"
+         id="stop8" />
+      <stop
+         style="stop-color:#33200c;stop-opacity:1;"
+         offset="1"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8"
+       id="linearGradient9"
+       x1="36.143757"
+       y1="58.66494"
+       x2="33.50713"
+       y2="8.7887545"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:url(#linearGradient9);fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+       id="rect8"
+       width="57.676357"
+       height="55.963196"
+       x="5.0284882"
+       y="5.8850689"
+       inkscape:path-effect="#path-effect10"
+       sodipodi:type="rect"
+       d="m 11.784859,5.8850689 h 44.66451 a 6.2554762,6.2554762 45 0 1 6.255476,6.2554761 l 0,43.061208 a 6.6465112,6.6465112 135 0 1 -6.646511,6.646512 H 12.492418 a 7.46393,7.46393 45 0 1 -7.4639298,-7.46393 l 0,-41.742895 A 6.7563707,6.7563707 135 0 1 11.784859,5.8850689 Z" />
+    <g
+       id="g8"
+       inkscape:label="Hole">
+      <path
+         style="fill:#191919;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         id="rect1"
+         width="48.686642"
+         height="47.405415"
+         x="9.3346567"
+         y="9.7007217"
+         inkscape:path-effect="#path-effect9"
+         sodipodi:type="rect"
+         d="m 15.082196,9.7007217 37.868983,0 a 5.0701198,5.0701198 45 0 1 5.070119,5.0701203 v 36.477895 a 5.8573991,5.8573991 135 0 1 -5.857399,5.857399 H 15.173793 A 5.8391358,5.8391358 45 0 1 9.3346567,51.267001 l 0,-35.81874 A 5.7475397,5.7475397 135 0 1 15.082196,9.7007217 Z" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="m 18.029079,9.6912233 6.956999,47.3637457 1.469619,0.03043 -3.789791,-47.3941797 z"
+         id="path2"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="M 50.114792,9.684817 43.247688,57.09351 41.688174,57.078992 45.759527,9.703754 Z"
+         id="path2-9"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="m 22.800105,17.514047 h 22.800107 v 3.375435 H 22.672731 Z"
+         id="path3" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="m 23.43698,29.041476 h 21.080544 v 2.48381 H 23.564355 Z"
+         id="path4" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="m 24.137542,37.766656 h 20.061545 l -0.127376,1.783247 H 23.94648 Z"
+         id="path5" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="M 24.838104,45.090712 H 43.37115 v 1.337437 H 24.647042 Z"
+         id="path6" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="m 25.220229,50.376769 h 17.45036 V 51.07733 H 25.283916 Z"
+         id="path7" />
+      <path
+         style="fill:#7e7e7e;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:3.7;paint-order:markers stroke fill"
+         d="M 42.288465,54.516453 H 25.729728 v 0.382125 h 16.303985 z"
+         id="path8" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+using RimWorld;
+using RimWorld.Planet;
+using Verse;
+
+namespace DwarfFlavourPack;
+
+public class TunnelEntrance: Site, INameableWorldObject
+{
+    public string nameInt;
+    public string Name
+    {
+        get => nameInt;
+        set => nameInt = value;
+    }
+    
+    public override string Label => nameInt ?? base.Label;
+
+    public override bool HasName => !nameInt.NullOrEmpty();
+    
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_Values.Look(ref nameInt, "nameInt");
+    }
+}
