@@ -74,7 +74,10 @@
         <ReleaseFiles Include="../../../1.*/**" Exclude="../../../1.*/Source/**" />
     <AboutFiles Include="../../../About/**" Exclude="../../../About/*.png~" />
     <CommonFiles Include="../../../Common/**" /> <CompatibilityFiles Include="../../../Compatibility/**" />  <ExtraFiles Include="../../../loadFolders.xml;../../../LICENSE;../../../README.md" />  <ReleaseFiles Update="..\..\Defs\DFP_Tunnels.xml">
-  <Link>DwarfFlavourPack\1.6\Defs\DFP_Tunnels.xml</Link>
+</ReleaseFiles>  <ReleaseFiles Update="..\..\Defs\DFP_TunnelNamer.xml">
+  <Link>DwarfFlavourPack\1.6\Defs\DFP_TunnelNamer.xml</Link>
+</ReleaseFiles>  <ReleaseFiles Update="..\..\Defs\DFP_TunnelCaravan.xml">
+  <Link>DwarfFlavourPack\1.6\Defs\DFP_TunnelCaravan.xml</Link>
 </ReleaseFiles>
     </ItemGroup>
 </Project>

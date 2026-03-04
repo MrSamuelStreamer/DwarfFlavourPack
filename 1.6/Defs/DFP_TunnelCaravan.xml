@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <ThingDef>
+        <defName>DFP_TunnelCaravan</defName>
+        <label>Tunnel Caravan</label>
+
+        <!-- Required: without a category, core systems can NRE during load/wealth recount -->
+        <category>Item</category>
+
+        <thingClass>DwarfFlavourPack.TunnelCaravan</thingClass>
+
+        <!-- Strongly recommended for a "holder" thing that should not tick like normal items -->
+        <tickerType>Never</tickerType>
+
+        <!-- Optional but helps avoid it behaving like a normal item -->
+        <selectable>false</selectable>
+        <altitudeLayer>BelowTerrain</altitudeLayer>
+    </ThingDef>
+</Defs>

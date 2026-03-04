@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RulePackDef>
+        <defName>DFP_TunnelEntranceNamer</defName>
+        <include>
+            <li>TribalWordUtility</li>
+            <li>OutlanderPlaceNameUtility</li>
+        </include>
+        <rulePack>
+            <rulesStrings>
+                <li>r_name->[NamePerson]'s [noun]</li>
+                <li>r_name->[NamePerson]'s [AdjectiveNatural] [noun]</li>
+                <li>r_name->[AdjectiveNatural] [noun]</li>
+                
+                <li>noun->hole</li>
+                <li>noun->entrance</li>
+                <li>noun->shaft</li>
+                <li>noun->deep</li>
+            </rulesStrings>
+        </rulePack>
+    </RulePackDef>   
+</Defs>
