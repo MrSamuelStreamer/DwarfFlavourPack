@@ -12,6 +12,8 @@ namespace DwarfFlavourPack;
 [StaticConstructorOnStartup]
 public class Building_Tunnel: Building, IThingHolder
 {
+  public ThingOwner<TunnelCaravan> innerContainer;
+  
   private static readonly Texture2D ViewPocketMapTex = ContentFinder<Texture2D>.Get("UI/Commands/ViewCave");
   private static readonly Texture2D CancelEnterTex = ContentFinder<Texture2D>.Get("UI/Designators/Cancel");
   private static readonly Texture2D DefaultEnterTex = ContentFinder<Texture2D>.Get("UI/Commands/EnterCave");
@@ -19,7 +21,6 @@ public class Building_Tunnel: Building, IThingHolder
   public SurfaceTile target;
   
   public List<TransferableOneWay> leftToLoad;
-  private ThingOwner<TunnelCaravan> innerContainer;
   
   public bool notifiedCantLoadMore;
 
@@ -39,19 +40,34 @@ public class Building_Tunnel: Building, IThingHolder
     get => leftToLoad != null && leftToLoad.Any();
   }
 
+  private TunnelCaravan caravan;
   public TunnelCaravan Caravan
   {
     get
     {
-      if (innerContainer.Count <= 0)
+      innerContainer ??= new ThingOwner<TunnelCaravan>(this);
+
+      // Prefer an already-held instance (e.g. after load)
+      if (caravan == null)
+        caravan = innerContainer.FirstOrDefault<TunnelCaravan>();
+
+      if (caravan == null)
       {
-        TunnelCaravan caravan = (TunnelCaravan)ThingMaker.MakeThing(DwarfFlavourPackDefOf.DFP_TunnelCaravan);
+        caravan = (TunnelCaravan)ThingMaker.MakeThing(DwarfFlavourPackDefOf.DFP_TunnelCaravan);
         caravan.tunnel = this;
         caravan.origin = Tile;
-        innerContainer.TryAdd(caravan);
+        
+        // IMPORTANT: do NOT spawn it on the map. It must live inside innerContainer.
+        innerContainer.TryAddOrTransfer(caravan);
+      }
+      else
+      {
+        // Safety: if something ever spawned it anyway, despawn before keeping it in the container.
+        if (caravan.Spawned)
+          caravan.DeSpawn();
       }
 
-      return innerContainer[0];
+      return caravan;
     }
   }
   
@@ -86,6 +102,7 @@ public class Building_Tunnel: Building, IThingHolder
   {
     base.ExposeData();
     Scribe_Collections.Look(ref leftToLoad, "leftToLoad", LookMode.Deep);
+    Scribe_Deep.Look(ref innerContainer, "innerContainer", this);
     if (Scribe.mode != LoadSaveMode.PostLoadInit)
       return;
     leftToLoad?.RemoveAll(x => x.AnyThing == null);
@@ -94,31 +111,44 @@ public class Building_Tunnel: Building, IThingHolder
   public override void SpawnSetup(Map map, bool respawningAfterLoad)
   {
     base.SpawnSetup(map, respawningAfterLoad);
-    innerContainer = new ThingOwner<TunnelCaravan>();
+    WorldGenStep_Tunnels tunnels = new WorldGenStep_Tunnels();
+    if(!tunnels.RegenerateNeeded(map.Tile))
+      return;
+    
+    LongEventHandler.QueueLongEvent(
+      () =>
+      {
+        tunnels.GenerateFresh(Find.World.info.seedString, Find.World.grid.Surface);
+        Find.World.renderer.AllDrawLayers.First(layer => layer is WorldDrawLayer_Tunnels).SetDirty();
+      }, 
+      "DwarfFlavourPack_TunnelRegen",
+      false,
+      exception =>
+      {
+        ModLog.Error(exception.ToString());
+      }
+    );
   }
 
   protected override void Tick()
   {
     base.Tick();
-    if (!this.IsHashIntervalTick(60)) 
+    
+    if (Caravan.ReadyToSend)
+    {
+      TunnelGenData.Instance.SendCaravan(this);
       return;
-    if(!Spawned)
+    }
+    
+    if (!this.IsHashIntervalTick(60) || !Spawned || !LoadInProgress || AnyPawnCanLoadAnythingNow)
       return;
-    if(!LoadInProgress)
+    
+    if(leftToLoad is not { Count: > 0 } || leftToLoad[0]?.AnyThing == null)
       return;
+    
     if(notifiedCantLoadMore)
       return;
-    if(AnyPawnCanLoadAnythingNow)
-      return;
-    if (leftToLoad[0]?.AnyThing == null)
-    {
-      if (Caravan.destination != null)
-      {
-        TunnelGenData.Instance.SendCaravan(Caravan, this);
-        notifiedCantLoadMore = false;
-        leftToLoad = null;
-      }
-    }
+    
     notifiedCantLoadMore = true;
     Messages.Message("MessageCantLoadMoreIntoPortal".Translate((NamedArgument) Label, (NamedArgument) Faction.OfPlayer.def.pawnsPlural, (NamedArgument) leftToLoad[0].AnyThing), (Thing) this, MessageTypeDefOf.CautionInput);
   }
@@ -128,11 +158,8 @@ public class Building_Tunnel: Building, IThingHolder
     ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
   }
 
-  public ThingOwner GetDirectlyHeldThings()
-  {
-    return innerContainer;
-  }
-
+  public ThingOwner GetDirectlyHeldThings() => innerContainer;
+  
   public void Notify_ThingAdded(Thing t) => SubtractFromToLoadList(t, t.stackCount);
 
   public void AddToTheToLoadList(TransferableOneWay t, int count)
@@ -174,6 +201,12 @@ public class Building_Tunnel: Building, IThingHolder
     transferableOneWay.things.Remove(t);
     if (transferableOneWay.CountToTransfer <= 0)
       leftToLoad.Remove(transferableOneWay);
+
+    if (leftToLoad.Count <= 0)
+    {
+      Caravan.ReadyToSend = true;
+    }
+    
     return loadList;
   }
 
@@ -184,6 +217,46 @@ public class Building_Tunnel: Building, IThingHolder
       Map.lordManager.RemoveLord(oldLord);
     leftToLoad.Clear();
     Caravan.GetDirectlyHeldThings().TryDropAll(Position, Map, ThingPlaceMode.Near);
+  }
+
+  public void ClearCaravan()
+  {
+    // If the caravan was transferred out (to the world component ThingOwner),
+    // make sure we don't keep a stale reference in this building's container.
+    if (innerContainer != null)
+    {
+      if (caravan != null)
+      {
+        innerContainer.Remove(caravan);
+      }
+      else if (innerContainer.Count > 0)
+      {
+        // Defensive: the container should only ever hold the one caravan instance.
+        // Remove anything left behind so we don't duplicate on next access.
+        while (innerContainer.Count > 0)
+          innerContainer.Remove(innerContainer[0]);
+      }
+    }
+
+    caravan = null;
+    leftToLoad?.Clear();
+    notifiedCantLoadMore = false;
+  }
+
+  public override string GetInspectString()
+  {
+    var loaded = Caravan.GetDirectlyHeldThings().ToList();
+    
+    if (loaded.Count == 0)
+      return base.GetInspectString();
+
+    string result = base.GetInspectString();
+    if (!result.NullOrEmpty())
+      result += "Contains:\n";
+
+    result += string.Join("\n", loaded.Select(thing => " - " + thing.LabelCap));
+
+    return result;
   }
 
   public virtual bool IsEnterable(out string reason)
@@ -209,9 +282,17 @@ public class Building_Tunnel: Building, IThingHolder
     {
       action = delegate
       {
+        List<WorldObject> wos = TunnelGenData.WorldObjectsWithTunnelEntrances().Where(wo=>wo!=null).ToList();
+
+        wos.Remove(Find.WorldObjects.SiteAt(Map.Tile));
+        
         FloatMenuUtility.MakeMenu(
-          Find.WorldObjects.AllWorldObjects.OfType<TunnelEntrance>(),
-          entrance => entrance.Label,
+          wos,
+          entrance =>
+          {
+            var distance = Find.WorldGrid.ApproxDistanceInTiles(Tile, entrance.Tile);
+            return entrance.LabelCap + " [" + distance.ToStringDecimalIfSmall() + " tiles]";
+          },
           entrance =>
           {
             return ()=>
@@ -228,7 +309,7 @@ public class Building_Tunnel: Building, IThingHolder
       disabledReason = text
     };
     
-    if (LoadInProgress)
+    if (LoadInProgress || Caravan.GetDirectlyHeldThings().Any())
     {
       Command_Action gizmo2 = new Command_Action();
       gizmo2.action = CancelLoad;

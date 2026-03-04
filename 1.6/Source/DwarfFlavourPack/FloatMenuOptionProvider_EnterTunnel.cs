@@ -22,6 +22,7 @@ public class FloatMenuOptionProvider_EnterTunnel : FloatMenuOptionProvider
     Thing clickedThing,
     FloatMenuContext context)
   {
+    return null;
     Building_Tunnel tunnel = clickedThing as Building_Tunnel;
     if (tunnel == null)
       return null;
@@ -53,6 +54,7 @@ public class FloatMenuOptionProvider_EnterTunnel : FloatMenuOptionProvider
 
   private static AcceptanceReport CanEnterTunnel(Pawn pawn, Building_Tunnel tunnel)
   {
+    return false;
     if (!pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.ClosestTouch, Danger.Deadly))
       return "NoPath".Translate();
     return !pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) ? "Incapable".Translate() : true;

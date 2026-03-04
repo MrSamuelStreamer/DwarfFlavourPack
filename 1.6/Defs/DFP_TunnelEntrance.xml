@@ -21,7 +21,6 @@
             <drawSize>(2,2)</drawSize>
         </graphicData>
         <altitudeLayer>FloorEmplacement</altitudeLayer>
-        <passability>Impassable</passability>
         <holdsRoof>true</holdsRoof>
         <destroyable>false</destroyable>
         <building>

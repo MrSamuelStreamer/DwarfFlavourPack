@@ -31,7 +31,7 @@ public class WorldGenStep_TunnelEntrances : WorldGenStep
         }
     }
 
-    public static void SpawnTunnelEntrance(PlanetTile tile, PlanetLayer layer, Faction faction)
+    public static TunnelEntrance SpawnTunnelEntrance(PlanetTile tile, PlanetLayer layer, Faction faction)
     {
         TunnelEntrance worldObject = (TunnelEntrance)WorldObjectMaker.MakeWorldObject(DwarfFlavourPackDefOf.DFP_TunnelEntranceSite);
         worldObject.SetFaction(faction);
@@ -43,5 +43,7 @@ public class WorldGenStep_TunnelEntrances : WorldGenStep
             
         Find.World.landmarks.AddLandmark(LandmarkDefOf.Chasm, worldObject.Tile, layer, true);
         Find.WorldObjects.Add(worldObject);
+
+        return worldObject;
     }
 }

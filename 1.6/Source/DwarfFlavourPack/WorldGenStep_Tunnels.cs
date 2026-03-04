@@ -22,6 +22,11 @@ public class WorldGenStep_Tunnels : WorldGenStep
 
   public override int SeedPart => 1538472345;
 
+  public bool RegenerateNeeded(PlanetTile tile)
+  {
+    return !TunnelGenData.Instance.potentialTunnels.ContainsKey((SurfaceTile)tile.Tile);
+  }
+  
   public override void GenerateFresh(string seed, PlanetLayer layer)
   {
     GenerateTunnelEndpoints(layer);
@@ -40,7 +45,7 @@ public class WorldGenStep_Tunnels : WorldGenStep
     GenerateTunnelNetwork(layer);
     Rand.PopState();
   }
-
+  
   private void GenerateTunnelEndpoints(PlanetLayer layer)
   {
     TunnelGenData.Instance.Clear();
