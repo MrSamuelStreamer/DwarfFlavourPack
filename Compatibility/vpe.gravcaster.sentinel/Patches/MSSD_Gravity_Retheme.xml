@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- VPE_GravmancerSTNL -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/VanillaPsycastsExpanded.PsycasterPathDef[defName="VPE_GravmancerSTNL"]/label</xpath>
+        <value>
+            <label>Tonal Manipulation</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/VanillaPsycastsExpanded.PsycasterPathDef[defName="VPE_GravmancerSTNL"]/description</xpath>
+        <value>
+            <description>The Dwemer magic of manipulation and control over the metaphysical nature of reality.</description>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/VanillaPsycastsExpanded.PsycasterPathDef[defName="VPE_GravmancerSTNL"]/tooltip</xpath>
+        <value>
+            <tooltip>The Dwemer magic of manipulation and control over the metaphysical nature of reality.</tooltip>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/VanillaPsycastsExpanded.PsycasterPathDef[defName="VPE_GravmancerSTNL"]/tab</xpath>
+        <value>
+            <tab>Tonal Magicks</tab>
+        </value>
+    </Operation>
+</Patch>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- VPER_Runesmith -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/VanillaPsycastsExpanded.PsycasterPathDef[defName="VPER_Runesmith"]/tab</xpath>
+        <value>
+            <tab>Arcane</tab>
+        </value>
+    </Operation>
+</Patch>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- LavaGenerator from Lava Power mod -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="LavaGenerator"]/researchPrerequisites</xpath>
+        <value>
+            <li>VHGE_GasExtraction</li>
+        </value>
+    </Operation>
+    
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="LavaGenerator"]/costList</xpath>
+        <value>
+            <costList>
+                <Steel>500</Steel>
+                <ComponentIndustrial>5</ComponentIndustrial>
+                <RF_GildedPlasteel>150</RF_GildedPlasteel>
+                <RF_Staballoy>50</RF_Staballoy>
+            </costList>
+        </value>
+    </Operation>
+</Patch>

@@ -9,5 +9,12 @@
 		<li IfModActive="cixwow.helixienbrazier">Compatibility/cixwow.helixienbrazier</li>
 		<li IfModActive="cixwow.helixiengasproduction">Compatibility/cixwow.helixiengasproduction</li>
 		<li IfModActive="bart.magmarefinery">Compatibility/bart.magmarefinery</li>
+		<li IfModActive="co.uk.epicguru.rimforge">Compatibility/co.uk.epicguru.rimforge</li>
+		<li IfModActive="vpe.geomancer.sentinel">Compatibility/vpe.geomancer.sentinel</li>
+		<li IfModActive="vpe.gravcaster.sentinel">Compatibility/vpe.gravcaster.sentinel</li>
+		<li IfModActive="horo.lavapower">Compatibility/horo.lavapower</li>
+		<li IfModActive="vanillaexpanded.vpe.puppeteer">Compatibility/vanillaexpanded.vpe.puppeteer</li>
+		<li IfModActive="chairheir.vperunesmith">Compatibility/chairheir.vperunesmith</li>
+		<li IfModActive="aranmaho.rangerclass">Compatibility/aranmaho.rangerclass</li>
 	</v1.6>
 </loadFolders>

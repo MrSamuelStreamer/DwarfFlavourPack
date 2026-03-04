@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- RF_Adamantium -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Adamantium"]/label</xpath>
+        <value>
+            <label>Dwarven Adamant</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Adamantium"]/description</xpath>
+        <value>
+            <description>A complex alloy of Dwemer Brass, Staballoy and Gilded Mithril.
+Unbelievably strong, and can be sharpened to a razor's edge without risk of it fracturing.
+Melee weapons built out of this material have a 50% chance to stop or deflect a bullet back at the shooter.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_Bronze -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Bronze"]/label</xpath>
+        <value>
+            <label>Dwarven Bronze</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Bronze"]/description</xpath>
+        <value>
+            <description>An alloy of forged copper and deepiron, superheated in Dwemer forges and impossible to replicate without specialised techniques.
+Makes for robust tools, weapons and armor, at the cost of beauty and construction time.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_Copper -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Copper"]/label</xpath>
+        <value>
+            <label>Forged Copper</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Copper"]/description</xpath>
+        <value>
+            <description>Forged copper crafted with Dwemer techniques. Great for alloying with other metals, but a reasonable material for construction or tools in this pure state.
+However, it is very malleable, making it fast to work with.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_GildedPlasteel -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_GildedPlasteel"]/label</xpath>
+        <value>
+            <label>Gilded Mithril</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_GildedPlasteel"]/description</xpath>
+        <value>
+            <description>An alloy of mithril and gold, gilded by the Dwemer through their advanced metallurgical techniques.
+This material is extremely durable and lightweight, making it ideal for crafting high-quality armor and tools. It's also very pretty to look at.</description>
+        </value>
+    </Operation>
+    
+    <!-- RF_GoldDore -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_GoldDore"]/label</xpath>
+        <value>
+            <label>Electrum</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_GoldDore"]/description</xpath>
+        <value>
+            <description>A semi-pure alloy of gold and silver, crafted with Dwemer techniques. Not very useful as a material due to it's softness, but exceedingly beautiful.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_Mercury -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Mercury"]/label</xpath>
+        <value>
+            <label>Tonal Silver</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Mercury"]/description</xpath>
+        <value>
+            <description>Vials of tonal silver, extracted from the resonant bloom plant, and suspended in a liquid state by tonal magic.
+Can be refined into Tonal Weave at magmagtic forge by a colonist if they have the Blessing of Kagrenac.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_MercuryUltraweave -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_MercuryUltraweave"]/label</xpath>
+        <value>
+            <label>Tonal Weave</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_MercuryUltraweave"]/description</xpath>
+        <value>
+            <description>A cloth made out of devilstrand strengthened by tonal silver and mithril.
+Highly durable and resistant to even heavy magics.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_Staballoy -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Staballoy"]/label</xpath>
+        <value>
+            <label>Dwemer Amalgam</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Staballoy"]/description</xpath>
+        <value>
+            <description>An alloy of orichalcum and mithril.
+Incredibly dense and resitant to blunt and sharp damage, but very ugly to look at.
+It's strength allows to to be forged into wickedly sharp bladed weapons, but the wielder may find the weight overwhelming.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_Tin -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Tin"]/label</xpath>
+        <value>
+            <label>Deeptin</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Tin"]/description</xpath>
+        <value>
+            <description>Deeptin, from the depths of the soil. Essential for the production of Dwemer brass and other alloys.
+In this pure state, it is a very soft metal, and so is not well suited for weapons, tools or armor.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_Plant_MercuryBloom -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Plant_MercuryBloom"]/label</xpath>
+        <value>
+            <label>Resonant Bloom</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="RF_Plant_MercuryBloom"]/description</xpath>
+        <value>
+            <description>A Resonant Bloom plant.
+It seems that this plant is especially efficient at absorbing the tonal magic resonance that occurs as a side effect of Dwemer magics.
+This plant is a key ingredient in making Tonal Weave.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_ZirsCorruption -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/TraitDef[defName="RF_ZirsCorruption"]/degreeDatas/li/label</xpath>
+        <value>
+            <label>Numidium's Curse</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/TraitDef[defName="RF_ZirsCorruption"]/degreeDatas/li/description</xpath>
+        <value>
+            <description>[PAWN_nameDef]'s mind has been twisted by the resonance of Numidium!
+An obsession or hatred revolving around Numidium and the Heart of Lorkhan has lead this individual to madness, but also unlocked previously unknown physical prowess.</description>
+        </value>
+    </Operation>
+
+    <!-- RF_BlessingOfZir -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/TraitDef[defName="RF_BlessingOfZir"]/degreeDatas/li/label</xpath>
+        <value>
+            <label>Numidium's Blessing</label>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/TraitDef[defName="RF_BlessingOfZir"]/degreeDatas/li/description</xpath>
+        <value>
+            <description>[PAWN_nameDef] has received the blessing of Numidium!
+[PAWN_nameDef] is able to easily understand the inner workings of machines and devices, allowing [PAWN_objective] to craft and build items of higher quality as well as work faster.</description>
+        </value>
+    </Operation>
+
+    <!-- Recipe workers added -->
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RF_MercuryUltraweave"]/recipeMaker/recipeUsers</xpath>
+        <value>
+            <li>VFE_TableSmithyLargeGas</li>
+            <li>VHGE_GasPoweredSmithy</li>
+        </value>
+    </Operation>
+
+</Patch>

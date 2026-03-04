@@ -17,6 +17,10 @@
         </li>
     </modDependencies>
 
+    <loadBefore>
+        <li>sarg.alphamemes</li>
+    </loadBefore>
+
     <loadAfter>
         <li>brrainz.harmony</li>
         <li>Ludeon.RimWorld</li>
@@ -29,5 +33,12 @@
         <li>cixwow.helixienbrazier</li>
         <li>cixwow.helixienboiler</li>
         <li>cixwow.helixiengasproduction</li>
+        <li>co.uk.epicguru.rimforge</li>
+        <li>vpe.geomancer.sentinel</li>
+        <li>vpe.gravcaster.sentinel</li>
+        <li>horo.lavapower</li>
+        <li>vanillaexpanded.vpe.puppeteer</li>
+        <li>chairheir.vperunesmith</li>
+        <li>aranmaho.rangerclass</li>
     </loadAfter>
 </ModMetaData>

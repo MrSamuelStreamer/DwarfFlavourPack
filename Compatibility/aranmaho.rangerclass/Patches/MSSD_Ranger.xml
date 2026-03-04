@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- VPEP_Puppeteer -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/VanillaPsycastsExpanded.PsycasterPathDef[defName="Makai_Ranger"]/tab</xpath>
+        <value>
+            <tab>Martial</tab>
+        </value>
+    </Operation>
+</Patch>

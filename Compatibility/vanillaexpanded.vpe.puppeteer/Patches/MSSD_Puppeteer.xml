@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- VPEP_Puppeteer -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/VanillaPsycastsExpanded.PsycasterPathDef[defName="VPEP_Puppeteer"]/tab</xpath>
+        <value>
+            <tab>Arcane</tab>
+        </value>
+    </Operation>
+</Patch>

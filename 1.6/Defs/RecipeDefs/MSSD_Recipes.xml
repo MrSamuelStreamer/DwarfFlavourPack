@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<!-- Industrial recipe for a medieval time -->
+	<RecipeDef>
+		<defName>MSSD_Component_Dwemer_Recipe</defName>
+		<workAmount>400</workAmount>
+		<label>craft advanced mechanical parts</label>
+		<jobString>Crafting an advanced mechanical part.</jobString>
+		<targetCountAdjustment>5</targetCountAdjustment>
+		<researchPrerequisites>
+			<li>VHGE_GasExtraction</li>
+		</researchPrerequisites>
+		<recipeUsers>
+			<li>VFE_TableSmithyLargeGas</li>
+			<li>VHGE_GasPoweredSmithy</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>DankPyon_ComponentBasic</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>RF_Bronze</li>
+					</thingDefs>
+				</filter>
+				<count>10</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>DankPyon_ComponentBasic</li>
+				<li>RF_Bronze</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<ComponentIndustrial>1</ComponentIndustrial>
+		</products>
+	</RecipeDef>
+	<!-- x10, slightly less work, slightly more ingredients -->
+	<RecipeDef>
+		<defName>MSSD_Component_Dwemer_Recipe</defName>
+		<workAmount>3500</workAmount>
+		<label>craft advanced mechanical parts x10</label>
+		<jobString>Crafting 10 advanced mechanical parts.</jobString>
+		<targetCountAdjustment>5</targetCountAdjustment>
+		<researchPrerequisites>
+			<li>VHGE_GasExtraction</li>
+		</researchPrerequisites>
+		<recipeUsers>
+			<li>VFE_TableSmithyLargeGas</li>
+			<li>VHGE_GasPoweredSmithy</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>DankPyon_ComponentBasic</li>
+					</thingDefs>
+				</filter>
+				<count>10</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>RF_Bronze</li>
+					</thingDefs>
+				</filter>
+				<count>120</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>DankPyon_ComponentBasic</li>
+				<li>RF_Bronze</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<ComponentIndustrial>10</ComponentIndustrial>
+		</products>
+	</RecipeDef>
+</Defs>
