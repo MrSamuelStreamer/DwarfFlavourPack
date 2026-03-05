@@ -26,6 +26,8 @@ public static class DwarfFlavourPackDefOf
   public static ThingDef DFP_TunnelCaravan;
   public static WorldObjectDef DFP_TunnelCaravanWorldObject;
 
+  public static ResearchProjectDef DFP_Minecarts;
+
 
   static DwarfFlavourPackDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(DwarfFlavourPackDefOf));
 }

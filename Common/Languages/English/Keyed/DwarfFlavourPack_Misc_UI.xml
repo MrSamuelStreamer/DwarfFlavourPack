@@ -2,7 +2,9 @@
 <LanguageData>
     <DwarfFlavourPack_SettingsCategory>DwarfFlavourPack</DwarfFlavourPack_SettingsCategory>
     <DwarfFlavourPack_Settings_SettingName>Some Setting</DwarfFlavourPack_Settings_SettingName>
-    <DwarfFlavourPack_Settings_TilesPerHour>Tunnelling Caravan Tiles Per Hour: {0}</DwarfFlavourPack_Settings_TilesPerHour>
+    <DwarfFlavourPack_Settings_TilesPerHour>Tunnel Cart Tiles Per Hour: {0}</DwarfFlavourPack_Settings_TilesPerHour>
+    <DwarfFlavourPack_Settings_ResearchedTilesPerHour>Researched Tunnel Cart Tiles Per Hour: {0}
+    </DwarfFlavourPack_Settings_ResearchedTilesPerHour>
     <DwarfFlavourPack_CaravanProgress>{PAWN_nameDef}'s caravan: {0} to go</DwarfFlavourPack_CaravanProgress>
     <DwarfFlavourPack_TunnelMap>Generating Map</DwarfFlavourPack_TunnelMap>
     <DwarfFlavourPack_TunnelRegen>Regenerating Tunnel Network</DwarfFlavourPack_TunnelRegen>

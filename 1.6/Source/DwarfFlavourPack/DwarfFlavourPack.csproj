@@ -81,6 +81,9 @@
   <Link>DwarfFlavourPack\1.6\Defs\DFP_TunnelNamer.xml</Link>
 </ReleaseFiles>  <ReleaseFiles Update="..\..\Defs\DFP_TunnelCaravan.xml">
   <Link>DwarfFlavourPack\1.6\Defs\DFP_TunnelCaravan.xml</Link>
+  </ReleaseFiles>
+      <ReleaseFiles Update="..\..\Defs\DFP_TunnelResearch.xml">
+          <Link>DwarfFlavourPack\1.6\Defs\DFP_TunnelResearch.xml</Link>
 </ReleaseFiles>
     </ItemGroup>
 </Project>

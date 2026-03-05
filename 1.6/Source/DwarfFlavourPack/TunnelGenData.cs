@@ -64,7 +64,13 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
     }
 
     float distance = Find.WorldGrid.ApproxDistanceInTiles(tunnel.Caravan.origin, tunnel.Caravan.destination);
-    float tilesPerHour = Mathf.Max(DwarfFlavourPackMod.settings.TilesPerHour, 0.0001f);
+
+    float tilesPerHour = Mathf.Max(DwarfFlavourPackMod.settings.DefaultTilesPerHour, 0.0001f);
+    if (DwarfFlavourPackDefOf.DFP_Minecarts.IsFinished)
+    {
+      tilesPerHour = Mathf.Max(DwarfFlavourPackMod.settings.ResearchedTilesPerHour, 0.0001f);
+    }
+
     int ticksToTravel = Mathf.FloorToInt((distance / tilesPerHour) * GenDate.TicksPerHour);
     tunnel.Caravan.travelEndsAtTick = Find.TickManager.TicksGame + ticksToTravel;
     tunnel.Caravan.travelStartsAtTick = Find.TickManager.TicksGame;
