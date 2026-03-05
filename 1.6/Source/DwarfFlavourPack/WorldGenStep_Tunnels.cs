@@ -9,7 +9,7 @@ public class WorldGenStep_Tunnels : WorldGenStep
 {
   // Controls how many extra endpoints get sprinkled in, scaled by world size (tiles / 100k).
   private static readonly FloatRange ExtraTunnelNodesPer100KTiles = new FloatRange(5f, 25f);
-  
+
   // Probability of allowing an extra connection even if it would create a cycle (i.e., not needed for spanning tree).
   private const float ChanceExtraNonSpanningTreeLink = 0.15f;
 
@@ -24,9 +24,19 @@ public class WorldGenStep_Tunnels : WorldGenStep
 
   public bool RegenerateNeeded(PlanetTile tile)
   {
-    return !TunnelGenData.Instance.potentialTunnels.ContainsKey((SurfaceTile)tile.Tile);
+    return !TunnelGenData.Instance.potentialTunnels.ContainsKey((SurfaceTile) tile.Tile);
   }
-  
+
+  public void Regenerate(PlanetTile tile)
+  {
+    GenerateTunnelEndpoints(tile.Layer, true);
+    Rand.PushState();
+    int seedFromSeedString = GenText.StableStringHash(Find.World.info.seedString);
+    Rand.Seed = Gen.HashCombineInt(seedFromSeedString, SeedPart);
+    GenerateTunnelNetwork(tile.Layer);
+    Rand.PopState();
+  }
+
   public override void GenerateFresh(string seed, PlanetLayer layer)
   {
     GenerateTunnelEndpoints(layer);
@@ -45,19 +55,22 @@ public class WorldGenStep_Tunnels : WorldGenStep
     GenerateTunnelNetwork(layer);
     Rand.PopState();
   }
-  
-  private void GenerateTunnelEndpoints(PlanetLayer layer)
+
+  private void GenerateTunnelEndpoints(PlanetLayer layer, bool withPlayerHomes = false)
   {
     TunnelGenData.Instance.Clear();
-    
+
     List<PlanetTile> candidateNodes = Find.WorldObjects.AllWorldObjects
-      .Where(wo=>wo.def == DwarfFlavourPackDefOf.DFP_TunnelEntranceSite)
+      .Where(wo => wo.def == DwarfFlavourPackDefOf.DFP_TunnelEntranceSite)
       .Select(wo => wo.Tile)
       .ToList();
 
-    // Add player home tiles.
-    candidateNodes.AddRange(Current.Game.Maps.Where(map => map.IsPlayerHome).Select(map => map.Tile));
-    
+    if (withPlayerHomes)
+    {
+      // Add player home tiles.
+      candidateNodes.AddRange(Current.Game.Maps.Where(map => map.IsPlayerHome).Select(map => map.Tile));
+    }
+
     // Add additional random "settlement-like" tiles to increase network complexity with world size.
     int randomCandidates = GenMath.RoundRandom(Find.WorldGrid.TilesCount / 100000f * ExtraTunnelNodesPer100KTiles.RandomInRange);
     for (int index = 0; index < randomCandidates; ++index)
@@ -65,7 +78,8 @@ public class WorldGenStep_Tunnels : WorldGenStep
 
     // Remove duplicates so we don't build redundant nodes/links.
     // Store nodes into the world generation data; later steps read from here.
-    TunnelGenData.Instance.tunnelNodes[layer] = candidateNodes.Distinct().ToList();;
+    TunnelGenData.Instance.tunnelNodes[layer] = candidateNodes.Distinct().ToList();
+    ;
   }
 
   private void GenerateTunnelNetwork(PlanetLayer layer)

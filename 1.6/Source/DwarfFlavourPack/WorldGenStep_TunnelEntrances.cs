@@ -55,7 +55,17 @@ public class WorldGenStep_TunnelEntrances : WorldGenStep
     TunnelEntrance worldObject = (TunnelEntrance) WorldObjectMaker.MakeWorldObject(DwarfFlavourPackDefOf.DFP_TunnelEntranceSite);
     worldObject.SetFaction(faction);
     worldObject.Tile = tile;
-    SiteMakerHelper.GenerateDefaultParams(StorytellerUtility.DefaultSiteThreatPointsNow(), worldObject.Tile, faction, [DwarfFlavourPackDefOf.DFP_TunnelEntranceSitePart], out var sitePartDefsWithParams);
+    List<SitePartDefWithParams> sitePartDefsWithParams;
+
+    if (Faction.OfPlayerSilentFail != null)
+    {
+      SiteMakerHelper.GenerateDefaultParams(StorytellerUtility.DefaultSiteThreatPointsNow(), worldObject.Tile, faction, [DwarfFlavourPackDefOf.DFP_TunnelEntranceSitePart], out sitePartDefsWithParams);
+    }
+    else
+    {
+      SiteMakerHelper.GenerateDefaultParams(100, worldObject.Tile, faction, [DwarfFlavourPackDefOf.DFP_TunnelEntranceSitePart], out sitePartDefsWithParams);
+
+    }
     worldObject.AddPart(new SitePart(worldObject, sitePartDefsWithParams[0].def, sitePartDefsWithParams[0].parms));
 
     worldObject.Name = SettlementNameGenerator.GenerateSettlementName(worldObject, DwarfFlavourPackDefOf.DFP_TunnelEntranceSite.nameMaker);

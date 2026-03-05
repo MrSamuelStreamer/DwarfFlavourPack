@@ -99,13 +99,13 @@ public class Building_Tunnel : Building, IThingHolder
   {
     base.SpawnSetup(map, respawningAfterLoad);
     WorldGenStep_Tunnels tunnels = new WorldGenStep_Tunnels();
-    if (!tunnels.RegenerateNeeded(map.Tile))
+    if (!tunnels.RegenerateNeeded(Tile))
       return;
 
     LongEventHandler.QueueLongEvent(
       () =>
       {
-        tunnels.GenerateFresh(Find.World.info.seedString, Find.World.grid.Surface);
+        tunnels.Regenerate(Tile);
         Find.World.renderer.AllDrawLayers.First(layer => layer is WorldDrawLayer_Tunnels).SetDirty();
       },
       "DwarfFlavourPack_TunnelRegen",
@@ -338,7 +338,10 @@ public class Building_Tunnel : Building, IThingHolder
     {
       action = delegate
       {
-        List<WorldObject> wos = TunnelGenData.WorldObjectsWithTunnelEntrances().Where(wo => wo != null).ToList();
+        HashSet<int> reachableTiles = TunnelGenData.Instance.GetReachableTilesFrom(Tile);
+        List<WorldObject> wos = TunnelGenData.WorldObjectsWithTunnelEntrances()
+          .Where(wo => wo != null && wo.Tile != Map.Tile && reachableTiles.Contains(wo.Tile))
+          .ToList();
 
         wos.Remove(Find.WorldObjects.SiteAt(Map.Tile));
 

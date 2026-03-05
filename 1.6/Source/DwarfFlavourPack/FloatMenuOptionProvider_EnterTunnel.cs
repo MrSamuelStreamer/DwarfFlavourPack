@@ -65,8 +65,9 @@ public class FloatMenuOptionProvider_EnterTunnel : FloatMenuOptionProvider
     }
     else
     {
+      HashSet<int> reachableTiles = TunnelGenData.Instance.GetReachableTilesFrom(tunnel.Tile);
       List<WorldObject> wos = TunnelGenData.WorldObjectsWithTunnelEntrances()
-        .Where(wo => wo != null && wo.Tile != tunnel.Map.Tile)
+        .Where(wo => wo != null && wo.Tile != tunnel.Map.Tile && reachableTiles.Contains(wo.Tile))
         .ToList();
 
       foreach (WorldObject worldObject in wos)

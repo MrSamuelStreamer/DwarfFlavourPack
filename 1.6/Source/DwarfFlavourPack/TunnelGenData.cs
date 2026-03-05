@@ -53,6 +53,38 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
   public static TunnelGenData Instance => Find.World.GetComponent<TunnelGenData>();
   public Dictionary<PlanetLayer, List<PlanetTile>> tunnelNodes = new();
   public Dictionary<SurfaceTile, List<TunnelLink>> potentialTunnels = new();
+  private Dictionary<int, HashSet<int>> reachableCache = new();
+
+  public HashSet<int> GetReachableTilesFrom(int startTile)
+  {
+    if (reachableCache.TryGetValue(startTile, out HashSet<int> reachable))
+      return reachable;
+
+    HashSet<int> visited = new HashSet<int>
+    {
+      startTile
+    };
+    Queue<int> queue = new Queue<int>();
+    queue.Enqueue(startTile);
+
+    while (queue.Count > 0)
+    {
+      int current = queue.Dequeue();
+      if (Find.WorldGrid[current] is { } surfaceTile && potentialTunnels.TryGetValue(surfaceTile, out List<TunnelLink> links))
+      {
+        foreach (TunnelLink link in links)
+        {
+          if (visited.Add(link.neighbor.tileId))
+          {
+            queue.Enqueue(link.neighbor.tileId);
+          }
+        }
+      }
+    }
+
+    reachableCache[startTile] = visited;
+    return visited;
+  }
 
   public void SendCaravan(Building_Tunnel tunnel)
   {
@@ -114,10 +146,9 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
         return path;
       }
 
-      Tile currentTile = current.Tile;
-      if (currentTile is SurfaceTile currentSurfaceTile && potentialTunnels.TryGetValue(currentSurfaceTile, out var links))
+      if (current.Tile is SurfaceTile currentSurfaceTile && potentialTunnels.TryGetValue(currentSurfaceTile, out List<TunnelLink> links))
       {
-        foreach (var link in links)
+        foreach (TunnelLink link in links)
         {
           if (!cameFrom.ContainsKey(link.neighbor))
           {
@@ -128,11 +159,10 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
       }
     }
 
-    Log.Warning("Could not find tunnel path from " + start + " to " + end + ". Falling back to direct path.");
+    Log.Error("Could not find tunnel path from " + start + " to " + end + ". No fallback available.");
     return new List<int>
     {
-      start.tileId,
-      end.tileId
+      start.tileId
     };
   }
 
@@ -140,6 +170,7 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
   {
     tunnelNodes.Clear();
     potentialTunnels.Clear();
+    reachableCache.Clear();
   }
 
   public TunnelDef GetTunnelDef(PlanetTile fromTile, PlanetTile toTile)
@@ -190,6 +221,7 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
         tunnel = tunnelDef
       };
       potentialTunnels[toSurfaceTile].Add(fromTunnelLink);
+      reachableCache.Clear();
     }
   }
 
