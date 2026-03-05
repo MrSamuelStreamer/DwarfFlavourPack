@@ -10,102 +10,135 @@ namespace DwarfFlavourPack;
 
 public static class TunnelUtilities
 {
-  
+
   public static bool HasJobOnTunnel(Pawn pawn, Building_Tunnel tunnel)
   {
     return tunnel != null && !tunnel.leftToLoad.NullOrEmpty() && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.Touch, pawn.NormalMaxDanger()) && FindThingToLoad(pawn, tunnel).Thing != null;
   }
-  
+
   public static Job JobOnTunnel(Pawn p, Building_Tunnel tunnel)
   {
-    Job job = JobMaker.MakeJob(DwarfFlavourPackDefOf.DFP_HaulToTunnel, LocalTargetInfo.Invalid, (LocalTargetInfo) (Thing) tunnel);
-    job.ignoreForbidden = true;
-    return job;
+    ThingCount thingCount = FindThingToLoad(p, tunnel);
+    if (thingCount.Thing is Pawn targetPawn && (targetPawn.Downed || targetPawn.IsSelfShutdown()))
+    {
+      Job job = JobMaker.MakeJob(DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal, tunnel, targetPawn);
+      job.count = 1;
+      return job;
+    }
+    else
+    {
+      Job job = JobMaker.MakeJob(DwarfFlavourPackDefOf.DFP_HaulToTunnel, LocalTargetInfo.Invalid, (LocalTargetInfo) (Thing) tunnel);
+      job.ignoreForbidden = true;
+      return job;
+    }
   }
-  
-  private static HashSet<Thing> neededThings = new HashSet<Thing>();
+
+  private static List<TransferableOneWay> tmpHungryTransferables = new List<TransferableOneWay>();
   private static Dictionary<TransferableOneWay, int> tmpAlreadyLoading = new Dictionary<TransferableOneWay, int>();
-  
+
   public static ThingCount FindThingToLoad(Pawn p, Building_Tunnel tunnel)
   {
-    neededThings.Clear();
     List<TransferableOneWay> leftToLoad = tunnel.leftToLoad;
-    tmpAlreadyLoading.Clear();
-    if (leftToLoad != null)
+    if (leftToLoad.NullOrEmpty())
     {
-      List<Pawn> pawnList = tunnel.Map.mapPawns.PawnsInFaction(Faction.OfPlayer);
-      for (int index = 0; index < pawnList.Count; ++index)
+      return new ThingCount();
+    }
+
+    tmpAlreadyLoading.Clear();
+    List<Pawn> pawnList = tunnel.Map.mapPawns.PawnsInFaction(Faction.OfPlayer);
+    for (int index = 0; index < pawnList.Count; ++index)
+    {
+      if (pawnList[index] != p && pawnList[index].CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel)
       {
-        if (pawnList[index] != p && pawnList[index].CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel)
+        JobDriver_HaulToTunnel curDriver = (JobDriver_HaulToTunnel) pawnList[index].jobs.curDriver;
+        if (curDriver != null && curDriver.Container == tunnel)
         {
-          JobDriver_HaulToTunnel curDriver = (JobDriver_HaulToTunnel) pawnList[index].jobs.curDriver;
-          if (curDriver.Container == tunnel)
+          // Identify which transferable is being satisfied by this other pawn.
+          TransferableOneWay key = TransferableUtility.TransferableMatchingDesperate(curDriver.ThingToCarry, leftToLoad, TransferAsOneMode.PodsOrCaravanPacking);
+          if (key != null)
           {
-            TransferableOneWay key = TransferableUtility.TransferableMatchingDesperate(curDriver.ThingToCarry, leftToLoad, TransferAsOneMode.PodsOrCaravanPacking);
-            if (key != null)
-            {
-              int num = 0;
-              if (tmpAlreadyLoading.TryGetValue(key, out num))
-                tmpAlreadyLoading[key] = num + curDriver.initialCount;
-              else
-                tmpAlreadyLoading.Add(key, curDriver.initialCount);
-            }
+            int num = 0;
+            if (tmpAlreadyLoading.TryGetValue(key, out num))
+              tmpAlreadyLoading[key] = num + curDriver.initialCount;
+            else
+              tmpAlreadyLoading.Add(key, curDriver.initialCount);
           }
         }
       }
-      for (int index1 = 0; index1 < leftToLoad.Count; ++index1)
+    }
+
+    tmpHungryTransferables.Clear();
+    for (int i = 0; i < leftToLoad.Count; i++)
+    {
+      int targetedCount = 0;
+      tmpAlreadyLoading.TryGetValue(leftToLoad[i], out targetedCount);
+      if (leftToLoad[i].CountToTransfer - targetedCount > 0)
       {
-        TransferableOneWay transferableOneWay = leftToLoad[index1];
-        int num;
-        if (!tmpAlreadyLoading.TryGetValue(leftToLoad[index1], out num))
-          num = 0;
-        if (transferableOneWay.CountToTransfer - num > 0)
-        {
-          for (int index2 = 0; index2 < transferableOneWay.things.Count; ++index2)
-            neededThings.Add(transferableOneWay.things[index2]);
-        }
+        tmpHungryTransferables.Add(leftToLoad[i]);
       }
     }
-    if (!neededThings.Any())
+
+    if (tmpHungryTransferables.Count == 0)
     {
       tmpAlreadyLoading.Clear();
       return new ThingCount();
     }
-    Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p), validator: x => neededThings.Contains(x) && p.CanReserve((LocalTargetInfo) x) && !x.IsForbidden(p) && p.carryTracker.AvailableStackSpace(x.def) > 0, lookInHaulSources: true);
-    if (thing == null)
-    {
-      foreach (Thing neededThing in neededThings)
+
+    // 1. Find closest item that matches a hungry transferable.
+    // Matching by type (TransferableMatchingDesperate) ensures we find items even if they've been
+    // split or merged since the loadout was finalized, or if they were recently un-forbidden.
+    Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map,
+      ThingRequest.ForGroup(ThingRequestGroup.HaulableEver),
+      PathEndMode.Touch,
+      TraverseParms.For(p),
+      validator: x =>
       {
-        if (neededThing is Pawn pawn && (!pawn.IsColonist && !pawn.IsColonyMech || pawn.Downed || pawn.IsSelfShutdown()) && !pawn.inventory.UnloadEverything && p.CanReserveAndReach((LocalTargetInfo) (Thing) pawn, PathEndMode.Touch, Danger.Deadly))
-        {
-          neededThings.Clear();
-          tmpAlreadyLoading.Clear();
-          return new ThingCount(pawn, 1);
-        }
-      }
-    }
-    neededThings.Clear();
+        if (x.IsForbidden(p)) return false;
+        if (!p.CanReserve(x)) return false;
+        if (p.carryTracker.AvailableStackSpace(x.def) <= 0) return false;
+
+        return TransferableUtility.TransferableMatchingDesperate(x, tmpHungryTransferables, TransferAsOneMode.PodsOrCaravanPacking) != null;
+      },
+      lookInHaulSources: true);
+
     if (thing != null)
     {
-      TransferableOneWay key = null;
-      for (int index = 0; index < leftToLoad.Count; ++index)
+      TransferableOneWay match = TransferableUtility.TransferableMatchingDesperate(thing, tmpHungryTransferables, TransferAsOneMode.PodsOrCaravanPacking);
+      int targetedCount = 0;
+      tmpAlreadyLoading.TryGetValue(match, out targetedCount);
+      int countToTake = Mathf.Min(match.CountToTransfer - targetedCount, thing.stackCount);
+
+      tmpAlreadyLoading.Clear();
+      tmpHungryTransferables.Clear();
+      return new ThingCount(thing, countToTake);
+    }
+
+    // 2. Search for specifically requested pawns (like downed animals or shutdown mechs)
+    for (int i = 0; i < tmpHungryTransferables.Count; i++)
+    {
+      TransferableOneWay tow = tmpHungryTransferables[i];
+      if (tow.ThingDef.category == ThingCategory.Pawn)
       {
-        if (leftToLoad[index].things.Contains(thing))
+        for (int j = 0; j < tow.things.Count; j++)
         {
-          key = leftToLoad[index];
-          break;
+          if (tow.things[j] is Pawn targetPawn && (!targetPawn.IsColonist && !targetPawn.IsColonyMech || targetPawn.Downed || targetPawn.IsSelfShutdown()) && !targetPawn.inventory.UnloadEverything)
+          {
+            if (p.CanReserveAndReach(targetPawn, PathEndMode.Touch, Danger.Deadly))
+            {
+              tmpAlreadyLoading.Clear();
+              tmpHungryTransferables.Clear();
+              return new ThingCount(targetPawn, 1);
+            }
+          }
         }
       }
-      int num;
-      if (!tmpAlreadyLoading.TryGetValue(key, out num))
-        num = 0;
-      tmpAlreadyLoading.Clear();
-      return new ThingCount(thing, Mathf.Min(key.CountToTransfer - num, thing.stackCount));
     }
+
     tmpAlreadyLoading.Clear();
+    tmpHungryTransferables.Clear();
     return new ThingCount();
   }
-    
+
 
   public static IEnumerable<Thing> ThingsBeingHauledTo(Building_Tunnel tunnel)
   {
@@ -115,6 +148,156 @@ public static class TunnelUtilities
       if (t.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) t.jobs.curDriver).Tunnel == tunnel && t.carryTracker.CarriedThing != null)
         yield return t.carryTracker.CarriedThing;
     }
+  }
+
+  public static bool AnyPawnCanLoadAnythingNow(Building_Tunnel tunnel)
+  {
+    if (tunnel == null || !tunnel.LoadInProgress || !tunnel.Spawned)
+      return false;
+    IReadOnlyList<Pawn> allPawnsSpawned = tunnel.Map.mapPawns.AllPawnsSpawned;
+    for (int index = 0; index < allPawnsSpawned.Count; ++index)
+    {
+      Pawn p = allPawnsSpawned[index];
+      if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) p.jobs.curDriver).Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && ((JobDriver_EnterTunnel) p.jobs.curDriver).Tunnel == tunnel)
+        return true;
+    }
+    for (int index = 0; index < allPawnsSpawned.Count; ++index)
+    {
+      Thing thing = allPawnsSpawned[index].mindState?.duty?.focus.Thing;
+      if (thing != null && thing == tunnel && allPawnsSpawned[index].CanReach((LocalTargetInfo) thing, PathEndMode.Touch, Danger.Deadly))
+      {
+        if (allPawnsSpawned[index].IsColonist && HasJobOnTunnel(allPawnsSpawned[index], tunnel))
+          return true;
+      }
+    }
+    return false;
+  }
+
+  public static bool AnyPawnCouldLoadAnything(Building_Tunnel tunnel, bool includeForbidden)
+  {
+    if (tunnel == null || !tunnel.LoadInProgress || !tunnel.Spawned)
+      return false;
+    IReadOnlyList<Pawn> allPawnsSpawned = tunnel.Map.mapPawns.AllPawnsSpawned;
+    for (int index = 0; index < allPawnsSpawned.Count; ++index)
+    {
+      Pawn p = allPawnsSpawned[index];
+      if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) p.jobs.curDriver).Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && ((JobDriver_EnterTunnel) p.jobs.curDriver).Tunnel == tunnel)
+        return true;
+    }
+    for (int index = 0; index < allPawnsSpawned.Count; ++index)
+    {
+      Pawn p = allPawnsSpawned[index];
+      Thing focusThing = p.mindState?.duty?.focus.Thing;
+      if (focusThing != null && focusThing == tunnel && p.CanReach((LocalTargetInfo) focusThing, PathEndMode.Touch, Danger.Deadly))
+      {
+        if (p.IsColonist && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
+        {
+          if (includeForbidden)
+          {
+            // If we include forbidden, just check if there's *any* reachable thing matching the loadout, ignoring its forbidden status.
+            // We reuse the logic from FindThingToLoad but with a custom validator that ignores forbidden.
+            if (CanFindAnyThingToLoad(p, tunnel, includeForbidden: true))
+              return true;
+          }
+          else
+          {
+            if (HasJobOnTunnel(p, tunnel))
+              return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private static bool CanFindAnyThingToLoad(Pawn p, Building_Tunnel tunnel, bool includeForbidden)
+  {
+    List<TransferableOneWay> leftToLoad = tunnel.leftToLoad;
+    if (leftToLoad.NullOrEmpty()) return false;
+
+    tmpAlreadyLoading.Clear();
+    List<Pawn> pawnList = tunnel.Map.mapPawns.PawnsInFaction(Faction.OfPlayer);
+    for (int index = 0; index < pawnList.Count; ++index)
+    {
+      if (pawnList[index] != p && pawnList[index].CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel)
+      {
+        JobDriver_HaulToTunnel curDriver = (JobDriver_HaulToTunnel) pawnList[index].jobs.curDriver;
+        if (curDriver != null && curDriver.Container == tunnel)
+        {
+          TransferableOneWay key = TransferableUtility.TransferableMatchingDesperate(curDriver.ThingToCarry, leftToLoad, TransferAsOneMode.PodsOrCaravanPacking);
+          if (key != null)
+          {
+            int num = 0;
+            if (tmpAlreadyLoading.TryGetValue(key, out num))
+              tmpAlreadyLoading[key] = num + curDriver.initialCount;
+            else
+              tmpAlreadyLoading.Add(key, curDriver.initialCount);
+          }
+        }
+      }
+    }
+
+    tmpHungryTransferables.Clear();
+    for (int i = 0; i < leftToLoad.Count; i++)
+    {
+      int targetedCount = 0;
+      tmpAlreadyLoading.TryGetValue(leftToLoad[i], out targetedCount);
+      if (leftToLoad[i].CountToTransfer - targetedCount > 0)
+        tmpHungryTransferables.Add(leftToLoad[i]);
+    }
+
+    if (tmpHungryTransferables.Count == 0)
+    {
+      tmpAlreadyLoading.Clear();
+      return false;
+    }
+
+    // 1. Find closest item that matches a hungry transferable.
+    Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map,
+      ThingRequest.ForGroup(ThingRequestGroup.HaulableEver),
+      PathEndMode.Touch,
+      TraverseParms.For(p),
+      validator: x =>
+      {
+        if (!includeForbidden && x.IsForbidden(p)) return false;
+        if (!p.CanReserve(x)) return false;
+        if (p.carryTracker.AvailableStackSpace(x.def) <= 0) return false;
+
+        return TransferableUtility.TransferableMatchingDesperate(x, tmpHungryTransferables, TransferAsOneMode.PodsOrCaravanPacking) != null;
+      },
+      lookInHaulSources: true);
+
+    if (thing != null)
+    {
+      tmpAlreadyLoading.Clear();
+      tmpHungryTransferables.Clear();
+      return true;
+    }
+
+    // 2. Search for specifically requested pawns (like downed animals or shutdown mechs)
+    for (int i = 0; i < tmpHungryTransferables.Count; i++)
+    {
+      TransferableOneWay tow = tmpHungryTransferables[i];
+      if (tow.ThingDef.category == ThingCategory.Pawn)
+      {
+        for (int j = 0; j < tow.things.Count; j++)
+        {
+          if (tow.things[j] is Pawn targetPawn && (!targetPawn.IsColonist && !targetPawn.IsColonyMech || targetPawn.Downed || targetPawn.IsSelfShutdown()) && !targetPawn.inventory.UnloadEverything)
+          {
+            if (p.CanReserveAndReach(targetPawn, PathEndMode.Touch, Danger.Deadly))
+            {
+              tmpAlreadyLoading.Clear();
+              tmpHungryTransferables.Clear();
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    tmpAlreadyLoading.Clear();
+    tmpHungryTransferables.Clear();
+    return false;
   }
 
   public static void MakeLordsAsAppropriate(List<Pawn> pawns, Building_Tunnel tunnel)

@@ -11,8 +11,10 @@ namespace DwarfFlavourPack;
 public class ITab_ContentsTunnel : ITab_ContentsBase
 {
   private List<Thing> tmpContainer = new List<Thing>();
-  private Vector2 scroll;
-  private float lastHeight;
+  private Vector2 scrollLeftToLoad;
+  private Vector2 scrollLoaded;
+  private float lastHeightLeftToLoad;
+  private float lastHeightLoaded;
 
   public override IList<Thing> container => tmpContainer;
 
@@ -20,7 +22,7 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
 
   public Building_Tunnel Tunnel => SelThing as Building_Tunnel;
 
-  public override bool IsVisible => Tunnel != null && Tunnel.LoadInProgress;
+  public override bool IsVisible => Tunnel != null && (Tunnel.LoadInProgress || (Tunnel.Caravan?.GetDirectlyHeldThings().Any ?? false));
 
   public override IntVec3 DropOffset => IntVec3.Zero;
 
@@ -33,32 +35,145 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
   protected override void DoItemsLists(Rect inRect, ref float curY)
   {
     Text.Font = GameFont.Small;
-    bool flag = false;
-    float curY1 = 0.0f;
-    Widgets.BeginGroup(inRect);
-    Rect viewRect = inRect with
-    {
-      y = 0.0f,
-      height = lastHeight
-    };
-    if (lastHeight > (double) inRect.height)
-      viewRect.width -= 16f;
-    Widgets.BeginScrollView(inRect, ref scroll, viewRect);
-    Widgets.ListSeparator(ref curY1, inRect.width, Tunnel.EnteringString);
+
+    bool forbidden = false;
     if (Tunnel.leftToLoad != null)
     {
       foreach (TransferableOneWay t in Tunnel.leftToLoad.Where(t => t.CountToTransfer > 0 && t.HasAnyThing))
       {
-        flag = true;
-        TransferableOneWay t1 = t;
-        DoThingRow(t.ThingDef, t.CountToTransfer, t.things, viewRect.width, ref curY1, x => OnDropToLoadThing(t1, x));
+        for (int i = 0; i < t.things.Count; i++)
+        {
+          if (t.things[i].IsForbidden(Faction.OfPlayer))
+          {
+            forbidden = true;
+            break;
+          }
+        }
+        if (forbidden)
+          break;
       }
     }
-    lastHeight = curY1;
+
+    if (forbidden)
+    {
+      Rect warningRect = new Rect(inRect.x, inRect.y, inRect.width, 40f);
+      GUI.color = Color.yellow;
+      Text.Anchor = TextAnchor.MiddleLeft;
+      Widgets.Label(warningRect, "ForbiddenItemsInLoadoutWarning".Translate());
+      Text.Anchor = TextAnchor.UpperLeft;
+      GUI.color = Color.white;
+      inRect.yMin += 45f;
+    }
+
+    float halfHeight = inRect.height / 2f;
+    Rect leftToLoadRect = new Rect(inRect.x, inRect.y, inRect.width, halfHeight - 2f);
+    Rect loadedRect = new Rect(inRect.x, inRect.y + halfHeight + 2f, inRect.width, halfHeight - 2f);
+
+    // Left to Load Section
+    DoLeftToLoadList(leftToLoadRect);
+
+    // Loaded Section
+    DoLoadedList(loadedRect);
+  }
+
+  private void DoLeftToLoadList(Rect rect)
+  {
+    Widgets.BeginGroup(rect);
+    Rect viewRect = new Rect(0f, 0f, rect.width, lastHeightLeftToLoad);
+    if (lastHeightLeftToLoad > rect.height)
+      viewRect.width -= 16f;
+    float curY = 0.0f;
+    Widgets.BeginScrollView(rect.AtZero(), ref scrollLeftToLoad, viewRect);
+    Widgets.ListSeparator(ref curY, viewRect.width, "ItemsToLoad".Translate());
+    bool anyItems = false;
+    if (Tunnel.leftToLoad != null)
+    {
+      foreach (TransferableOneWay t in Tunnel.leftToLoad.Where(t => t.CountToTransfer > 0 && t.HasAnyThing))
+      {
+        anyItems = true;
+        TransferableOneWay t1 = t;
+        DoThingRow(t.ThingDef, t.CountToTransfer, t.things, viewRect.width, ref curY, x => OnDropToLoadThing(t1, x));
+      }
+    }
+    if (!anyItems)
+      Widgets.NoneLabel(ref curY, viewRect.width);
+    lastHeightLeftToLoad = curY;
     Widgets.EndScrollView();
-    if (!flag)
-      Widgets.NoneLabel(ref curY1, inRect.width);
     Widgets.EndGroup();
+  }
+
+  private void DoLoadedList(Rect rect)
+  {
+    Widgets.BeginGroup(rect);
+    Rect viewRect = new Rect(0f, 0f, rect.width, lastHeightLoaded);
+    if (lastHeightLoaded > rect.height)
+      viewRect.width -= 16f;
+    float curY = 0.0f;
+    Widgets.BeginScrollView(rect.AtZero(), ref scrollLoaded, viewRect);
+
+    // Header for Loaded section
+    Rect headerRect = new Rect(0f, curY, viewRect.width, 24f);
+    Widgets.ListSeparator(ref curY, viewRect.width, "LoadedItems".Translate());
+
+    // Remove All button
+    Rect removeAllRect = new Rect(viewRect.width - 100f, headerRect.y, 100f, 24f);
+    if (Widgets.ButtonText(removeAllRect, "RemoveAll".Translate()))
+    {
+      List<Thing> toDrop = Tunnel.Caravan.GetDirectlyHeldThings().ToList();
+      foreach (Thing t in toDrop)
+      {
+        if (Tunnel.Caravan.GetDirectlyHeldThings().TryDrop(t, Tunnel.Position, Tunnel.Map, ThingPlaceMode.Near, t.stackCount, out Thing droppedThing))
+        {
+          if (droppedThing is Pawn pawn)
+          {
+            RemovePawnFromLoadLord(pawn);
+          }
+        }
+      }
+    }
+
+    bool anyLoaded = false;
+    var loadedThings = Tunnel.Caravan.GetDirectlyHeldThings();
+    if (loadedThings.Any)
+    {
+      anyLoaded = true;
+      // Grouping loaded things to show them as rows, similar to how leftToLoad does it
+      // Since it's a ThingOwner, we might have many stacks of the same ThingDef
+      var grouped = loadedThings.GroupBy(x => x.def);
+      foreach (var group in grouped.OrderBy(g => g.Key.label))
+      {
+        List<Thing> things = group.ToList();
+        int count = things.Sum(x => x.stackCount);
+        DoThingRow(group.Key, count, things, viewRect.width, ref curY, x => OnDropLoadedThing(group.Key, x));
+      }
+    }
+    if (!anyLoaded)
+      Widgets.NoneLabel(ref curY, viewRect.width);
+    lastHeightLoaded = curY;
+    Widgets.EndScrollView();
+    Widgets.EndGroup();
+  }
+
+  private void OnDropLoadedThing(ThingDef def, int count)
+  {
+    var loadedThings = Tunnel.Caravan.GetDirectlyHeldThings();
+    int remainingToRemove = count;
+    for (int i = loadedThings.Count - 1; i >= 0 && remainingToRemove > 0; i--)
+    {
+      Thing t = loadedThings[i];
+      if (t.def == def)
+      {
+        int toRemove = Mathf.Min(t.stackCount, remainingToRemove);
+        if (loadedThings.TryDrop(t, Tunnel.Position, Tunnel.Map, ThingPlaceMode.Near, toRemove, out Thing droppedThing))
+        {
+          if (droppedThing is Pawn pawn)
+          {
+            RemovePawnFromLoadLord(pawn);
+          }
+        }
+        remainingToRemove -= toRemove;
+      }
+    }
   }
 
   protected override void OnDropThing(Thing t, int count)

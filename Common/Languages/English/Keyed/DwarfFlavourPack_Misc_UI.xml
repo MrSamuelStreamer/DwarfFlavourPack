@@ -6,4 +6,10 @@
     <DwarfFlavourPack_CaravanProgress>{PAWN_nameDef}'s caravan: {0} to go</DwarfFlavourPack_CaravanProgress>
     <DwarfFlavourPack_TunnelMap>Generating Map</DwarfFlavourPack_TunnelMap>
     <DwarfFlavourPack_TunnelRegen>Regenerating Tunnel Network</DwarfFlavourPack_TunnelRegen>
+    <ItemsToLoad>Items to load</ItemsToLoad>
+    <LoadedItems>Loaded items</LoadedItems>
+    <RemoveAll>Remove all</RemoveAll>
+    <ForbiddenItemsInLoadoutWarning>Warning: Some items in the loadout are forbidden and won't be hauled. They need to
+        be unforbidden.
+    </ForbiddenItemsInLoadoutWarning>
 </LanguageData>

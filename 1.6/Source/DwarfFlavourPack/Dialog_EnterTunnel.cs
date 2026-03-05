@@ -138,7 +138,7 @@ public class Dialog_EnterTunnel : Window
   private void AddItemsToTransferables()
   {
     bool isPocketMap = tunnel.Map.IsPocketMap;
-    foreach (Thing reachableColonyItem in CaravanFormingUtility.AllReachableColonyItems(tunnel.Map, isPocketMap, isPocketMap))
+    foreach (Thing reachableColonyItem in CaravanFormingUtility.AllReachableColonyItems(tunnel.Map, isPocketMap, isPocketMap, true))
       AddToTransferables(reachableColonyItem);
   }
 

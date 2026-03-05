@@ -4,7 +4,6 @@ using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Verse.AI;
 using Verse.AI.Group;
 
 namespace DwarfFlavourPack;
@@ -74,30 +73,7 @@ public class Building_Tunnel : Building, IThingHolder
 
   public bool AnyPawnCanLoadAnythingNow
   {
-    get
-    {
-      if (!LoadInProgress || !Spawned)
-        return false;
-      IReadOnlyList<Pawn> allPawnsSpawned = Map.mapPawns.AllPawnsSpawned;
-      for (int index = 0; index < allPawnsSpawned.Count; ++index)
-      {
-        Pawn p = allPawnsSpawned[index];
-        if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) p.jobs.curDriver).Tunnel == this || p.jobs.curDriver is JobDriver_EnterTunnel enterTunnel && enterTunnel.Tunnel == this)
-          return true;
-      }
-      for (int index = 0; index < allPawnsSpawned.Count; ++index)
-      {
-        Thing thing = allPawnsSpawned[index].mindState?.duty?.focus.Thing;
-        if (thing != null && thing == this && allPawnsSpawned[index].CanReach((LocalTargetInfo) thing, PathEndMode.Touch, Danger.Deadly))
-          return true;
-      }
-      for (int index = 0; index < allPawnsSpawned.Count; ++index)
-      {
-        if (allPawnsSpawned[index].IsColonist && TunnelUtilities.HasJobOnTunnel(allPawnsSpawned[index], this))
-          return true;
-      }
-      return false;
-    }
+    get => TunnelUtilities.AnyPawnCanLoadAnythingNow(this);
   }
 
   public override void ExposeData()
@@ -138,7 +114,7 @@ public class Building_Tunnel : Building, IThingHolder
   {
     base.Tick();
 
-    if (Caravan.readyToSend)
+    if (ShouldSendCaravanNow())
     {
       TunnelGenData.Instance.SendCaravan(this);
       return;
@@ -172,6 +148,37 @@ public class Building_Tunnel : Building, IThingHolder
 
     notifiedCantLoadMore = true;
     Messages.Message("MessageCantLoadMoreIntoPortal".Translate((NamedArgument) Label, (NamedArgument) Faction.OfPlayer.def.pawnsPlural, (NamedArgument) leftToLoad[0].AnyThing), (Thing) this, MessageTypeDefOf.CautionInput);
+  }
+
+  public bool ShouldSendCaravanNow()
+  {
+    if (Caravan.readyToSend)
+      return true;
+
+    if (!LoadInProgress)
+    {
+      // If no items left to load, check if all pawns from the Lord are inside.
+      Lord lord = Map.lordManager.lords.FirstOrDefault(l => l.LordJob is LordJob_LoadAndEnterTunnel lordJob && lordJob.tunnel == this);
+      if (lord == null)
+      {
+        // No lord means no pawns are assigned to enter voluntarily, 
+        // OR the process was just starting.
+        // If we were loading and now we are not, and there's no lord, we might be ready.
+        // But we only want to auto-send if there WAS a loading process.
+        return Caravan.GetDirectlyHeldThings().Any;
+      }
+
+      // If there is a lord, check if all its owned pawns are in the caravan container.
+      foreach (Pawn pawn in lord.ownedPawns)
+      {
+        if (!Caravan.GetDirectlyHeldThings().Contains(pawn))
+          return false;
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   public void GetChildHolders(List<IThingHolder> outChildren)
@@ -233,7 +240,7 @@ public class Building_Tunnel : Building, IThingHolder
 
     if (leftToLoad.Count <= 0)
     {
-      Caravan.readyToSend = true;
+      // We no longer set readyToSend here, ShouldSendCaravanNow will handle it.
     }
 
     return loadList;
