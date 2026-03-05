@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -46,14 +47,11 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
     Widgets.ListSeparator(ref curY1, inRect.width, Tunnel.EnteringString);
     if (Tunnel.leftToLoad != null)
     {
-      for (int index = 0; index < Tunnel.leftToLoad.Count; ++index)
+      foreach (TransferableOneWay t in Tunnel.leftToLoad.Where(t => t.CountToTransfer > 0 && t.HasAnyThing))
       {
-        TransferableOneWay t = Tunnel.leftToLoad[index];
-        if (t.CountToTransfer > 0 && t.HasAnyThing)
-        {
-          flag = true;
-          DoThingRow(t.ThingDef, t.CountToTransfer, t.things, viewRect.width, ref curY1, x => OnDropToLoadThing(t, x));
-        }
+        flag = true;
+        TransferableOneWay t1 = t;
+        DoThingRow(t.ThingDef, t.CountToTransfer, t.things, viewRect.width, ref curY1, x => OnDropToLoadThing(t1, x));
       }
     }
     lastHeight = curY1;
@@ -74,7 +72,7 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
   private void RemovePawnFromLoadLord(Pawn pawn)
   {
     Lord lord = pawn.GetLord();
-    if (lord == null || !(lord.LordJob is LordJob_LoadAndEnterTransporters))
+    if (lord is not { LordJob: LordJob_LoadAndEnterTunnel })
       return;
     lord.Notify_PawnLost(pawn, PawnLostCondition.LeftVoluntarily);
   }
@@ -93,9 +91,9 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
   private void EndJobForEveryoneHauling(TransferableOneWay t)
   {
     IReadOnlyList<Pawn> allPawnsSpawned = SelThing.Map.mapPawns.AllPawnsSpawned;
-    foreach (var t1 in allPawnsSpawned)
+    foreach (Pawn t1 in allPawnsSpawned)
     {
-      if (t1.CurJobDef == JobDefOf.HaulToTransporter)
+      if (t1.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel)
       {
         JobDriver_HaulToTunnel curDriver = (JobDriver_HaulToTunnel) t1.jobs.curDriver;
         if (curDriver.Tunnel == Tunnel && curDriver.ThingToCarry != null && curDriver.ThingToCarry.def == t.ThingDef)
