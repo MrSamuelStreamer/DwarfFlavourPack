@@ -152,6 +152,9 @@ public class Building_Tunnel : Building, IThingHolder
 
   public bool ShouldSendCaravanNow()
   {
+    if (!Caravan.GetDirectlyHeldThings().OfType<Pawn>().Any())
+      return false;
+
     if (Caravan.readyToSend)
       return true;
 

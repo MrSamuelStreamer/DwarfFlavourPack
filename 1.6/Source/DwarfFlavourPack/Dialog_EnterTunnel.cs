@@ -90,6 +90,11 @@ public class Dialog_EnterTunnel : Window
   private bool TryAccept()
   {
     List<Pawn> fromTransferables = TransferableUtility.GetPawnsFromTransferables(transferables);
+    if (!fromTransferables.Any())
+    {
+      Messages.Message("MessagePortalMustHavePawn".Translate(), MessageTypeDefOf.RejectInput);
+      return false;
+    }
     tunnel.leftToLoad = new List<TransferableOneWay>();
     foreach (TransferableOneWay transferable in transferables)
       tunnel.AddToTheToLoadList(transferable, transferable.CountToTransfer);

@@ -56,8 +56,16 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
 
   public void SendCaravan(Building_Tunnel tunnel)
   {
+    if (!tunnel.Caravan.GetDirectlyHeldThings().OfType<Pawn>().Any())
+    {
+      Log.Error("Attempted to send tunnel caravan without any pawns. Cancelling.");
+      tunnel.CancelLoad();
+      return;
+    }
+
     float distance = Find.WorldGrid.ApproxDistanceInTiles(tunnel.Caravan.origin, tunnel.Caravan.destination);
-    int ticksToTravel = Mathf.FloorToInt((distance / DwarfFlavourPackMod.settings.TilesPerHour) * GenDate.TicksPerHour);
+    float tilesPerHour = Mathf.Max(DwarfFlavourPackMod.settings.TilesPerHour, 0.0001f);
+    int ticksToTravel = Mathf.FloorToInt((distance / tilesPerHour) * GenDate.TicksPerHour);
     tunnel.Caravan.travelEndsAtTick = Find.TickManager.TicksGame + ticksToTravel;
     tunnel.Caravan.travelStartsAtTick = Find.TickManager.TicksGame;
 

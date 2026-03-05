@@ -43,20 +43,6 @@ public class TunnelCaravan : Thing, IThingHolder
   {
     base.ExposeData();
 
-    if (Scribe.mode == LoadSaveMode.Saving)
-    {
-      _tmpSavedPawns.Clear();
-      if (_innerContainer != null)
-      {
-        foreach (var t in _innerContainer.OfType<Pawn>().ToList())
-        {
-          _innerContainer.Remove(t);
-          _tmpSavedPawns.Add(t);
-        }
-      }
-    }
-
-    Scribe_Collections.Look(ref _tmpSavedPawns, "tmpSavedPawns", LookMode.Deep);
     Scribe_Deep.Look(ref _innerContainer, "innerContainer", this);
     Scribe_References.Look(ref tunnel, "tunnel");
     Scribe_Deep.Look(ref surfaceTile, "surfaceTile");
@@ -67,20 +53,6 @@ public class TunnelCaravan : Thing, IThingHolder
     Scribe_Values.Look(ref readyToSend, "ReadyToSend");
     Scribe_Values.Look(ref mapGenerating, "MapGenerating");
     Scribe_Values.Look(ref done, "Done");
-
-    if (Scribe.mode == LoadSaveMode.PostLoadInit)
-    {
-      _innerContainer ??= new ThingOwnerProxy(this);
-      if (_tmpSavedPawns != null)
-      {
-        foreach (Pawn t in _tmpSavedPawns)
-        {
-          if (t != null)
-            _innerContainer.TryAddOrTransfer(t);
-        }
-        _tmpSavedPawns.Clear();
-      }
-    }
   }
 
   public void GetChildHolders(List<IThingHolder> outChildren)
@@ -94,11 +66,11 @@ public class TunnelCaravan : Thing, IThingHolder
     return _innerContainer;
   }
 
-  public Pawn Owner => _innerContainer.OfType<Pawn>().First();
+  public Pawn Owner => GetDirectlyHeldThings().OfType<Pawn>().FirstOrDefault();
 
   public string TimeToGo => (travelEndsAtTick - Find.TickManager.TicksGame).ToStringTicksToPeriod();
 
-  public string Progress => "DwarfFlavourPack_CaravanProgress".Translate(TimeToGo, Owner.Named("PAWN"));
+  public string Progress => Owner != null ? "DwarfFlavourPack_CaravanProgress".Translate(TimeToGo, Owner.Named("PAWN")) : "DwarfFlavourPack_CaravanProgressItemsOnly".Translate(TimeToGo);
 
   public void SpawnToMap(Map map)
   {

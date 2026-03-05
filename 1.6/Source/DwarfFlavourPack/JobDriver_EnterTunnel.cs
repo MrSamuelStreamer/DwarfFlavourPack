@@ -37,6 +37,14 @@ public class JobDriver_EnterTunnel : JobDriver
         return;
       }
       pawn.DeSpawn();
+      if (pawn.carryTracker.CarriedThing != null)
+      {
+        if (!tunnel.Caravan.GetDirectlyHeldThings().TryAddOrTransfer(pawn.carryTracker.CarriedThing))
+        {
+          Log.Error("Could not add carried thing " + pawn.carryTracker.CarriedThing + " to tunnel caravan " + tunnel.Caravan + ". Attempting to respawn near tunnel.");
+          GenSpawn.Spawn(pawn.carryTracker.CarriedThing, tunnel.Position, tunnel.Map);
+        }
+      }
       if (!tunnel.Caravan.GetDirectlyHeldThings().TryAddOrTransfer(pawn))
       {
         Log.Error("Could not add pawn " + pawn + " to tunnel caravan " + tunnel.Caravan + ". Attempting to respawn near tunnel.");
