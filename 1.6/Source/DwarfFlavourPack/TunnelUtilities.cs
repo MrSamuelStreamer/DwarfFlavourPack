@@ -13,7 +13,7 @@ public static class TunnelUtilities
 
   public static bool HasJobOnTunnel(Pawn pawn, Building_Tunnel tunnel)
   {
-    return tunnel != null && !tunnel.leftToLoad.NullOrEmpty() && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.Touch, pawn.NormalMaxDanger()) && FindThingToLoad(pawn, tunnel).Thing != null;
+    return tunnel != null && tunnel.Spawned && !tunnel.leftToLoad.NullOrEmpty() && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.Touch, Danger.Deadly) && FindThingToLoad(pawn, tunnel).Thing != null;
   }
 
   public static Job JobOnTunnel(Pawn p, Building_Tunnel tunnel)
@@ -38,6 +38,10 @@ public static class TunnelUtilities
 
   public static ThingCount FindThingToLoad(Pawn p, Building_Tunnel tunnel)
   {
+    if (tunnel == null || tunnel.Map == null)
+    {
+      return new ThingCount();
+    }
     List<TransferableOneWay> leftToLoad = tunnel.leftToLoad;
     if (leftToLoad.NullOrEmpty())
     {
@@ -50,7 +54,7 @@ public static class TunnelUtilities
     {
       if (pawnList[index] != p && pawnList[index].CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel)
       {
-        JobDriver_HaulToTunnel curDriver = (JobDriver_HaulToTunnel) pawnList[index].jobs.curDriver;
+        JobDriver_HaulToTunnel curDriver = pawnList[index].jobs?.curDriver as JobDriver_HaulToTunnel;
         if (curDriver != null && curDriver.Container == tunnel)
         {
           // Identify which transferable is being satisfied by this other pawn.
@@ -142,23 +146,25 @@ public static class TunnelUtilities
 
   public static IEnumerable<Thing> ThingsBeingHauledTo(Building_Tunnel tunnel)
   {
+    if (tunnel == null || tunnel.Map == null)
+      yield break;
     IReadOnlyList<Pawn> pawns = tunnel.Map.mapPawns.AllPawnsSpawned;
     foreach (var t in pawns)
     {
-      if (t.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) t.jobs.curDriver).Tunnel == tunnel && t.carryTracker.CarriedThing != null)
+      if (t.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && t.jobs?.curDriver is JobDriver_HaulToTunnel curDriver && curDriver.Tunnel == tunnel && t.carryTracker.CarriedThing != null)
         yield return t.carryTracker.CarriedThing;
     }
   }
 
   public static bool AnyPawnCanLoadAnythingNow(Building_Tunnel tunnel)
   {
-    if (tunnel == null || !tunnel.LoadInProgress || !tunnel.Spawned)
+    if (tunnel == null || !tunnel.LoadInProgress || !tunnel.Spawned || tunnel.Map == null)
       return false;
     IReadOnlyList<Pawn> allPawnsSpawned = tunnel.Map.mapPawns.AllPawnsSpawned;
     for (int index = 0; index < allPawnsSpawned.Count; ++index)
     {
       Pawn p = allPawnsSpawned[index];
-      if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) p.jobs.curDriver).Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && ((JobDriver_EnterTunnel) p.jobs.curDriver).Tunnel == tunnel)
+      if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && p.jobs?.curDriver is JobDriver_HaulToTunnel haulDriver && haulDriver.Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && p.jobs?.curDriver is JobDriver_EnterTunnel enterDriver && enterDriver.Tunnel == tunnel)
         return true;
     }
     for (int index = 0; index < allPawnsSpawned.Count; ++index)
@@ -175,13 +181,13 @@ public static class TunnelUtilities
 
   public static bool AnyPawnCouldLoadAnything(Building_Tunnel tunnel, bool includeForbidden)
   {
-    if (tunnel == null || !tunnel.LoadInProgress || !tunnel.Spawned)
+    if (tunnel == null || !tunnel.LoadInProgress || !tunnel.Spawned || tunnel.Map == null)
       return false;
     IReadOnlyList<Pawn> allPawnsSpawned = tunnel.Map.mapPawns.AllPawnsSpawned;
     for (int index = 0; index < allPawnsSpawned.Count; ++index)
     {
       Pawn p = allPawnsSpawned[index];
-      if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && ((JobDriver_HaulToTunnel) p.jobs.curDriver).Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && ((JobDriver_EnterTunnel) p.jobs.curDriver).Tunnel == tunnel)
+      if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && p.jobs?.curDriver is JobDriver_HaulToTunnel haulDriver && haulDriver.Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && p.jobs?.curDriver is JobDriver_EnterTunnel enterDriver && enterDriver.Tunnel == tunnel)
         return true;
     }
     for (int index = 0; index < allPawnsSpawned.Count; ++index)
@@ -212,6 +218,7 @@ public static class TunnelUtilities
 
   private static bool CanFindAnyThingToLoad(Pawn p, Building_Tunnel tunnel, bool includeForbidden)
   {
+    if (tunnel == null || tunnel.Map == null) return false;
     List<TransferableOneWay> leftToLoad = tunnel.leftToLoad;
     if (leftToLoad.NullOrEmpty()) return false;
 
@@ -221,7 +228,7 @@ public static class TunnelUtilities
     {
       if (pawnList[index] != p && pawnList[index].CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel)
       {
-        JobDriver_HaulToTunnel curDriver = (JobDriver_HaulToTunnel) pawnList[index].jobs.curDriver;
+        JobDriver_HaulToTunnel curDriver = pawnList[index].jobs?.curDriver as JobDriver_HaulToTunnel;
         if (curDriver != null && curDriver.Container == tunnel)
         {
           TransferableOneWay key = TransferableUtility.TransferableMatchingDesperate(curDriver.ThingToCarry, leftToLoad, TransferAsOneMode.PodsOrCaravanPacking);

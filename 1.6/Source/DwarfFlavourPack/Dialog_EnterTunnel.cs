@@ -157,9 +157,13 @@ public class Dialog_EnterTunnel : Window
 
   private void AddItemsToTransferables()
   {
-    bool isPocketMap = tunnel.Map.IsPocketMap;
-    foreach (Thing reachableColonyItem in CaravanFormingUtility.AllReachableColonyItems(tunnel.Map, isPocketMap, isPocketMap, true))
-      AddToTransferables(reachableColonyItem);
+    foreach (Thing thing in tunnel.Map.listerThings.AllThings)
+    {
+      if (thing.def.category == ThingCategory.Item && thing.Spawned && !thing.IsForbidden(Faction.OfPlayer))
+      {
+        AddToTransferables(thing);
+      }
+    }
   }
 
   public override void OnAcceptKeyPressed()

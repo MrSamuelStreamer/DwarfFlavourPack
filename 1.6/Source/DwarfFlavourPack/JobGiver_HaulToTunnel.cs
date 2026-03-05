@@ -3,15 +3,15 @@ using Verse.AI;
 
 namespace DwarfFlavourPack;
 
-public class JobGiver_HaulToTunnel: ThinkNode_JobGiver
+public class JobGiver_HaulToTunnel : ThinkNode_JobGiver
 {
-    protected override Job TryGiveJob(Pawn pawn)
+  protected override Job TryGiveJob(Pawn pawn)
+  {
+    Building_Tunnel tunnel = pawn.mindState?.duty?.focus.Thing as Building_Tunnel;
+    if (tunnel != null && TunnelUtilities.HasJobOnTunnel(pawn, tunnel))
     {
-        Building_Tunnel tunnel = pawn.mindState.duty.focus.Thing as Building_Tunnel;
-        if (TunnelUtilities.HasJobOnTunnel(pawn, tunnel))
-        {
-            return TunnelUtilities.JobOnTunnel(pawn, tunnel);
-        }
-        return null;
+      return TunnelUtilities.JobOnTunnel(pawn, tunnel);
     }
+    return null;
+  }
 }
