@@ -24,6 +24,9 @@ public class Building_Tunnel : Building, IThingHolder
   public bool notifiedCantLoadMore;
   private int lastLoadPossibleTick = -1;
 
+  private bool cachedAnyPawnCanLoad;
+  private int lastAnyPawnCanLoadCheckTick = -1;
+
   protected virtual Texture2D EnterTex => DefaultEnterTex;
 
   public virtual string EnterString => "EnterPortal".Translate((NamedArgument) Label);
@@ -70,7 +73,14 @@ public class Building_Tunnel : Building, IThingHolder
 
   public bool AnyPawnCanLoadAnythingNow
   {
-    get => TunnelUtilities.AnyPawnCanLoadAnythingNow(this);
+    get
+    {
+      if (lastAnyPawnCanLoadCheckTick == Find.TickManager.TicksGame)
+        return cachedAnyPawnCanLoad;
+      cachedAnyPawnCanLoad = TunnelUtilities.AnyPawnCanLoadAnythingNow(this);
+      lastAnyPawnCanLoadCheckTick = Find.TickManager.TicksGame;
+      return cachedAnyPawnCanLoad;
+    }
   }
 
   public override void ExposeData()
@@ -111,10 +121,13 @@ public class Building_Tunnel : Building, IThingHolder
   {
     base.Tick();
 
-    if (ShouldSendCaravanNow())
+    if (this.IsHashIntervalTick(60))
     {
-      TunnelGenData.Instance.SendCaravan(this);
-      return;
+      if (ShouldSendCaravanNow())
+      {
+        TunnelGenData.Instance.SendCaravan(this);
+        return;
+      }
     }
 
     if (!Spawned || !LoadInProgress)

@@ -175,6 +175,10 @@ public static class TunnelUtilities
       if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && p.jobs?.curDriver is JobDriver_HaulToTunnel haulDriver && haulDriver.Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && p.jobs?.curDriver is JobDriver_EnterTunnel enterDriver && enterDriver.Tunnel == tunnel)
         return true;
     }
+
+    if (!tunnel.IsHashIntervalTick(60))
+      return false;
+
     for (int index = 0; index < allPawnsSpawned.Count; ++index)
     {
       Thing thing = allPawnsSpawned[index].mindState?.duty?.focus.Thing;
@@ -191,6 +195,7 @@ public static class TunnelUtilities
   {
     if (tunnel == null || !tunnel.LoadInProgress || !tunnel.Spawned || tunnel.Map == null)
       return false;
+
     IReadOnlyList<Pawn> allPawnsSpawned = tunnel.Map.mapPawns.AllPawnsSpawned;
     for (int index = 0; index < allPawnsSpawned.Count; ++index)
     {
@@ -198,6 +203,12 @@ public static class TunnelUtilities
       if (p.CurJobDef == DwarfFlavourPackDefOf.DFP_HaulToTunnel && p.jobs?.curDriver is JobDriver_HaulToTunnel haulDriver && haulDriver.Tunnel == tunnel || p.CurJobDef == DwarfFlavourPackDefOf.DFP_CarryDownedPawnToPortal && p.jobs?.curDriver is JobDriver_EnterTunnel enterDriver && enterDriver.Tunnel == tunnel)
         return true;
     }
+
+    if (!tunnel.IsHashIntervalTick(60))
+    {
+      return false;
+    }
+
     for (int index = 0; index < allPawnsSpawned.Count; ++index)
     {
       Pawn p = allPawnsSpawned[index];
