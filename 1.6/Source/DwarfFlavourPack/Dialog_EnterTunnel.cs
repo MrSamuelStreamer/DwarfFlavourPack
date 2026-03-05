@@ -16,6 +16,7 @@ public class Dialog_EnterTunnel : Window
   private readonly Vector2 BottomButtonSize = new Vector2(160f, 40f);
   private Building_Tunnel tunnel;
   private WorldObject destination;
+  private List<Pawn> preSelectedPawns;
   private List<TransferableOneWay> transferables;
   private TransferableOneWayWidget pawnsTransfer;
   private TransferableOneWayWidget itemsTransfer;
@@ -26,10 +27,11 @@ public class Dialog_EnterTunnel : Window
 
   protected override float Margin => 0.0f;
 
-  public Dialog_EnterTunnel(Building_Tunnel tunnel, WorldObject destination)
+  public Dialog_EnterTunnel(Building_Tunnel tunnel, WorldObject destination, List<Pawn> preSelectedPawns = null)
   {
     this.tunnel = tunnel;
     this.destination = destination;
+    this.preSelectedPawns = preSelectedPawns;
     forcePause = true;
     absorbInputAroundWindow = true;
   }
@@ -106,6 +108,19 @@ public class Dialog_EnterTunnel : Window
     }
     AddPawnsToTransferables();
     AddItemsToTransferables();
+
+    if (preSelectedPawns != null)
+    {
+      foreach (Pawn pawn in preSelectedPawns)
+      {
+        TransferableOneWay transferable = TransferableUtility.TransferableMatching(pawn, transferables, TransferAsOneMode.PodsOrCaravanPacking);
+        if (transferable != null)
+        {
+          transferable.ForceTo(1);
+        }
+      }
+    }
+
     foreach (Thing t in TunnelUtilities.ThingsBeingHauledTo(tunnel))
       AddToTransferables(t);
     pawnsTransfer = new TransferableOneWayWidget(null, null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: tunnel.Map.Tile, drawEquippedWeapon: true);

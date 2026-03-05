@@ -22,8 +22,8 @@ public class TunnelCaravan : Thing, IThingHolder
 {
   private ThingOwnerProxy _innerContainer;
 
-  public PlanetTile destination;
-  public PlanetTile origin;
+  public PlanetTile destination = PlanetTile.Invalid;
+  public PlanetTile origin = PlanetTile.Invalid;
 
 
   public Building_Tunnel tunnel;
@@ -41,7 +41,6 @@ public class TunnelCaravan : Thing, IThingHolder
 
   public override void ExposeData()
   {
-    // CRITICAL: without this, Thing.def / thingIDNumber won't be saved/loaded correctly.
     base.ExposeData();
 
     if (Scribe.mode == LoadSaveMode.Saving)

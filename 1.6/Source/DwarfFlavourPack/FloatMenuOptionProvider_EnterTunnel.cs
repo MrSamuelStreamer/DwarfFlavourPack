@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 
@@ -8,8 +9,6 @@ namespace DwarfFlavourPack;
 
 public class FloatMenuOptionProvider_EnterTunnel : FloatMenuOptionProvider
 {
-  private static List<Pawn> tmpTunnelEnteringPawns = new List<Pawn>();
-
   protected override bool Drafted => true;
 
   protected override bool Undrafted => true;
@@ -18,43 +17,82 @@ public class FloatMenuOptionProvider_EnterTunnel : FloatMenuOptionProvider
 
   protected override bool MechanoidCanDo => true;
 
-  protected override FloatMenuOption GetSingleOptionFor(
+  public override IEnumerable<FloatMenuOption> GetOptionsFor(
     Thing clickedThing,
     FloatMenuContext context)
   {
-    return null;
+
     Building_Tunnel tunnel = clickedThing as Building_Tunnel;
     if (tunnel == null)
-      return null;
-    string reason;
-    if (!tunnel.IsEnterable(out reason))
-      return new FloatMenuOption("CannotEnterPortal".Translate((NamedArgument) tunnel.Label) + ": " + reason, null);
+      yield break;
+
+    FloatMenuOption singleOptionFor = this.GetSingleOptionFor(clickedThing, context);
+    if (singleOptionFor != null)
+      yield return singleOptionFor;
+
+    if (!tunnel.IsEnterable(out string reason))
+    {
+      yield return new FloatMenuOption("CannotEnterPortal".Translate((NamedArgument) tunnel.Label) + ": " + reason, null);
+      yield break;
+    }
+
     if (!context.IsMultiselect)
     {
       AcceptanceReport acceptanceReport = CanEnterTunnel(context.FirstSelectedPawn, tunnel);
       if (!acceptanceReport.Accepted)
-        return new FloatMenuOption("CannotEnterPortal".Translate((NamedArgument) tunnel.Label) + ": " + acceptanceReport.Reason, null);
+      {
+        yield return new FloatMenuOption("CannotEnterPortal".Translate((NamedArgument) tunnel.Label) + ": " + acceptanceReport.Reason, null);
+        yield break;
+      }
     }
-    tmpTunnelEnteringPawns.Clear();
+
+    List<Pawn> selectedPawns = new List<Pawn>();
     foreach (Pawn validSelectedPawn in context.ValidSelectedPawns)
     {
-      if (CanEnterTunnel(context.FirstSelectedPawn, tunnel))
-        tmpTunnelEnteringPawns.Add(validSelectedPawn);
+      if (CanEnterTunnel(validSelectedPawn, tunnel).Accepted)
+        selectedPawns.Add(validSelectedPawn);
     }
-    return tmpTunnelEnteringPawns.NullOrEmpty() ? null : new FloatMenuOption(tunnel.EnterString, (Action) (() =>
+
+    if (selectedPawns.NullOrEmpty())
+      yield break;
+
+    if (tunnel.Caravan.destination != PlanetTile.Invalid)
     {
-      foreach (Pawn tunnelEnteringPawn in tmpTunnelEnteringPawns)
+      yield return new FloatMenuOption(tunnel.EnterString, () =>
       {
-        Job job = JobMaker.MakeJob(DwarfFlavourPackDefOf.DFP_EnterTunnel, (LocalTargetInfo) (Thing) tunnel);
-        job.playerForced = true;
-        tunnelEnteringPawn.jobs.TryTakeOrderedJob(job);
+        SendToTunnel(tunnel, selectedPawns);
+      });
+    }
+    else
+    {
+      List<WorldObject> wos = TunnelGenData.WorldObjectsWithTunnelEntrances()
+        .Where(wo => wo != null && wo.Tile != tunnel.Map.Tile)
+        .ToList();
+
+      foreach (WorldObject worldObject in wos)
+      {
+        float distance = Find.WorldGrid.ApproxDistanceInTiles(tunnel.Tile, worldObject.Tile);
+
+        yield return new FloatMenuOption(worldObject.LabelCap + " [" + distance.ToStringDecimalIfSmall() + " tiles]", () =>
+        {
+          Find.WindowStack.Add(new Dialog_EnterTunnel(tunnel, worldObject, selectedPawns));
+        });
       }
-    }), MenuOptionPriority.High);
+    }
+  }
+
+  public void SendToTunnel(Building_Tunnel tunnel, List<Pawn> pawns)
+  {
+    foreach (Pawn pawn in pawns)
+    {
+      Job job = JobMaker.MakeJob(DwarfFlavourPackDefOf.DFP_EnterTunnel, (LocalTargetInfo) (Thing) tunnel);
+      job.playerForced = true;
+      pawn.jobs.TryTakeOrderedJob(job);
+    }
   }
 
   private static AcceptanceReport CanEnterTunnel(Pawn pawn, Building_Tunnel tunnel)
   {
-    return false;
     if (!pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.ClosestTouch, Danger.Deadly))
       return "NoPath".Translate();
     return !pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) ? "Incapable".Translate() : true;
