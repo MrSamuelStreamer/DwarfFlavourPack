@@ -13,7 +13,13 @@ public static class TunnelUtilities
 
   public static bool HasJobOnTunnel(Pawn pawn, Building_Tunnel tunnel)
   {
-    return tunnel != null && tunnel.Spawned && !tunnel.leftToLoad.NullOrEmpty() && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.Touch, Danger.Deadly) && FindThingToLoad(pawn, tunnel).Thing != null;
+    if (tunnel == null || !tunnel.Spawned || tunnel.leftToLoad.NullOrEmpty() || pawn == null)
+      return false;
+
+    if (!(pawn.health?.capacities?.CapableOf(PawnCapacityDefOf.Manipulation) ?? false) || !pawn.CanReach((LocalTargetInfo) (Thing) tunnel, PathEndMode.Touch, Danger.Deadly))
+      return false;
+
+    return FindThingToLoad(pawn, tunnel).Thing != null;
   }
 
   public static Job JobOnTunnel(Pawn p, Building_Tunnel tunnel)
@@ -74,11 +80,12 @@ public static class TunnelUtilities
     tmpHungryTransferables.Clear();
     for (int i = 0; i < leftToLoad.Count; i++)
     {
-      int targetedCount = 0;
-      tmpAlreadyLoading.TryGetValue(leftToLoad[i], out targetedCount);
-      if (leftToLoad[i].CountToTransfer - targetedCount > 0)
+      TransferableOneWay tow = leftToLoad[i];
+      if (tow == null) continue;
+      tmpAlreadyLoading.TryGetValue(tow, out int targetedCount);
+      if (tow.CountToTransfer - targetedCount > 0)
       {
-        tmpHungryTransferables.Add(leftToLoad[i]);
+        tmpHungryTransferables.Add(tow);
       }
     }
 
@@ -121,6 +128,7 @@ public static class TunnelUtilities
     for (int i = 0; i < tmpHungryTransferables.Count; i++)
     {
       TransferableOneWay tow = tmpHungryTransferables[i];
+      if (tow?.ThingDef == null) continue;
       if (tow.ThingDef.category == ThingCategory.Pawn)
       {
         for (int j = 0; j < tow.things.Count; j++)
@@ -247,10 +255,11 @@ public static class TunnelUtilities
     tmpHungryTransferables.Clear();
     for (int i = 0; i < leftToLoad.Count; i++)
     {
-      int targetedCount = 0;
-      tmpAlreadyLoading.TryGetValue(leftToLoad[i], out targetedCount);
-      if (leftToLoad[i].CountToTransfer - targetedCount > 0)
-        tmpHungryTransferables.Add(leftToLoad[i]);
+      TransferableOneWay tow = leftToLoad[i];
+      if (tow == null) continue;
+      tmpAlreadyLoading.TryGetValue(tow, out int targetedCount);
+      if (tow.CountToTransfer - targetedCount > 0)
+        tmpHungryTransferables.Add(tow);
     }
 
     if (tmpHungryTransferables.Count == 0)
@@ -285,6 +294,7 @@ public static class TunnelUtilities
     for (int i = 0; i < tmpHungryTransferables.Count; i++)
     {
       TransferableOneWay tow = tmpHungryTransferables[i];
+      if (tow?.ThingDef == null) continue;
       if (tow.ThingDef.category == ThingCategory.Pawn)
       {
         for (int j = 0; j < tow.things.Count; j++)

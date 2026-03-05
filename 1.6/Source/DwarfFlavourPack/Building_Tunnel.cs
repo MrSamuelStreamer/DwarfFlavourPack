@@ -35,10 +35,7 @@ public class Building_Tunnel : Building, IThingHolder
     get => "EnteringPortal".Translate((NamedArgument) Label);
   }
 
-  public bool LoadInProgress
-  {
-    get => leftToLoad != null && leftToLoad.Any();
-  }
+  public bool LoadInProgress => leftToLoad is { Count: > 0 };
 
   private TunnelCaravan caravan;
   public TunnelCaravan Caravan
@@ -85,7 +82,7 @@ public class Building_Tunnel : Building, IThingHolder
     Scribe_Values.Look(ref lastLoadPossibleTick, "lastLoadPossibleTick", -1);
     if (Scribe.mode != LoadSaveMode.PostLoadInit)
       return;
-    leftToLoad?.RemoveAll(x => x.AnyThing == null);
+    leftToLoad?.RemoveAll(x => x?.AnyThing == null);
   }
 
   public override void SpawnSetup(Map map, bool respawningAfterLoad)
@@ -140,7 +137,7 @@ public class Building_Tunnel : Building, IThingHolder
     if (lastLoadPossibleTick != -1 && (Find.TickManager.TicksGame - lastLoadPossibleTick) < 600)
       return;
 
-    if (leftToLoad is not { Count: > 0 } || leftToLoad[0]?.AnyThing == null)
+    if (leftToLoad == null || leftToLoad.Count <= 0 || leftToLoad[0] == null || leftToLoad[0].AnyThing == null)
       return;
 
     if (notifiedCantLoadMore)
@@ -254,6 +251,8 @@ public class Building_Tunnel : Building, IThingHolder
     Lord oldLord = Map.lordManager.lords.FirstOrDefault(l => l.LordJob is LordJob_LoadAndEnterTunnel lordJob && lordJob.tunnel == this);
     if (oldLord != null)
       Map.lordManager.RemoveLord(oldLord);
+    if (leftToLoad == null)
+      return;
     leftToLoad.Clear();
     Caravan.GetDirectlyHeldThings().TryDropAll(Position, Map, ThingPlaceMode.Near);
   }
@@ -281,7 +280,8 @@ public class Building_Tunnel : Building, IThingHolder
     }
 
     caravan = null;
-    leftToLoad?.Clear();
+    if (leftToLoad != null)
+      leftToLoad.Clear();
     notifiedCantLoadMore = false;
     lastLoadPossibleTick = -1;
   }
