@@ -69,10 +69,65 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
     tunnel.Caravan.travelEndsAtTick = Find.TickManager.TicksGame + ticksToTravel;
     tunnel.Caravan.travelStartsAtTick = Find.TickManager.TicksGame;
 
+    tunnel.Caravan.pathTiles = FindTunnelPath(tunnel.Caravan.origin, tunnel.Caravan.destination);
+
+    // Spawn world object
+    WorldObject_TunnelCaravan wo = (WorldObject_TunnelCaravan) WorldObjectMaker.MakeWorldObject(DwarfFlavourPackDefOf.DFP_TunnelCaravanWorldObject);
+    wo.Tile = tunnel.Caravan.origin;
+    wo.caravan = tunnel.Caravan;
+    Find.WorldObjects.Add(wo);
+
     // Transfer the Thing from the building's ThingOwner into the world component's ThingOwner.
     Caravans.TryAddOrTransfer(tunnel.Caravan);
 
     tunnel.ClearCaravan();
+  }
+
+  private List<int> FindTunnelPath(PlanetTile start, PlanetTile end)
+  {
+    Queue<PlanetTile> queue = new Queue<PlanetTile>();
+    Dictionary<PlanetTile, PlanetTile> cameFrom = new Dictionary<PlanetTile, PlanetTile>();
+
+    queue.Enqueue(start);
+    cameFrom[start] = PlanetTile.Invalid;
+
+    while (queue.Count > 0)
+    {
+      PlanetTile current = queue.Dequeue();
+
+      if (current == end)
+      {
+        List<int> path = new List<int>();
+        PlanetTile step = current;
+        while (step != PlanetTile.Invalid)
+        {
+          path.Add(step.tileId);
+          step = cameFrom[step];
+        }
+        path.Reverse();
+        return path;
+      }
+
+      Tile currentTile = current.Tile;
+      if (currentTile is SurfaceTile currentSurfaceTile && potentialTunnels.TryGetValue(currentSurfaceTile, out var links))
+      {
+        foreach (var link in links)
+        {
+          if (!cameFrom.ContainsKey(link.neighbor))
+          {
+            cameFrom[link.neighbor] = current;
+            queue.Enqueue(link.neighbor);
+          }
+        }
+      }
+    }
+
+    Log.Warning("Could not find tunnel path from " + start + " to " + end + ". Falling back to direct path.");
+    return new List<int>
+    {
+      start.tileId,
+      end.tileId
+    };
   }
 
   public void Clear()

@@ -24,7 +24,7 @@ public class TunnelCaravan : Thing, IThingHolder
 
   public PlanetTile destination = PlanetTile.Invalid;
   public PlanetTile origin = PlanetTile.Invalid;
-
+  public List<int> pathTiles = new List<int>();
 
   public Building_Tunnel tunnel;
 
@@ -50,6 +50,7 @@ public class TunnelCaravan : Thing, IThingHolder
     Scribe_Values.Look(ref travelEndsAtTick, "travelEndsAtTick", -1);
     Scribe_Values.Look(ref origin, "origin");
     Scribe_Values.Look(ref destination, "destination");
+    Scribe_Collections.Look(ref pathTiles, "pathTiles", LookMode.Value);
     Scribe_Values.Look(ref readyToSend, "ReadyToSend");
     Scribe_Values.Look(ref mapGenerating, "MapGenerating");
     Scribe_Values.Look(ref done, "Done");

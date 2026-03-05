@@ -103,4 +103,14 @@
         <approachOrderString>Enter {0}</approachOrderString>
         <approachingReportString>Entering {0}.</approachingReportString>
     </SitePartDef>
+
+    <WorldObjectDef>
+        <defName>DFP_TunnelCaravanWorldObject</defName>
+        <label>tunnel caravan</label>
+        <worldObjectClass>DwarfFlavourPack.WorldObject_TunnelCaravan</worldObjectClass>
+        <texture>UI/DFP_MineCart</texture>
+        <expandingIconTexture>UI/DFP_MineCart</expandingIconTexture>
+        <expandingIcon>true</expandingIcon>
+        <expandingIconPriority>100</expandingIconPriority>
+    </WorldObjectDef>
 </Defs>

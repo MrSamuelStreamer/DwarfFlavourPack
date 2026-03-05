@@ -35,7 +35,17 @@ public static class WorldInterface_Patch
         if (Event.current.type == EventType.MouseDown)
         {
           Event.current.Use();
-          Find.WorldInterface.SelectedTile = caravan.destination;
+          WorldObject_TunnelCaravan wo = Find.WorldObjects.AllWorldObjects.OfType<WorldObject_TunnelCaravan>().FirstOrDefault(w => w.caravan == caravan);
+          if (wo != null)
+          {
+            Find.WorldInterface.SelectedTile = wo.Tile;
+            Find.WorldSelector.ClearSelection();
+            Find.WorldSelector.Select(wo);
+          }
+          else
+          {
+            Find.WorldInterface.SelectedTile = caravan.destination;
+          }
           Find.WorldCameraDriver.JumpTo(Find.WorldGrid.GetTileCenter(Find.WorldInterface.SelectedTile));
 
         }
