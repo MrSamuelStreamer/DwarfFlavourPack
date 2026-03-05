@@ -138,7 +138,7 @@ public class Building_Tunnel : Building, IThingHolder
   {
     base.Tick();
 
-    if (Caravan.ReadyToSend)
+    if (Caravan.readyToSend)
     {
       TunnelGenData.Instance.SendCaravan(this);
       return;
@@ -233,7 +233,7 @@ public class Building_Tunnel : Building, IThingHolder
 
     if (leftToLoad.Count <= 0)
     {
-      Caravan.ReadyToSend = true;
+      Caravan.readyToSend = true;
     }
 
     return loadList;

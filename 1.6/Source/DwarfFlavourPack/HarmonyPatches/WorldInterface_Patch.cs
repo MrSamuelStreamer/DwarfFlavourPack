@@ -10,42 +10,42 @@ namespace DwarfFlavourPack.HarmonyPatches;
 [HarmonyPatch(typeof(WorldInterface))]
 public static class WorldInterface_Patch
 {
-    [HarmonyPatch(nameof(WorldInterface.WorldInterfaceOnGUI))]
-    [HarmonyPostfix]
-    public static void WorldInterfaceOnGUIPostfix()
+  [HarmonyPatch(nameof(WorldInterface.WorldInterfaceOnGUI))]
+  [HarmonyPostfix]
+  public static void WorldInterfaceOnGUIPostfix()
+  {
+    if (!WorldRendererUtility.WorldSelected || !Find.WorldCamera.gameObject.activeInHierarchy)
+      return;
+    if (Event.current.type == EventType.Layout)
+      return;
+    float leftX = UI.screenWidth - 420f;
+    float curBaseY = 200f;
+
+    Rect rect = new Rect(leftX, curBaseY, 400, 24);
+    GameFont orig = Text.Font;
+    Text.Font = GameFont.Small;
+    Text.Anchor = TextAnchor.MiddleRight;
+
+    foreach (TunnelCaravan caravan in TunnelGenData.Instance.Caravans.InnerListForReading.Where(c => !c.done && !c.mapGenerating))
     {
-        if (!WorldRendererUtility.WorldSelected || !Find.WorldCamera.gameObject.activeInHierarchy)
-            return;
-        if (Event.current.type == EventType.Layout)
-            return;
-        float leftX = UI.screenWidth - 420f;
-        float curBaseY = 200f;
-     
-        Rect rect = new Rect(leftX, curBaseY, 400, 24);
-        GameFont orig = Text.Font;
-        Text.Font = GameFont.Small;
-        Text.Anchor = TextAnchor.MiddleRight;
-        
-        foreach (TunnelCaravan caravan in TunnelGenData.Instance.Caravans.InnerListForReading.Where(c => !c.Done && !c.MapGenerating))
+      Widgets.Label(rect, caravan.Progress);
+      if (Mouse.IsOver(rect))
+      {
+        Widgets.DrawHighlight(rect);
+        if (Event.current.type == EventType.MouseDown)
         {
-            Widgets.Label(rect, caravan.Progress);
-            if (Mouse.IsOver(rect))
-            {
-                Widgets.DrawHighlight(rect);
-                if (Event.current.type == EventType.MouseDown)
-                {
-                    Event.current.Use();
-                    Find.WorldInterface.SelectedTile = caravan.destination;
-                    Find.WorldCameraDriver.JumpTo(Find.WorldGrid.GetTileCenter(Find.WorldInterface.SelectedTile));
+          Event.current.Use();
+          Find.WorldInterface.SelectedTile = caravan.destination;
+          Find.WorldCameraDriver.JumpTo(Find.WorldGrid.GetTileCenter(Find.WorldInterface.SelectedTile));
 
-                }
-                // TooltipHandler.TipRegion(rect, new TipSignal("Memory usage may not be accurate in optimized builds.", 5670913));
-            }
-
-            curBaseY += 28;
         }
+        // TooltipHandler.TipRegion(rect, new TipSignal("Memory usage may not be accurate in optimized builds.", 5670913));
+      }
 
-        Text.Anchor = TextAnchor.UpperLeft;   
-        Text.Font = orig;
+      curBaseY += 28;
     }
+
+    Text.Anchor = TextAnchor.UpperLeft;
+    Text.Font = orig;
+  }
 }

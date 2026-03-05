@@ -6,14 +6,9 @@ using Verse;
 
 namespace DwarfFlavourPack;
 
-public class ThingOwnerProxy : ThingOwner<Thing>
+public class ThingOwnerProxy(IThingHolder owner) : ThingOwner<Thing>(owner)
 {
   public TunnelCaravan Caravan => owner as TunnelCaravan;
-
-  public ThingOwnerProxy(IThingHolder owner) : base(owner)
-  {
-
-  }
 
   protected override void NotifyAdded(Thing item)
   {
@@ -22,6 +17,7 @@ public class ThingOwnerProxy : ThingOwner<Thing>
   }
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class TunnelCaravan : Thing, IThingHolder
 {
   private ThingOwnerProxy _innerContainer;
@@ -37,11 +33,11 @@ public class TunnelCaravan : Thing, IThingHolder
   public int travelStartsAtTick = -1;
   public int travelEndsAtTick = -1;
 
-  public bool MapGenerating = false;
-  public bool ReadyToSend = false;
-  public bool Done = false;
+  public bool mapGenerating;
+  public bool readyToSend;
+  public bool done;
 
-  private List<Pawn> tmpSavedPawns = new();
+  private List<Pawn> _tmpSavedPawns = new List<Pawn>();
 
   public override void ExposeData()
   {
@@ -50,18 +46,18 @@ public class TunnelCaravan : Thing, IThingHolder
 
     if (Scribe.mode == LoadSaveMode.Saving)
     {
-      tmpSavedPawns.Clear();
+      _tmpSavedPawns.Clear();
       if (_innerContainer != null)
       {
         foreach (var t in _innerContainer.OfType<Pawn>().ToList())
         {
           _innerContainer.Remove(t);
-          tmpSavedPawns.Add(t);
+          _tmpSavedPawns.Add(t);
         }
       }
     }
 
-    Scribe_Collections.Look(ref tmpSavedPawns, "tmpSavedPawns", LookMode.Deep);
+    Scribe_Collections.Look(ref _tmpSavedPawns, "tmpSavedPawns", LookMode.Deep);
     Scribe_Deep.Look(ref _innerContainer, "innerContainer", this);
     Scribe_References.Look(ref tunnel, "tunnel");
     Scribe_Deep.Look(ref surfaceTile, "surfaceTile");
@@ -69,21 +65,21 @@ public class TunnelCaravan : Thing, IThingHolder
     Scribe_Values.Look(ref travelEndsAtTick, "travelEndsAtTick", -1);
     Scribe_Values.Look(ref origin, "origin");
     Scribe_Values.Look(ref destination, "destination");
-    Scribe_Values.Look(ref ReadyToSend, "ReadyToSend", false);
-    Scribe_Values.Look(ref MapGenerating, "MapGenerating", false);
-    Scribe_Values.Look(ref Done, "Done", false);
+    Scribe_Values.Look(ref readyToSend, "ReadyToSend");
+    Scribe_Values.Look(ref mapGenerating, "MapGenerating");
+    Scribe_Values.Look(ref done, "Done");
 
     if (Scribe.mode == LoadSaveMode.PostLoadInit)
     {
       _innerContainer ??= new ThingOwnerProxy(this);
-      if (tmpSavedPawns != null)
+      if (_tmpSavedPawns != null)
       {
-        foreach (Pawn t in tmpSavedPawns)
+        foreach (Pawn t in _tmpSavedPawns)
         {
           if (t != null)
             _innerContainer.TryAddOrTransfer(t);
         }
-        tmpSavedPawns.Clear();
+        _tmpSavedPawns.Clear();
       }
     }
   }
@@ -115,7 +111,7 @@ public class TunnelCaravan : Thing, IThingHolder
     }
     else
     {
-      // If no tunnel, look for a suitable spot (e.g. any entry point or just near center)
+      // If no tunnel, look for a suitable spot (e.g. any entry point or just near centre)
       if (RCellFinder.TryFindRandomCellNearTheCenterOfTheMapWith(x => x.Standable(map) && !x.Fogged(map), map, out IntVec3 result))
       {
         loc = result;
