@@ -27,13 +27,13 @@ public class WorldGenStep_Tunnels : WorldGenStep
     return !TunnelGenData.Instance.potentialTunnels.ContainsKey((SurfaceTile) tile.Tile);
   }
 
-  public void Regenerate(PlanetTile tile)
+  public void Regenerate(PlanetLayer layer)
   {
-    GenerateTunnelEndpoints(tile.Layer, true);
+    GenerateTunnelEndpoints(layer, true);
     Rand.PushState();
     int seedFromSeedString = GenText.StableStringHash(Find.World.info.seedString);
     Rand.Seed = Gen.HashCombineInt(seedFromSeedString, SeedPart);
-    GenerateTunnelNetwork(tile.Layer);
+    GenerateTunnelNetwork(layer);
     Rand.PopState();
   }
 

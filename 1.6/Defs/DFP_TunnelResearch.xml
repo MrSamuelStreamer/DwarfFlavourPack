@@ -3,9 +3,7 @@
     <ResearchProjectDef>
         <defName>DFP_Minecarts</defName>
         <label>minecart control mastery</label>
-        <description>Discover the secrets of the minecart control system to enable faster travel through the tunnel
-            system.
-        </description>
+        <description>Discover the secrets of the minecart control system to enable faster travel through the tunnel system.</description>
         <baseCost>5500</baseCost>
         <techLevel>Neolithic</techLevel>
         <researchViewX>2.00</researchViewX>

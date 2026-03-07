@@ -23,7 +23,6 @@ public static class DwarfFlavourPackDefOf
   public static SitePartDef DFP_TunnelEntranceSitePart;
 
   public static ThingDef DFP_TunnelEntrance;
-  public static ThingDef DFP_TunnelCaravan;
   public static WorldObjectDef DFP_TunnelCaravanWorldObject;
 
   public static ResearchProjectDef DFP_Minecarts;

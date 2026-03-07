@@ -22,7 +22,7 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
 
   public Building_Tunnel Tunnel => SelThing as Building_Tunnel;
 
-  public override bool IsVisible => Tunnel != null && (Tunnel.LoadInProgress || (Tunnel.Caravan?.GetDirectlyHeldThings().Any ?? false));
+  public override bool IsVisible => Tunnel != null && (Tunnel.LoadInProgress || (Tunnel.innerContainer?.Any ?? false));
 
   public override IntVec3 DropOffset => IntVec3.Zero;
 
@@ -119,10 +119,10 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
     Rect removeAllRect = new Rect(viewRect.width - 100f, headerRect.y, 100f, 24f);
     if (Widgets.ButtonText(removeAllRect, "RemoveAll".Translate()))
     {
-      List<Thing> toDrop = Tunnel.Caravan.GetDirectlyHeldThings().ToList();
+      List<Thing> toDrop = Tunnel.innerContainer.ToList();
       foreach (Thing t in toDrop)
       {
-        if (Tunnel.Caravan.GetDirectlyHeldThings().TryDrop(t, Tunnel.Position, Tunnel.Map, ThingPlaceMode.Near, t.stackCount, out Thing droppedThing))
+        if (Tunnel.innerContainer.TryDrop(t, Tunnel.Position, Tunnel.Map, ThingPlaceMode.Near, t.stackCount, out Thing droppedThing))
         {
           if (droppedThing is Pawn pawn)
           {
@@ -133,7 +133,7 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
     }
 
     bool anyLoaded = false;
-    var loadedThings = Tunnel.Caravan.GetDirectlyHeldThings();
+    var loadedThings = Tunnel.innerContainer;
     if (loadedThings.Any)
     {
       anyLoaded = true;
@@ -156,7 +156,7 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
 
   private void OnDropLoadedThing(ThingDef def, int count)
   {
-    var loadedThings = Tunnel.Caravan.GetDirectlyHeldThings();
+    var loadedThings = Tunnel.innerContainer;
     int remainingToRemove = count;
     for (int i = loadedThings.Count - 1; i >= 0 && remainingToRemove > 0; i--)
     {

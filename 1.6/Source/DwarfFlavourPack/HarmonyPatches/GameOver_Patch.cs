@@ -29,16 +29,12 @@ public static class GameOver_Patch
 
   private static bool AnyPlayerPawnInTunnels()
   {
-    // 1. Check TunnelCaravans (WorldObjects/held by TunnelGenData)
-    TunnelGenData tunnelGenData = TunnelGenData.Instance;
-    if (tunnelGenData != null)
+    // 1. Check TunnelCaravans (WorldObjects)
+    foreach (TunnelCaravan tunnelCaravan in Find.WorldObjects.AllWorldObjects.OfType<TunnelCaravan>())
     {
-      foreach (TunnelCaravan tunnelCaravan in tunnelGenData.Caravans)
+      if (tunnelCaravan.PawnsListForReading.Any(p => p.Faction == Faction.OfPlayer))
       {
-        if (tunnelCaravan.GetDirectlyHeldThings().OfType<Pawn>().Any(p => p.Faction == Faction.OfPlayer))
-        {
-          return true;
-        }
+        return true;
       }
     }
 
@@ -47,7 +43,7 @@ public static class GameOver_Patch
     {
       foreach (Building_Tunnel thing in map.listerThings.AllThings.OfType<Building_Tunnel>())
       {
-        if (thing.Caravan.GetDirectlyHeldThings().OfType<Pawn>().Any(p => p.Faction == Faction.OfPlayer))
+        if (thing.innerContainer.OfType<Pawn>().Any(p => p.Faction == Faction.OfPlayer))
         {
           return true;
         }
@@ -68,7 +64,7 @@ public static class GameOver_Patch
 
     foreach (Building_Tunnel thing in map.listerThings.AllThings.OfType<Building_Tunnel>())
     {
-      if (thing.Caravan.GetDirectlyHeldThings().OfType<Pawn>().Any(p => p.Faction == Faction.OfPlayer))
+      if (thing.innerContainer.OfType<Pawn>().Any(p => p.Faction == Faction.OfPlayer))
       {
         __result = true;
         return;

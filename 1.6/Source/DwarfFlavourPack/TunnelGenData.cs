@@ -8,20 +8,8 @@ using Verse;
 
 namespace DwarfFlavourPack;
 
-public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
+public class TunnelGenData(World world) : WorldComponent(world)
 {
-  // ReSharper disable once InconsistentNaming
-  private ThingOwner<TunnelCaravan> caravans;
-
-  public ThingOwner<TunnelCaravan> Caravans
-  {
-    get
-    {
-      caravans ??= new ThingOwner<TunnelCaravan>(this);
-      return caravans;
-    }
-  }
-
   public WorldPathing Pather
   {
     get
@@ -88,14 +76,14 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
 
   public void SendCaravan(Building_Tunnel tunnel)
   {
-    if (!tunnel.Caravan.GetDirectlyHeldThings().OfType<Pawn>().Any())
+    if (!tunnel.innerContainer.OfType<Pawn>().Any())
     {
       Log.Error("Attempted to send tunnel caravan without any pawns. Cancelling.");
       tunnel.CancelLoad();
       return;
     }
 
-    float distance = Find.WorldGrid.ApproxDistanceInTiles(tunnel.Caravan.origin, tunnel.Caravan.destination);
+    float distance = Find.WorldGrid.ApproxDistanceInTiles(tunnel.origin, tunnel.destination);
 
     float tilesPerHour = Mathf.Max(DwarfFlavourPackMod.settings.DefaultTilesPerHour, 0.0001f);
     if (DwarfFlavourPackDefOf.DFP_Minecarts.IsFinished)
@@ -104,24 +92,46 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
     }
 
     int ticksToTravel = Mathf.FloorToInt((distance / tilesPerHour) * GenDate.TicksPerHour);
-    tunnel.Caravan.travelEndsAtTick = Find.TickManager.TicksGame + ticksToTravel;
-    tunnel.Caravan.travelStartsAtTick = Find.TickManager.TicksGame;
+    
+    // Create actual Caravan
+    List<Pawn> pawns = tunnel.innerContainer.OfType<Pawn>().ToList();
+    TunnelCaravan newCaravan = (TunnelCaravan)WorldObjectMaker.MakeWorldObject(DwarfFlavourPackDefOf.DFP_TunnelCaravanWorldObject);
+    newCaravan.Tile = tunnel.Tile;
+    newCaravan.SetFaction(Faction.OfPlayer);
+    Find.WorldObjects.Add(newCaravan);
+    
+    foreach (Pawn pawn in pawns)
+    {
+        tunnel.innerContainer.Remove(pawn);
+        newCaravan.AddPawn(pawn, true);
+        if (!pawn.IsWorldPawn())
+        {
+            Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.KeepForever);
+        }
+    }
+    
+    // Transfer items
+    List<Thing> items = tunnel.innerContainer.Where(t => !(t is Pawn)).ToList();
+    foreach (Thing item in items)
+    {
+        tunnel.innerContainer.Remove(item);
+        newCaravan.AddPawnOrItem(item, true);
+    }
 
-    tunnel.Caravan.pathTiles = FindTunnelPath(tunnel.Caravan.origin, tunnel.Caravan.destination);
+    newCaravan.origin = tunnel.origin;
+    newCaravan.destination = tunnel.destination;
+    newCaravan.travelEndsAtTick = Find.TickManager.TicksGame + ticksToTravel;
+    newCaravan.travelStartsAtTick = Find.TickManager.TicksGame;
+    newCaravan.tunnel = tunnel;
 
-    // Spawn world object
-    WorldObject_TunnelCaravan wo = (WorldObject_TunnelCaravan) WorldObjectMaker.MakeWorldObject(DwarfFlavourPackDefOf.DFP_TunnelCaravanWorldObject);
-    wo.Tile = tunnel.Caravan.origin;
-    wo.caravan = tunnel.Caravan;
-    Find.WorldObjects.Add(wo);
-
-    // Transfer the Thing from the building's ThingOwner into the world component's ThingOwner.
-    Caravans.TryAddOrTransfer(tunnel.Caravan);
+    // Start movement via pather. 
+    // We set repathImmediately to true so it triggers our GenerateNewPath Harmony patch.
+    newCaravan.pather.StartPath(newCaravan.destination.tileId, null, true);
 
     tunnel.ClearCaravan();
   }
 
-  private List<int> FindTunnelPath(PlanetTile start, PlanetTile end)
+  public List<int> FindTunnelPath(PlanetTile start, PlanetTile end)
   {
     Queue<PlanetTile> queue = new Queue<PlanetTile>();
     Dictionary<PlanetTile, PlanetTile> cameFrom = new Dictionary<PlanetTile, PlanetTile>();
@@ -227,30 +237,22 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
 
   public void GetChildHolders(List<IThingHolder> outChildren)
   {
-    // Make sure scribing/GC can walk the nested holder graph.
-    ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, Caravans);
   }
 
-  public ThingOwner GetDirectlyHeldThings() => Caravans;
+  public ThingOwner GetDirectlyHeldThings() => null;
 
   public IThingHolder ParentHolder => null;
 
   public override void ExposeData()
   {
     base.ExposeData();
-
-    // ThingOwner is the "correct" way to save/load owned Things.
-    Scribe_Deep.Look(ref caravans, "caravans", this);
-
-    if (Scribe.mode == LoadSaveMode.PostLoadInit)
-      caravans ??= new ThingOwner<TunnelCaravan>(this);
   }
 
   public override void WorldComponentTick()
   {
     base.WorldComponentTick();
 
-    foreach (TunnelCaravan caravan in Caravans.InnerListForReading.Where(c => !c.done && !c.mapGenerating))
+    foreach (TunnelCaravan caravan in Find.WorldObjects.AllWorldObjects.OfType<TunnelCaravan>().Where(c => !c.done && !c.mapGenerating))
     {
       if (Find.TickManager.TicksGame < caravan.travelEndsAtTick) continue;
 
@@ -275,9 +277,9 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
       });
     }
 
-    // Remove finished caravans from the ThingOwner (not a List anymore).
-    foreach (var done in Caravans.InnerListForReading.Where(c => c.done).ToList())
-      Caravans.Remove(done);
+    // Remove finished caravans.
+    foreach (var done in Find.WorldObjects.AllWorldObjects.OfType<TunnelCaravan>().Where(c => c.done).ToList())
+      done.Destroy();
   }
 
   [DebugAction("Spawning", "Spawn Tunnel Entrance", actionType = DebugActionType.ToolWorld, allowedGameStates = AllowedGameStates.PlayingOnWorld)]
@@ -296,11 +298,11 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
   }
 
   [DebugAction("Spawning", "Regenerate Tunnels", allowedGameStates = AllowedGameStates.PlayingOnWorld)]
-  private static void RegenerateTunnels()
+  public static void RegenerateTunnels()
   {
     LongEventHandler.QueueLongEvent(() =>
     {
-      new WorldGenStep_Tunnels().GenerateFresh(Find.World.info.seedString, Find.World.grid.Surface);
+      new WorldGenStep_Tunnels().Regenerate(Find.WorldGrid.Surface);
       Find.World.renderer.AllDrawLayers.First(layer => layer is WorldDrawLayer_Tunnels).SetDirty();
     }, "Regenerating Tunnel Network", false, exception =>
     {

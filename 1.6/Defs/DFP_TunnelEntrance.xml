@@ -5,7 +5,7 @@
         <label>tunnel network entrance</label>
         <description>tunnel network entrance</description>
         <size>(2,2)</size>
-        <useHitPoints>false</useHitPoints>
+        <useHitPoints>true</useHitPoints>
         <thingClass>DwarfFlavourPack.Building_Tunnel</thingClass>
         <tickerType>Normal</tickerType>
         <rotatable>false</rotatable>
@@ -22,16 +22,17 @@
         </graphicData>
         <altitudeLayer>FloorEmplacement</altitudeLayer>
         <holdsRoof>true</holdsRoof>
-        <destroyable>false</destroyable>
+        <destroyable>true</destroyable>
         <building>
             <isEdifice>true</isEdifice>
-            <deconstructible>false</deconstructible>
-            <isTargetable>false</isTargetable>
+            <deconstructible>true</deconstructible>
+            <isTargetable>true</isTargetable>
             <isInert>true</isInert>
-            <claimable>false</claimable>
+            <claimable>true</claimable>
             <expandHomeArea>false</expandHomeArea>
         </building>
         <statBases>
+            <MaxHitPoints>1000</MaxHitPoints>
             <Flammability>0</Flammability>
             <WorkToMake>3000</WorkToMake>
         </statBases>

@@ -2,76 +2,142 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace DwarfFlavourPack;
 
-public class ThingOwnerProxy(IThingHolder owner) : ThingOwner<Thing>(owner)
+public class TunnelCaravan : Caravan
 {
-  public TunnelCaravan Caravan => owner as TunnelCaravan;
-
-  protected override void NotifyAdded(Thing item)
-  {
-    base.NotifyAdded(item);
-    Caravan?.tunnel.Notify_ThingAdded(item);
-  }
-}
-
-// ReSharper disable once ClassNeverInstantiated.Global
-public class TunnelCaravan : Thing, IThingHolder
-{
-  private ThingOwnerProxy _innerContainer;
-
   public PlanetTile destination = PlanetTile.Invalid;
   public PlanetTile origin = PlanetTile.Invalid;
-  public List<int> pathTiles = new List<int>();
 
   public Building_Tunnel tunnel;
-
-  public SurfaceTile surfaceTile;
 
   public int travelStartsAtTick = -1;
   public int travelEndsAtTick = -1;
 
   public bool mapGenerating;
-  public bool readyToSend;
   public bool done;
-
-  private List<Pawn> _tmpSavedPawns = new List<Pawn>();
 
   public override void ExposeData()
   {
     base.ExposeData();
 
-    Scribe_Deep.Look(ref _innerContainer, "innerContainer", this);
     Scribe_References.Look(ref tunnel, "tunnel");
-    Scribe_Deep.Look(ref surfaceTile, "surfaceTile");
     Scribe_Values.Look(ref travelStartsAtTick, "travelStartsAtTick", -1);
     Scribe_Values.Look(ref travelEndsAtTick, "travelEndsAtTick", -1);
     Scribe_Values.Look(ref origin, "origin");
     Scribe_Values.Look(ref destination, "destination");
-    Scribe_Collections.Look(ref pathTiles, "pathTiles", LookMode.Value);
-    Scribe_Values.Look(ref readyToSend, "ReadyToSend");
     Scribe_Values.Look(ref mapGenerating, "MapGenerating");
     Scribe_Values.Look(ref done, "Done");
   }
 
-  public void GetChildHolders(List<IThingHolder> outChildren)
+  public override Vector3 DrawPos
   {
-    ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+    get
+    {
+      if (pather.curPath == null || pather.curPath.NodesLeftCount < 2)
+        return base.DrawPos;
+
+      if (!pather.MovingNow)
+          return base.DrawPos;
+
+      // When we are using the vanilla-managed pather, the caravan is always moving from Tile to pather.nextTile.
+      Vector3 startPos = Find.WorldGrid.GetTileCenter(Tile);
+      Vector3 endPos = Find.WorldGrid.GetTileCenter(pather.nextTile);
+
+      // pather.nextTileCostLeft decreases from pather.nextTileCostTotal down to 0 as we move between tiles.
+      // But wait, TunnelCaravan doesn't use the vanilla movement cost logic for speed.
+      // We force it through ticksToTravel.
+      
+      // Let's recalculate progress between the CURRENT tile and the NEXT tile based on time.
+      float totalProgress = Mathf.Clamp01((float)(Find.TickManager.TicksGame - travelStartsAtTick) / (travelEndsAtTick - travelStartsAtTick));
+      
+      TunnelGenData tunnelGenData = TunnelGenData.Instance;
+      if (tunnelGenData != null)
+      {
+          List<int> nodes = tunnelGenData.FindTunnelPath(origin, destination);
+          if (nodes != null && nodes.Count > 1)
+          {
+              float floatIndex = totalProgress * (nodes.Count - 1);
+              int index = Mathf.FloorToInt(floatIndex);
+              float t = floatIndex - index;
+              
+              if (index < nodes.Count - 1)
+              {
+                  Vector3 s = Find.WorldGrid.GetTileCenter(nodes[index]);
+                  Vector3 e = Find.WorldGrid.GetTileCenter(nodes[index + 1]);
+                  return FinalizePoint(Vector3.Slerp(s, e, t));
+              }
+          }
+      }
+
+      return base.DrawPos;
+    }
   }
 
-  public ThingOwner GetDirectlyHeldThings()
+  private Vector3 FinalizePoint(Vector3 inp)
   {
-    _innerContainer ??= new ThingOwnerProxy(this);
-    return _innerContainer;
+    return inp + inp.normalized * 0.015f;
   }
 
-  public Pawn Owner => GetDirectlyHeldThings().OfType<Pawn>().FirstOrDefault();
+  protected override void Tick()
+  {
+    if (done)
+    {
+      Destroy();
+      return;
+    }
+
+    // Update Tile based on progress.
+    // This will cause the pather to consume nodes if the current Tile changes.
+    float progress = Mathf.Clamp01((float)(Find.TickManager.TicksGame - travelStartsAtTick) / (travelEndsAtTick - travelStartsAtTick));
+    
+    // We want to know which tile we are "on" according to our progress.
+    TunnelGenData tunnelGenData = TunnelGenData.Instance;
+    if (tunnelGenData != null)
+    {
+        List<int> nodes = tunnelGenData.FindTunnelPath(origin, destination);
+        if (nodes != null && nodes.Count > 0)
+        {
+            int index = Mathf.FloorToInt(progress * (nodes.Count - 1));
+            int currentTileId = nodes[Mathf.Clamp(index, 0, nodes.Count - 1)];
+            
+            if (Tile != currentTileId)
+            {
+                Tile = currentTileId;
+                // If we changed tiles, we might need to refresh the path to ensure it starts at the new tile
+                // and correctly shows progress on the map.
+                pather.Notify_Teleported_Int(); // Clears current path state safely
+                pather.StartPath(destination.tileId, null, true);
+            }
+        }
+    }
+
+    base.Tick();
+  }
 
   public string TimeToGo => (travelEndsAtTick - Find.TickManager.TicksGame).ToStringTicksToPeriod();
 
-  public string Progress => Owner != null ? "DwarfFlavourPack_CaravanProgress".Translate(TimeToGo, Owner.Named("PAWN")) : "DwarfFlavourPack_CaravanProgressItemsOnly".Translate(TimeToGo);
+  public string Progress => PawnsListForReading.Count > 0 ? "DwarfFlavourPack_CaravanProgress".Translate(TimeToGo, PawnsListForReading[0].Named("PAWN")) : "DwarfFlavourPack_CaravanProgressItemsOnly".Translate(TimeToGo);
+
+  public override IEnumerable<Gizmo> GetGizmos()
+  {
+    foreach (Gizmo gizmo in base.GetGizmos())
+    {
+      if (gizmo is Command command)
+      {
+        if (command.defaultLabel == "CommandSettle".Translate() ||
+            command.defaultLabel == "CommandSetupCamp".Translate() ||
+            command.defaultLabel == "CommandPauseCaravan".Translate())
+        {
+          continue;
+        }
+      }
+      yield return gizmo;
+    }
+  }
 
   public void SpawnToMap(Map map)
   {
@@ -83,12 +149,22 @@ public class TunnelCaravan : Thing, IThingHolder
     }
     else
     {
-      // If no tunnel, look for a suitable spot (e.g. any entry point or just near centre)
       if (RCellFinder.TryFindRandomCellNearTheCenterOfTheMapWith(x => x.Standable(map) && !x.Fogged(map), map, out IntVec3 result))
       {
         loc = result;
       }
     }
-    GetDirectlyHeldThings().TryDropAll(loc, map, ThingPlaceMode.Near);
+
+    List<Pawn> pawns = PawnsListForReading.ToList();
+    foreach (Pawn pawn in pawns)
+    {
+      GenSpawn.Spawn(pawn, loc, map);
+    }
+
+    List<Thing> items = Goods.ToList();
+    foreach (Thing item in items)
+    {
+      GenPlace.TryPlaceThing(item, loc, map, ThingPlaceMode.Near);
+    }
   }
 }

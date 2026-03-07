@@ -39,15 +39,16 @@ public class JobDriver_EnterTunnel : JobDriver
       pawn.DeSpawn();
       if (pawn.carryTracker.CarriedThing != null)
       {
-        if (!tunnel.Caravan.GetDirectlyHeldThings().TryAddOrTransfer(pawn.carryTracker.CarriedThing))
+        Thing carriedThing = pawn.carryTracker.CarriedThing;
+        if (!tunnel.TryAcceptThing(carriedThing))
         {
-          Log.Error("Could not add carried thing " + pawn.carryTracker.CarriedThing + " to tunnel caravan " + tunnel.Caravan + ". Attempting to respawn near tunnel.");
-          GenSpawn.Spawn(pawn.carryTracker.CarriedThing, tunnel.Position, tunnel.Map);
+          Log.Error("Could not add carried thing " + carriedThing + " to tunnel caravan container for " + tunnel + ". Attempting to respawn near tunnel.");
+          GenSpawn.Spawn(carriedThing, tunnel.Position, tunnel.Map);
         }
       }
-      if (!tunnel.Caravan.GetDirectlyHeldThings().TryAddOrTransfer(pawn))
+      if (!tunnel.TryAcceptThing(pawn))
       {
-        Log.Error("Could not add pawn " + pawn + " to tunnel caravan " + tunnel.Caravan + ". Attempting to respawn near tunnel.");
+        Log.Error("Could not add pawn " + pawn + " to tunnel caravan container for " + tunnel + ". Attempting to respawn near tunnel.");
         GenSpawn.Spawn(pawn, tunnel.Position, tunnel.Map);
         EndJobWith(JobCondition.Incompletable);
       }

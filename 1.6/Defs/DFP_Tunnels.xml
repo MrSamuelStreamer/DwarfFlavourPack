@@ -107,10 +107,25 @@
     <WorldObjectDef>
         <defName>DFP_TunnelCaravanWorldObject</defName>
         <label>tunnel caravan</label>
-        <worldObjectClass>DwarfFlavourPack.WorldObject_TunnelCaravan</worldObjectClass>
+        <description>A group of people travelling through tunnels in a minecart.</description>
+        <worldObjectClass>DwarfFlavourPack.TunnelCaravan</worldObjectClass>
         <texture>UI/DFP_MineCart</texture>
+        <useDynamicDrawer>true</useDynamicDrawer>
         <expandingIconTexture>UI/DFP_MineCart</expandingIconTexture>
         <expandingIcon>true</expandingIcon>
         <expandingIconPriority>100</expandingIconPriority>
+        <expandMore>true</expandMore>
+        <allowCaravanIncidentsWhichGenerateMap>true</allowCaravanIncidentsWhichGenerateMap>
+        <IncidentTargetTags>
+            <li>DFP_TunnelEntrance</li>
+        </IncidentTargetTags>
+        <inspectorTabs>
+            <li>WITab_Caravan_Health</li>
+            <li>WITab_Caravan_Needs</li>
+            <li>WITab_Caravan_Gear</li>
+            <li>WITab_Caravan_Social</li>
+            <li>WITab_Caravan_Items</li>
+            <li>WITab_Caravan_Feeding</li>
+        </inspectorTabs>
     </WorldObjectDef>
 </Defs>

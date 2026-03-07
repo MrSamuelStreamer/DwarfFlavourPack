@@ -26,7 +26,7 @@ public static class WorldInterface_Patch
     Text.Font = GameFont.Small;
     Text.Anchor = TextAnchor.MiddleRight;
 
-    foreach (TunnelCaravan caravan in TunnelGenData.Instance.Caravans.InnerListForReading.Where(c => !c.done && !c.mapGenerating))
+    foreach (TunnelCaravan caravan in Find.WorldObjects.AllWorldObjects.OfType<TunnelCaravan>().Where(c => !c.done && !c.mapGenerating))
     {
       Widgets.Label(rect, caravan.Progress);
       if (Mouse.IsOver(rect))
@@ -35,21 +35,11 @@ public static class WorldInterface_Patch
         if (Event.current.type == EventType.MouseDown)
         {
           Event.current.Use();
-          WorldObject_TunnelCaravan wo = Find.WorldObjects.AllWorldObjects.OfType<WorldObject_TunnelCaravan>().FirstOrDefault(w => w.caravan == caravan);
-          if (wo != null)
-          {
-            Find.WorldInterface.SelectedTile = wo.Tile;
-            Find.WorldSelector.ClearSelection();
-            Find.WorldSelector.Select(wo);
-          }
-          else
-          {
-            Find.WorldInterface.SelectedTile = caravan.destination;
-          }
+          Find.WorldInterface.SelectedTile = caravan.Tile;
+          Find.WorldSelector.ClearSelection();
+          Find.WorldSelector.Select(caravan);
           Find.WorldCameraDriver.JumpTo(Find.WorldGrid.GetTileCenter(Find.WorldInterface.SelectedTile));
-
         }
-        // TooltipHandler.TipRegion(rect, new TipSignal("Memory usage may not be accurate in optimized builds.", 5670913));
       }
 
       curBaseY += 28;

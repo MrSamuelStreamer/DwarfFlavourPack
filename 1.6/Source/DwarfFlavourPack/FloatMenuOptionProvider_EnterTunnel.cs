@@ -56,7 +56,7 @@ public class FloatMenuOptionProvider_EnterTunnel : FloatMenuOptionProvider
     if (selectedPawns.NullOrEmpty())
       yield break;
 
-    if (tunnel.Caravan.destination != PlanetTile.Invalid)
+    if (tunnel.destination != PlanetTile.Invalid)
     {
       yield return new FloatMenuOption(tunnel.EnterString, () =>
       {

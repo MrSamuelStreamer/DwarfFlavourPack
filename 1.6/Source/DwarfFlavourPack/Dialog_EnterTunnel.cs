@@ -99,7 +99,8 @@ public class Dialog_EnterTunnel : Window
     foreach (TransferableOneWay transferable in transferables)
       tunnel.AddToTheToLoadList(transferable, transferable.CountToTransfer);
     TunnelUtilities.MakeLordsAsAppropriate(fromTransferables, tunnel);
-    tunnel.Caravan.destination = destination.Tile;
+    tunnel.destination = destination.Tile;
+    tunnel.origin = tunnel.Map.Tile;
     return true;
   }
 
