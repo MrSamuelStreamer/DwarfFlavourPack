@@ -26,7 +26,7 @@ public static class WorldInterface_Patch
     Text.Font = GameFont.Small;
     Text.Anchor = TextAnchor.MiddleRight;
 
-    foreach (TunnelCaravan caravan in TunnelGenData.Instance.Caravans.InnerListForReading.Where(c => !c.done && !c.mapGenerating))
+    foreach (TunnelCaravan caravan in TunnelGenData.Instance.TravellingCaravans)
     {
       Widgets.Label(rect, caravan.Progress);
       if (Mouse.IsOver(rect))

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <IncidentCategoryDef>
+        <defName>DFP_TunnelCaravan</defName>
+        <name>Tunnel Caravan</name>
+    </IncidentCategoryDef>
+
+    <WorldObjectDef>
+        <defName>DFP_TunnelCaravanWorldObject</defName>
+        <label>tunnel caravan</label>
+        <worldObjectClass>DwarfFlavourPack.WorldObject_TunnelCaravan</worldObjectClass>
+        <texture>UI/DFP_MineCart</texture>
+        <expandingIconTexture>UI/DFP_MineCart</expandingIconTexture>
+        <expandingIcon>false</expandingIcon>
+        <expandingIconPriority>100</expandingIconPriority>
+        <IncidentTargetTags>
+            <li>DFP_TunnelCaravan</li>
+        </IncidentTargetTags>
+    </WorldObjectDef>
+    
+    <WorldObjectDef ParentName="StaticWorldObjectBase">
+        <defName>DFP_Ambush</defName>
+        <label>ambush</label>
+        <description>An ongoing ambush.</description>
+        <worldObjectClass>DwarfFlavourPack.TunnelCaravansBattlefield</worldObjectClass>
+        <texture>World/WorldObjects/Ambush</texture>
+        <expandingIcon>true</expandingIcon>
+        <expandingIconTexture>World/WorldObjects/Expanding/Ambush</expandingIconTexture>
+        <expandingIconPriority>80</expandingIconPriority>
+        <expandMore>true</expandMore>
+        <blockExitGridUntilBattleIsWon>true</blockExitGridUntilBattleIsWon>
+        <isTempIncidentMapOwner>true</isTempIncidentMapOwner>
+        <IncidentTargetTags>
+            <li>DFP_TunnelCaravan</li>
+        </IncidentTargetTags>
+        <comps>
+            <li Class="DwarfFlavourPack.Comps.WorldObjectCompProperties_FormTunnelCaravan" />
+            <li Class="WorldObjectCompProperties_TimedDetectionRaids" />
+        </comps>
+    </WorldObjectDef>
+</Defs>

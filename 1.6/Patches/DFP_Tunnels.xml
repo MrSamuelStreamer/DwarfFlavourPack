@@ -12,4 +12,39 @@
         <xpath>Defs/PlanetLayerDef[defName="Surface"]/worldDrawLayers</xpath>
         <value><li>DwarfFlavourPack.WorldDrawLayer_Tunnels</li></value>
     </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StorytellerDef[@Name="BaseStoryteller" and @Abstract="True" and defName="Surface"]/comps</xpath>
+        <value>
+            <li Class="DwarfFlavourPack.Comps.StorytellerCompProperties_TunnelCaravanCategoryIndividualMTBByBiome">
+                <category>Misc</category>
+                <allowedTargetTags>
+                    <li>DFP_TunnelCaravan</li>
+                </allowedTargetTags>
+            </li>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StorytellerDef[@Name="BaseStoryteller" and @Abstract="True" and defName="Surface"]/comps</xpath>
+        <value>
+            <li Class="DwarfFlavourPack.Comps.StorytellerCompProperties_TunnelCaravanCategoryIndividualMTBByBiome">
+                <category>ThreatSmall</category>
+                <applyCaravanVisibility>true</applyCaravanVisibility>
+                <allowedTargetTags>
+                    <li>DFP_TunnelCaravan</li>
+                </allowedTargetTags>
+            </li>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/StorytellerDef[@Name="BaseStoryteller" and @Abstract="True" and defName="Surface"]/comps</xpath>
+        <value>
+            <li Class="DwarfFlavourPack.Comps.StorytellerCompProperties_TunnelCaravanCategoryIndividualMTBByBiome">
+                <category>ThreatBig</category>
+                <applyCaravanVisibility>true</applyCaravanVisibility>
+                <allowedTargetTags>
+                    <li>DFP_TunnelCaravan</li>
+                </allowedTargetTags>
+            </li>
+        </value>
+    </Operation>
 </Patch>

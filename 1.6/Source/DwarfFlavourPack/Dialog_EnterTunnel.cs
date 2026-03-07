@@ -15,6 +15,8 @@ public class Dialog_EnterTunnel : Window
   private const float BottomAreaHeight = 55f;
   private readonly Vector2 BottomButtonSize = new Vector2(160f, 40f);
   private Building_Tunnel tunnel;
+  private WorldObject_TunnelCaravan caravan;
+  private MapParent mapParent;
   private WorldObject destination;
   private List<Pawn> preSelectedPawns;
   private List<TransferableOneWay> transferables;
@@ -22,16 +24,28 @@ public class Dialog_EnterTunnel : Window
   private TransferableOneWayWidget itemsTransfer;
   private Tab tab;
   private static List<TabRecord> tabsList = new List<TabRecord>();
+  public bool reform = false;
+  
+  public Map Map => tunnel != null ? tunnel.Map : mapParent.Map;
 
   public override Vector2 InitialSize => new Vector2(1024f, UI.screenHeight);
 
   protected override float Margin => 0.0f;
-
+  
   public Dialog_EnterTunnel(Building_Tunnel tunnel, WorldObject destination, List<Pawn> preSelectedPawns = null)
   {
     this.tunnel = tunnel;
     this.destination = destination;
     this.preSelectedPawns = preSelectedPawns;
+    forcePause = true;
+    absorbInputAroundWindow = true;
+  }
+  
+  public Dialog_EnterTunnel(MapParent mapParent, WorldObject_TunnelCaravan caravan)
+  {
+    this.mapParent = mapParent;
+    reform = true;
+    this.caravan = caravan;
     forcePause = true;
     absorbInputAroundWindow = true;
   }
@@ -89,6 +103,18 @@ public class Dialog_EnterTunnel : Window
 
   private bool TryAccept()
   {
+    if (reform)
+    {
+      foreach (TransferableOneWay transferable in transferables)
+      {
+        var thing = transferable.AnyThing;
+        thing.DeSpawnOrDeselect();
+        caravan.caravan.GetDirectlyHeldThings().TryAddOrTransfer(thing, transferable.CountToTransfer);
+        caravan.caravan.paused = false;
+      }  
+      return true;
+    }
+    
     List<Pawn> fromTransferables = TransferableUtility.GetPawnsFromTransferables(transferables);
     if (!fromTransferables.Any())
     {
@@ -128,9 +154,9 @@ public class Dialog_EnterTunnel : Window
 
     foreach (Thing t in TunnelUtilities.ThingsBeingHauledTo(tunnel))
       AddToTransferables(t);
-    pawnsTransfer = new TransferableOneWayWidget(null, null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: tunnel.Map.Tile, drawEquippedWeapon: true);
+    pawnsTransfer = new TransferableOneWayWidget(null, null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: Map.Tile, drawEquippedWeapon: true);
     CaravanUIUtility.AddPawnsSections(pawnsTransfer, transferables);
-    itemsTransfer = new TransferableOneWayWidget(transferables.Where(x => x.ThingDef.category != ThingCategory.Pawn), null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: tunnel.Map.Tile);
+    itemsTransfer = new TransferableOneWayWidget(transferables.Where(x => x.ThingDef.category != ThingCategory.Pawn), null, null, "TransferMapPortalColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, (Func<float>) (() => float.MaxValue), tile: Map.Tile);
   }
 
   private void AddToTransferables(Thing t)
@@ -151,13 +177,13 @@ public class Dialog_EnterTunnel : Window
 
   private void AddPawnsToTransferables()
   {
-    foreach (Thing allSendablePawn in CaravanFormingUtility.AllSendablePawns(tunnel.Map, true, allowLodgers: true))
+    foreach (Pawn allSendablePawn in CaravanFormingUtility.AllSendablePawns(Map, true, allowLodgers: true))
       AddToTransferables(allSendablePawn);
   }
 
   private void AddItemsToTransferables()
   {
-    foreach (Thing thing in tunnel.Map.listerThings.AllThings)
+    foreach (Thing thing in Map.listerThings.AllThings)
     {
       if (thing.def.category == ThingCategory.Item && thing.Spawned && !thing.IsForbidden(Faction.OfPlayer))
       {

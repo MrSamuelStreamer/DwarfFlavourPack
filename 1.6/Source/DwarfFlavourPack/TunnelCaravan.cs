@@ -36,6 +36,7 @@ public class TunnelCaravan : Thing, IThingHolder
   public bool mapGenerating;
   public bool readyToSend;
   public bool done;
+  public bool paused = false;
 
   private List<Pawn> _tmpSavedPawns = new List<Pawn>();
 

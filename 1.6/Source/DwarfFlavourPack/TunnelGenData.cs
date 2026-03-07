@@ -21,6 +21,8 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
       return caravans;
     }
   }
+  
+  public IEnumerable<TunnelCaravan> TravellingCaravans => Caravans.InnerListForReading.Where(c => c.destination != PlanetTile.Invalid && !c.mapGenerating && !c.done && !c.paused);
 
   public WorldPathing Pather
   {
@@ -250,7 +252,7 @@ public class TunnelGenData(World world) : WorldComponent(world), IThingHolder
   {
     base.WorldComponentTick();
 
-    foreach (TunnelCaravan caravan in Caravans.InnerListForReading.Where(c => !c.done && !c.mapGenerating))
+    foreach (TunnelCaravan caravan in Caravans.InnerListForReading.Where(c => !c.done && !c.mapGenerating && !c.paused))
     {
       if (Find.TickManager.TicksGame < caravan.travelEndsAtTick) continue;
 

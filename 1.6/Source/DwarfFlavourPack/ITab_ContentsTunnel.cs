@@ -59,7 +59,7 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
       Rect warningRect = new Rect(inRect.x, inRect.y, inRect.width, 40f);
       GUI.color = Color.yellow;
       Text.Anchor = TextAnchor.MiddleLeft;
-      Widgets.Label(warningRect, "ForbiddenItemsInLoadoutWarning".Translate());
+      Widgets.Label(warningRect, "DFP_ForbiddenItemsInLoadoutWarning".Translate());
       Text.Anchor = TextAnchor.UpperLeft;
       GUI.color = Color.white;
       inRect.yMin += 45f;
@@ -84,7 +84,7 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
       viewRect.width -= 16f;
     float curY = 0.0f;
     Widgets.BeginScrollView(rect.AtZero(), ref scrollLeftToLoad, viewRect);
-    Widgets.ListSeparator(ref curY, viewRect.width, "ItemsToLoad".Translate());
+    Widgets.ListSeparator(ref curY, viewRect.width, "DFP_ItemsToLoad".Translate());
     bool anyItems = false;
     if (Tunnel.leftToLoad != null)
     {
@@ -113,11 +113,11 @@ public class ITab_ContentsTunnel : ITab_ContentsBase
 
     // Header for Loaded section
     Rect headerRect = new Rect(0f, curY, viewRect.width, 24f);
-    Widgets.ListSeparator(ref curY, viewRect.width, "LoadedItems".Translate());
+    Widgets.ListSeparator(ref curY, viewRect.width, "DFP_LoadedItems".Translate());
 
     // Remove All button
     Rect removeAllRect = new Rect(viewRect.width - 100f, headerRect.y, 100f, 24f);
-    if (Widgets.ButtonText(removeAllRect, "RemoveAll".Translate()))
+    if (Widgets.ButtonText(removeAllRect, "DFP_RemoveAll".Translate()))
     {
       List<Thing> toDrop = Tunnel.Caravan.GetDirectlyHeldThings().ToList();
       foreach (Thing t in toDrop)

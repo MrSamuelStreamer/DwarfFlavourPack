@@ -1,12 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
 namespace DwarfFlavourPack;
 
-public class WorldObject_TunnelCaravan : WorldObject
+public class WorldObject_TunnelCaravan : WorldObject, IIncidentTarget, ILoadReferenceable
 {
   public TunnelCaravan caravan;
+
+  public WorldObject_TunnelCaravan()
+  {
+      storyState = new StoryState(this);
+  }
 
   public override Vector3 DrawPos
   {
@@ -65,10 +74,57 @@ public class WorldObject_TunnelCaravan : WorldObject
   {
     base.ExposeData();
     Scribe_References.Look(ref caravan, "caravan");
+    Scribe_Deep.Look(ref storyState, "storyState", this);
+
   }
 
   public override string GetInspectString()
   {
     return caravan?.Progress ?? base.GetInspectString();
   }
+
+  public StoryState storyState;
+  public StoryState StoryState => storyState;
+  
+  public GameConditionManager GameConditionManager
+  {
+    get
+    {
+      Log.ErrorOnce("Attempted to retrieve condition manager directly from caravan", 13291050);
+      return null;
+    }
+  }
+  
+
+  public float PlayerWealthForStoryteller
+  {
+    get
+    {
+      float num = 0.0f;
+      foreach (var t in PlayerPawnsForStoryteller)
+      {
+        num += WealthWatcher.GetEquipmentApparelAndInventoryWealth(t);
+        if (t.Faction == Faction.OfPlayer)
+        {
+          float marketValue = t.MarketValue;
+          if (t.IsSlave)
+            marketValue *= 0.75f;
+          num += marketValue;
+        }
+      }
+      return num * 0.7f;
+    }
+  }
+
+  public IEnumerable<Pawn> PlayerPawnsForStoryteller
+  {
+    get
+    {
+      return caravan.GetDirectlyHeldThings().OfType<Pawn>().Where(x => x.Faction == Faction.OfPlayer);
+    }
+  }
+
+  public FloatRange IncidentPointsRandomFactorRange => StorytellerUtility.CaravanPointsRandomFactorRange;
+
+  public int ConstantRandSeed => ID ^ 728249981;
 }
