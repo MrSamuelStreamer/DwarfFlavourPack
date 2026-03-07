@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+
+	<!-- Sunder -->
+
+	<ThingDef ParentName="DankPyon_Base_Blunt_NormalSize">
+		<defName>MSSD_Sunder</defName>
+		<label>Sunder</label>
+		<description>One of the three legendary tools of Kagrenac. Sunder is said to be resonate at a divine frequency, and it's blows always harmonise to exactly the power needed to achieve its purpose.</description>
+		<graphicData>
+			<texPath>Things/Item/Equipment/WeaponMelee/Sunder</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+		</graphicData>
+		<uiIconScale>1.15</uiIconScale>
+		<equippedAngleOffset>70</equippedAngleOffset>
+
+		<equippedStatOffsets>
+			<GeneralLaborSpeed>1.25</GeneralLaborSpeed>
+		</equippedStatOffsets>
+
+		<weaponTags>
+			<li>MedievalMeleeBasic</li>
+		</weaponTags>
+
+		<tools>
+			<li>
+				<label>handle</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>129</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+			<li>
+				<label>head</label>
+				<labelUsedInLogging>false</labelUsedInLogging>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>22.5</power>
+				<cooldownTime>1.6</cooldownTime>
+				<armorPenetration>0.75</armorPenetration>
+			</li>
+		</tools>
+	</ThingDef>
+
+	<!-- Keening -->
+
+	<ThingDef ParentName="DankPyon_Base_SharpSword_NormalSize">
+		<defName>MSSD_Keening</defName>
+		<label>Keening</label>
+		<description>Keening is one of the three legendary tools of Kagrenac. It is said to be a blade of immense power, capable of flaying and redirecting any form of power.</description>
+		<graphicData>
+			<texPath>Things/Item/Equipment/WeaponMelee/Keening</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+		</graphicData>
+
+		<equippedAngleOffset>10</equippedAngleOffset>
+
+		<weaponTags>
+			<li>MedievalMeleeDecent</li>
+		</weaponTags>
+
+		<tools>
+			<li>
+				<label>handle</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>14</power>
+				<cooldownTime>1.8</cooldownTime>
+			</li>
+			<li>
+				<label>edge</label>
+				<labelUsedInLogging>false</labelUsedInLogging>
+				<capacities>
+					<li>Cut</li>
+				</capacities>
+				<power>32.25</power>
+				<cooldownTime>1.75</cooldownTime>
+				<armorPenetration>0.55</armorPenetration>
+			</li>
+		</tools>
+	</ThingDef>
+</Defs>
