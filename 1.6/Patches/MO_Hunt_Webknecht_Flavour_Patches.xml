@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Webknecht/Wenechkt/Webknest/Webknect = Mountain Spider -->
+
+<!-- MO MOD -->
+<Patch>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Webknecht"]/label</xpath>
+    <value>
+      <label>mountain spider</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Webknecht"]/description</xpath>
+    <value>
+      <description>The Mountain Spider is a large arachnid that lives in sizable colonies in the dark areas of forests throughout the world. It’s there that they spin their webs between trees to trap anything from bird to unwitting traveller, and anything in between.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Webknecht"]/label</xpath>
+    <value>
+      <label>mountain spider</label>
+    </value>
+  </Operation>
+
+<!-- MAH MOD -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterwebbed"]/label</xpath>
+    <value>
+      <label>bloody letter (Mountain Spider)</label>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestA"]/label</xpath>
+    <value>
+      <label>Mountain Spider nest</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestA"]/description</xpath>
+    <value>
+      <description>A nest of Mountain Spiders.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestB"]/label</xpath>
+    <value>
+      <label>Mountain Spider nest</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestB"]/description</xpath>
+    <value>
+      <description>A nest of Mountain Spiders.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestC"]/label</xpath>
+    <value>
+      <label>Mountain Spider nest</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestC"]/description</xpath>
+    <value>
+      <description>A nest of Mountain Spiders.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatewebknest"]/label</xpath>
+    <value>
+      <label>Locate Mountain Spider</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatewebknest"]/description</xpath>
+    <value>
+      <description>Track down a Mountain Spider.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_webknechtquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> We tracked a nest of Mountain Spiders. They are extremely dangerous, and seldom have been matched by any humanoid. We should take great care.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_webknechtquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->bloody</li>
+				<li>complexAdj->sticky</li>
+				<li>complexAdj->hidden</li>
+				<li>complexAdj->dangerous</li>
+				<li>complexAdj->poisonous</li>
+				<li>complex->mountain spider nest</li>
+				<li>complex->mountain spider community</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+</Patch>
