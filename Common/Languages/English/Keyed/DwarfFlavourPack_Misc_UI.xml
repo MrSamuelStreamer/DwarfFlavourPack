@@ -14,4 +14,9 @@
     <ForbiddenItemsInLoadoutWarning>Warning: Some items in the loadout are forbidden and won't be hauled. They need to
         be unforbidden.
     </ForbiddenItemsInLoadoutWarning>
+
+    <PsycastNeurotrainerLabel>tome ({0})</PsycastNeurotrainerLabel>
+    <PsycastNeurotrainerUseLabel>Use tome to learn {0} spell</PsycastNeurotrainerUseLabel>
+    <PsycastNeurotrainerDescription>A magical tome written by a powerful mage containing all things to know about a specific spell.\n\n{PSYCAST_label}\n\n{PSYCASTDESCRIPTION}</PsycastNeurotrainerDescription>
+    <AbilityNeurotrainerUsed>{USER_labelShort} used tome to learn the {1} spell.</AbilityNeurotrainerUsed>
 </LanguageData>

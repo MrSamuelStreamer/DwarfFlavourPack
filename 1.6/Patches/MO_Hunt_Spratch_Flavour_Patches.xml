@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spratch = Spriggan -->
+<Patch>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Schrat"]/label</xpath>
+    <value>
+      <label>spriggan</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Schrat"]/description</xpath>
+    <value>
+      <description>A gnarled tangle of branches, roots and mud, roughly shaped after a human being.\n\nGifted with a twisted, sinister will, Spriggans slowly shuffle through the undergrowth in search of the living.\n\nIt’s said that Spriggans relish the blood of intrusive lumberjacks and overzealous hunters.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Schrat_Sapling"]/label</xpath>
+    <value>
+      <label>spriggan sapling</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Schrat_Dark"]/label</xpath>
+    <value>
+      <label>spriggan matriarch</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_SchratDark_Sapling"]/label</xpath>
+    <value>
+      <label>spriggan sapling</label>
+    </value>
+  </Operation>
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterschrat"]/label</xpath>
+    <value>
+      <label>bloody letter (Spriggan Matriarch)</label>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairA"]/label</xpath>
+    <value>
+      <label>Spriggan Matriarch's Grove</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairA"]/description</xpath>
+    <value>
+      <description>A forest clearing dominated by an ancient Spriggan Matriarch.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairB"]/label</xpath>
+    <value>
+      <label>Spriggan Matriarch's Domain</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairB"]/description</xpath>
+    <value>
+      <description>The territory of a powerful Spriggan Matriarch.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateschrat"]/label</xpath>
+    <value>
+      <label>Locate Spriggan Matriarch</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateschrat"]/description</xpath>
+    <value>
+      <description>Track down Spriggan Matriarch.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_schratquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> Reports speak of a hostile Spriggan Matriarch deep within the forest. A dangerous hunt, but one that could prove rewarding.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_schratquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+        <li>questName->[complex]</li>
+        <li>complexAdj->Ancient</li>
+        <li>complexAdj->Twisted</li>
+        <li>complexAdj->Cursed</li>
+        <li>complex->Spriggan Matriarch</li>
+        <li>complex->Spriggan Matriarch's grove</li>
+        <li>complex->Spriggan Matriarch's domain</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mercury techlevel - included resource in case yeeted by WTL (etc) -->
+<Patch>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ResearchProjectDef[defName="RF_Research_Mercury"]/techLevel</xpath>
+    <value>
+      <techLevel>Medieval</techLevel>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="RF_Mercury"]/techLevel</xpath>
+    <value>
+      <techLevel>Medieval</techLevel>
+    </value>
+  </Operation>
+
+</Patch>

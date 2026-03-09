@@ -44,7 +44,7 @@
 	</RecipeDef>
 	<!-- x10, slightly less work, slightly more ingredients -->
 	<RecipeDef>
-		<defName>MSSD_Component_Dwemer_Recipe</defName>
+		<defName>MSSD_Component_Dwemer_Recipe_10</defName>
 		<workAmount>3500</workAmount>
 		<label>craft advanced mechanical parts x10</label>
 		<jobString>Crafting 10 advanced mechanical parts.</jobString>

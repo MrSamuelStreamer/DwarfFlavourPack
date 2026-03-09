@@ -92,7 +92,7 @@ This material is extremely durable and lightweight, making it ideal for crafting
         <xpath>Defs/ThingDef[defName="RF_Mercury"]/description</xpath>
         <value>
             <description>Vials of tonal silver, extracted from the resonant bloom plant, and suspended in a liquid state by tonal magic.
-Can be refined into Tonal Weave at magmagtic forge by a colonist if they have the Blessing of Kagrenac.</description>
+Can be refined into Tonal Weave at magmatic forge by a colonist if they have the Blessing of Kagrenac.</description>
         </value>
     </Operation>
 

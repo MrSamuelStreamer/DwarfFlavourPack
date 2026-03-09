@@ -13,6 +13,15 @@
 			<graphicClass>Graphic_Single</graphicClass>
 			<shaderType>CutoutComplex</shaderType>
 		</graphicData>
+
+    <!-- added 09-03 chrtis B -->
+    <recipeMaker Inherit="False" IsNull="True" />
+    <smeltable>false</smeltable>
+    <statBases>
+      <Mass>2</Mass>
+    </statBases>
+    <!-- added 09-03 chrtis B -->
+
 		<uiIconScale>1.15</uiIconScale>
 		<equippedAngleOffset>70</equippedAngleOffset>
 
@@ -57,6 +66,14 @@
 			<graphicClass>Graphic_Single</graphicClass>
 			<shaderType>CutoutComplex</shaderType>
 		</graphicData>
+
+    <!-- added 09-03 chrtis B -->
+    <recipeMaker Inherit="False" IsNull="True" />
+    <smeltable>false</smeltable>
+    <statBases>
+      <Mass>2</Mass>
+    </statBases>
+    <!-- added 09-03 chrtis B -->
 
 		<equippedAngleOffset>10</equippedAngleOffset>
 
