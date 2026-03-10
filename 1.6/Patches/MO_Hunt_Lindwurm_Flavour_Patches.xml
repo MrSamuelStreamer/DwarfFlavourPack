@@ -13,19 +13,13 @@
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/ThingDef[defName="DankPyon_LindwurmForest"]/description</xpath>
     <value>
-      <description>An enormous reptile, halfway between serpents and dragons. One of the few creatures truly incapable of feeling fear. Any daredevil who manages to get past the mighty yet nimble tail and pierce a hardy scale will be splashed with corrosive blood. Drake blood is the most powerful acid known yet — dissolving even the thickest steel, eating through the flesh in seconds.</description>
+      <description>An enormous reptile, halfway between serpents and dragons. One of the few creatures truly incapable of feeling fear. Any daredevil who manages to get past the mighty yet nimble tail and pierce a hardy scale will be splashed with corrosive blood. Drake blood is the most powerful acid known yet - dissolving even the thickest steel, eating through the flesh in seconds.</description>
     </value>
   </Operation>
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/ThingDef[defName="DankPyon_LindwurmCave"]/label</xpath>
     <value>
       <label>cave drake</label>
-    </value>
-  </Operation>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="DankPyon_LindwurmCave"]/description</xpath>
-    <value>
-      <description>An enormous reptile, halfway between serpents and dragons. One of the few creatures truly incapable of feeling fear. Any daredevil who manages to get past the mighty yet nimble tail and pierce a hardy scale will be splashed with corrosive blood. Drake blood is the most powerful acid known yet — dissolving even the thickest steel, eating through the flesh in seconds.</description>
     </value>
   </Operation>
 
@@ -36,9 +30,9 @@
     </value>
   </Operation>
   <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/PawnKindDef[defName="DankPyon_LindwurmCave"]/labelPlural</xpath>
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_LindwurmCave"]/label</xpath>
     <value>
-      <labelPlural>cave drake</labelPlural>
+      <label>cave drake</label>
     </value>
   </Operation>
 
