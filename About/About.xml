@@ -16,11 +16,6 @@
             <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
         </li>
     </modDependencies>
-
-    <loadBefore>
-        <li>sarg.alphamemes</li>
-    </loadBefore>
-
     <loadAfter>
         <li>brrainz.harmony</li>
         <li>Ludeon.RimWorld</li>

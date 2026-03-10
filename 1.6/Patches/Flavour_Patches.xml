@@ -16,4 +16,23 @@
     </value>
   </Operation>
 
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatealp"]/iconPath</xpath>
+    <value>
+      <iconPath>UI/DFP_Mystery</iconPath>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_alpquest"]/root/nodes/li[@Class="QuestEditor_Library.QuestNode_RandomCustomMap"]/siteIconPath</xpath>
+    <value>
+      <siteIconPath>UI/DFP_Mystery</siteIconPath>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_alpquest"]/root/nodes/li[@Class="QuestEditor_Library.QuestNode_RandomCustomMap"]/expandingIconPath</xpath>
+    <value>
+      <expandingIconPath>UI/DFP_Mystery</expandingIconPath>
+    </value>
+  </Operation>
+
 </Patch>
