@@ -16,13 +16,26 @@
             <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
         </li>
     </modDependencies>
-<<<<<<< Updated upstream
-=======
-    
->>>>>>> Stashed changes
     <loadAfter>
         <li>brrainz.harmony</li>
         <li>Ludeon.RimWorld</li>
+        <li>Ludeon.RimWorld.Ideology</li>
+        <li>Ludeon.RimWorld.Royalty</li>
+        <li>Ludeon.RimWorld.Biotech</li>
+        <li>Ludeon.RimWorld.Anomaly</li>
+        <li>Ludeon.RimWorld.Odyssey</li>
+        <li>vanillaexpanded.helixiengas</li>
+        <li>cixwow.helixienbrazier</li>
+        <li>cixwow.helixienboiler</li>
+        <li>cixwow.helixiengasproduction</li>
+        <li>co.uk.epicguru.rimforge</li>
+        <li>vpe.geomancer.sentinel</li>
+        <li>vpe.gravcaster.sentinel</li>
+        <li>horo.lavapower</li>
+        <li>vanillaexpanded.vpe.puppeteer</li>
+        <li>chairheir.vperunesmith</li>
+        <li>aranmaho.rangerclass</li>
+        <li>dankpyon.medieval.overhaul</li>
         <li>joe.rpgadventureflavour.fork</li>
     </loadAfter>
 </ModMetaData>
