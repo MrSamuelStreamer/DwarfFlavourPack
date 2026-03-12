@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/XenotypeDef[defName="VRESaurids_Saurid"]/label</xpath>
+        <value>
+            <label>Argonian</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/XenotypeDef[defName="VRESaurids_Saurid"]/description</xpath>
+        <value>
+            <description>Argonians are the reptilian natives of Black Marsh, a vast swampland province in southeastern Tamriel. They are known as the foremost experts in guerrilla warfare throughout Tamriel, a reputation brought upon them by defending their borders from enemies for countless centuries. They have a connection to the Hist, a race of sapient spore trees.</description>
+        </value>
+    </Operation>
+</Patch>
