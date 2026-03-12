@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Patch>
+	<Operation Class="PatchOperationSequence">
+	<success>Always</success>
+		<operations>
+				<li Class="PatchOperationAdd">
+					<xpath>Defs/ThingDef[defName="Mashed_Ashlands_Basalt"]
+					</xpath>
+					<value>
+						<designationCategory>Structure</designationCategory>
+						<designatorDropdown>RoughStoneWall_Group</designatorDropdown>
+						<drawStyleCategory>Walls</drawStyleCategory>
+						<researchPrerequisites><li>Stonecutting</li></researchPrerequisites>
+						<uiOrder>1990</uiOrder>
+					</value>
+				</li>
+				<li Class="PatchOperationAdd">
+					<xpath>Defs/ThingDef[defName="Mashed_Ashlands_Basalt"]/statBases
+					</xpath>
+					<value>
+						<WorkToBuild>3000</WorkToBuild>
+					</value>
+				</li>
+				<li Class="PatchOperationAdd">
+					<xpath>Defs/ThingDef[	defName="Mashed_Ashlands_Basalt"]/building</xpath>
+					<value>
+						<blueprintGraphicData>
+							<texPath>Things/Building/Linked/Rock_Atlas</texPath>
+						</blueprintGraphicData>
+					</value>
+				</li>
+				<li Class="PatchOperationAdd">
+					<xpath>Defs/ThingDef[defName="Mashed_Ashlands_Basalt"]</xpath>
+					<value>
+						<costList><ChunkSandstone>1</ChunkSandstone></costList>
+						<uiIconPath>Basalt_MenuIcon</uiIconPath>
+					</value>
+				</li>
+				<li Class="PatchOperationAdd"> 
+					<xpath>Defs/ThingDef[defName="Mashed_Ashlands_SmoothedBasalt"]
+					</xpath>
+					<value>
+						<costList Inherit="false"/>
+						<designationCategory Inherit="false"/>
+						<researchPrerequisites Inherit="false"/>
+						<designatorDropdown Inherit="false"/>
+					</value>
+				</li>
+				<li Class="PatchOperationAdd">
+					<xpath>Defs/ThingDef[defName="Mashed_Ashlands_SmoothedBasalt"]/statBases
+					</xpath>
+					<value>
+						<WorkToBuild>0</WorkToBuild>
+					</value>
+				</li>
+		</operations>
+	</Operation>
+</Patch>
