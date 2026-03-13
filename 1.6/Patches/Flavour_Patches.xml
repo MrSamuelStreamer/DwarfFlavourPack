@@ -35,4 +35,11 @@
     </value>
   </Operation>
 
+  <Operation Class="PatchOperationReplace">
+		<xpath>Defs/ResearchProjectDef[defName="Electricity"]/techLevel</xpath>
+		<value>
+			<techLevel>Medieval</techLevel>
+		</value>
+	</Operation>
+
 </Patch>
