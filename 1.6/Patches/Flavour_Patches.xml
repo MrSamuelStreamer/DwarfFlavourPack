@@ -35,4 +35,23 @@
     </value>
   </Operation>
 
+  <Operation Class="PatchOperationReplace">
+		<xpath>Defs/ResearchProjectDef[defName="Electricity"]/techLevel</xpath>
+		<value>
+			<techLevel>Medieval</techLevel>
+		</value>
+	</Operation>
+  <Operation Class="PatchOperationReplace">
+		<xpath>Defs/ResearchProjectDef[defName="Electricity"]/label</xpath>
+		<value>
+			<label>Power</label>
+		</value>
+	</Operation>
+  <Operation Class="PatchOperationReplace">
+		<xpath>Defs/ResearchProjectDef[defName="Electricity"]/description</xpath>
+		<value>
+			<description>Some ES-like fluff description for power</description>
+		</value>
+	</Operation>
+
 </Patch>
