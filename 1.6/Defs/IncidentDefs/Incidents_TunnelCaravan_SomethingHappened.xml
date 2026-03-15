@@ -11,11 +11,70 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_BrendaKillsBarbas</workerClass>
-    <baseChance>0.3</baseChance>
+    <baseChance>100</baseChance>
     <minRefireDays>60</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>The tunnel caravan's minecarts have ground to a halt somewhere in the underground passages. Something is blocking the way ahead.\n\nThe caravan has been forced to stop and investigate.</letterText>
     <letterDef>ThreatBig</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
+
+  <!-- ForgottenOssuary: a natural chamber holds an ancient shrine and the skeletons
+       of those who came to worship and never left. Non-combat discovery event.
+       FireOncePerGame = true — set in the worker class. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanForgottenOssuary</defName>
+    <label>tunnel delay</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanForgottenOssuary</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>30</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>The tunnel caravan's minecarts have ground to a halt somewhere in the underground passages. Something is blocking the way ahead.\n\nThe caravan has been forced to stop and investigate.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
+
+  <!-- CaveIn: the tunnel ceiling collapses, sealing the passage with fallen rock.
+       Non-combat; the caravan must mine through the debris before they can reform.
+       Reform is blocked by CaveInReformBlocker_Patch until MapComponent_CaveInBlocker.IsCleared. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanCaveIn</defName>
+    <label>tunnel delay</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanCaveIn</workerClass>
+    <baseChance>0</baseChance>
+    <minRefireDays>30</minRefireDays>
+    <letterLabel>Tunnel collapse</letterLabel>
+    <letterText>A deep crack and rumble shakes the tunnel. Rock and earth pour from the ceiling, sealing the passage ahead.\n\nThe caravan is trapped. The debris must be cleared before they can move on.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
+
+  <!-- TradingCaravan: a friendly trading outfit is encountered inside the tunnel.
+       Non-combat; player trades at leisure and reforms normally whenever ready. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanTradingCaravan</defName>
+    <label>tunnel delay</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanTradingCaravan</workerClass>
+    <baseChance>1.5</baseChance>
+    <minRefireDays>15</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>Muffled voices drift through the tunnel walls ahead. The minecart slows.\n\nA trading outfit has stopped to rest in a wider chamber deeper in the passage. They seem friendly — and they have goods to sell.</letterText>
+    <letterDef>NeutralEvent</letterDef>
     <pointsScaleable>false</pointsScaleable>
   </IncidentDef>
 

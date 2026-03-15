@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Cave-In encounter strings -->
+  <DFP_CaveInReformBlocked>The passage is still blocked. Mine through the fallen rock first.</DFP_CaveInReformBlocked>
+  <DFP_CaveInClearedLabel>Path cleared</DFP_CaveInClearedLabel>
+  <DFP_CaveInClearedText>The caravan has broken through the cave-in. The passage ahead is open — the journey can continue.</DFP_CaveInClearedText>
+
+</LanguageData>
