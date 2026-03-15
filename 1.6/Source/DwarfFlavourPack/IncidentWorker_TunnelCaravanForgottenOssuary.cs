@@ -13,9 +13,9 @@ namespace DwarfFlavourPack;
 ///
 /// A single "Last Witness" ghost pawn satisfies IncidentWorker_Ambush's non-empty
 /// pawn guard (it bails before creating a map if GeneratePawns returns empty).
-/// In PostProcess the witness is despawned (not killed) so the player never sees a
-/// living non-colonist pawn. Killing would null out mindState, crashing
-/// LordToil_ExitMap.UpdateAllDuties; an alive-but-unspawned pawn is safe.
+/// The witness is despawned on the next tick (via MapComponent_DespawnGhostNextTick)
+/// so the player never sees it wandering. It must remain spawned until after DoExecute
+/// sends the letter — an unspawned pawn grays out the "Jump to location" button.
 /// </summary>
 public class IncidentWorker_TunnelCaravanForgottenOssuary : IncidentWorker_TunnelCaravanSomethingHappened
 {
@@ -40,12 +40,10 @@ public class IncidentWorker_TunnelCaravanForgottenOssuary : IncidentWorker_Tunne
         // so there are never any hostile threats and CheckWonBattle fires immediately.
         map.components.Add(new MapComponent_SuppressBattleWon(map));
 
-        // Despawn the ghost witness immediately so the player never sees a living
-        // non-colonist pawn. We despawn rather than kill because dead pawns have
-        // mindState == null, which causes LordToil_ExitMap.UpdateAllDuties to crash
-        // when the lord is created. An alive-but-unspawned pawn is invisible to the
-        // player and still has a valid mindState for the duty assignment.
-        _witness.DeSpawn();
+        // Despawn the ghost on the next tick — after DoExecute sends the letter
+        // (which needs the pawn spawned as look target), but before the player
+        // sees it wandering the map.
+        map.components.Add(new MapComponent_DespawnGhostNextTick(map, _witness));
 
         IntVec3 shrineCell = FindCellNearCenter(map);
 

@@ -70,7 +70,10 @@ public abstract class IncidentWorker_TunnelCaravanSomethingHappened : IncidentWo
     /// <summary>
     /// Generates a single harmless SpaceRefugee whose only role is to satisfy
     /// IncidentWorker_Ambush's non-empty pawn requirement and trigger map creation.
-    /// Pair with LordJob_ExitMapBest so the pawn immediately flees.
+    /// Use MapComponent_DespawnGhostNextTick to despawn this pawn after DoExecute
+    /// has sent the letter. Do NOT despawn in PostProcessGeneratedPawnsAfterSpawning —
+    /// that runs before SendStandardLetter captures generatedEnemies[0] as look target,
+    /// so an unspawned pawn at that point grays out the "Jump to location" button.
     /// </summary>
     protected static Pawn MakeGhostPawn() => PawnGenerator.GeneratePawn(
         new PawnGenerationRequest(

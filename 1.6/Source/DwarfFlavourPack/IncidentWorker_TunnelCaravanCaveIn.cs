@@ -12,7 +12,7 @@ namespace DwarfFlavourPack;
 /// a chokepoint. The caravan cannot reform until all blocking debris is mined clear.
 ///
 /// Non-combat pattern:
-///   - Ghost witness (SpaceRefugee) triggers map creation, then is despawned.
+///   - Ghost witness (SpaceRefugee) triggers map creation, despawned next tick.
 ///   - MapComponent_SuppressBattleWon prevents the "Caravan battle won" letter.
 ///   - MapComponent_CaveInBlocker tracks the debris and fires "path cleared" when done.
 ///   - CaveInReformBlocker_Patch (Harmony) blocks ExitMapAndCreateCaravan while
@@ -41,9 +41,10 @@ public class IncidentWorker_TunnelCaravanCaveIn : IncidentWorker_TunnelCaravanSo
         // Non-combat checklist: suppress "Caravan battle won" letter.
         map.components.Add(new MapComponent_SuppressBattleWon(map));
 
-        // Non-combat checklist: despawn the ghost witness — alive-but-unspawned keeps
-        // mindState valid for LordToil_ExitMap.UpdateAllDuties, but hides the pawn.
-        _witness.DeSpawn();
+        // Despawn the ghost on the next tick — after DoExecute sends the letter
+        // (which needs the pawn spawned as look target), but before the player
+        // sees it wandering the map.
+        map.components.Add(new MapComponent_DespawnGhostNextTick(map, _witness));
 
         // Add the blocker component before tracking rocks so TrackThing is ready.
         _caveInBlocker = new MapComponent_CaveInBlocker(map);

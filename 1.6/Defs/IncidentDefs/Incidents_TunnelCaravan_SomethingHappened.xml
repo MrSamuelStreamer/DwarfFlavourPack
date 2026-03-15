@@ -78,4 +78,22 @@
     <pointsScaleable>false</pointsScaleable>
   </IncidentDef>
 
+
+  <!-- AbandonedCache: scattered cargo from a previous expedition. No combat; pure loot event. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanAbandonedCache</defName>
+    <label>tunnel delay</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanAbandonedCache</workerClass>
+    <baseChance>1.0</baseChance>
+    <minRefireDays>25</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>The minecart rolls to a stop. Something is blocking the passage — or rather, something was left there long ago.\n\nAbandoned cargo sits in a natural alcove. Whoever left it is gone. The supplies remain.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
 </Defs>
