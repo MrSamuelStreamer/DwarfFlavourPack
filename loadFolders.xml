@@ -18,5 +18,6 @@
 		<li IfModActive="aranmaho.rangerclass">Compatibility/aranmaho.rangerclass</li>
 		<li IfModActive="ryuudra.constructvanillarockwalls">Compatibility/ryuudra.constructvanillarockwalls</li>
 		<li IfModActive="vanillaracesexpanded.saurid">Compatibility/vanillaracesexpanded.saurid</li>
+		<li IfModActive="who.vfee.isopodageneline">Compatibility/who.vfee.isopodageneline</li>
 	</v1.6>
 </loadFolders>

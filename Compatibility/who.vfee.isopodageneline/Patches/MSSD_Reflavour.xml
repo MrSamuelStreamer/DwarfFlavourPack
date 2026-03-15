@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- SW_Electrictick -> Megascarab, Royal Megascarab, Locust -->
+    <!-- SW_Electricfish -> Spelopede, VFEI2_RoyalSpelopede -->
+    <!-- SW_Electricgryllotalpa -> Megaspider -->
+    <!-- SW_Juggernautbeetles -> VFEI2_RoyalMegaspider, VFEI2_Megapede -->
+    <!-- SW_Grenadierworm -> VFEI2_Queen, HiveQueen -->
+    <!-- SW_Emperorisopod -> VFEI2_Empress -->
+    
+    <!-- SW_Electrictick (weakest) ->  -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Electrictick"]/label</xpath>
+        <value>
+            <label>Chaurus Chitterling</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/PawnKindDef[defName="SW_Electrictick"]/label</xpath>
+        <value>
+            <label>Chaurus Chitterling</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Electrictick"]/description</xpath>
+        <value>
+            <description>A young, freshly hatched Chaurus. Despite its small size, the Chaurus Chitterling is a dangerous creature.</description>
+        </value>
+    </Operation>
+    <!-- SW_Electricfish ->  -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Electricfish"]/label</xpath>
+        <value>
+            <label>Chaurus Neonate</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/PawnKindDef[defName="SW_Electricfish"]/label</xpath>
+        <value>
+            <label>Chaurus Neonate</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Electricfish"]/description</xpath>
+        <value>
+            <description>A commonly found, non-specialised Chaurus that makes up the majority of a hives population. It possesses a hardened carapace and is known for its aggressive behaviour.</description>
+        </value>
+    </Operation>
+    <!-- SW_Electricgryllotalpa ->  -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Electricgryllotalpa"]/label</xpath>
+        <value>
+            <label>Chaurus Hunter</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/PawnKindDef[defName="SW_Electricgryllotalpa"]/label</xpath>
+        <value>
+            <label>Chaurus Hunter</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Electricgryllotalpa"]/description</xpath>
+        <value>
+            <description>An agile and fast-moving Chaurus, sporting powerful wings. What it sacrifices in its exoskeleton, it makes up for in speed and agility.</description>
+        </value>
+    </Operation>
+    <!-- SW_Juggernautbeetles ->  -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Juggernautbeetles"]/label</xpath>
+        <value>
+            <label>Chaurus Reaper</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/PawnKindDef[defName="SW_Juggernautbeetles"]/label</xpath>
+        <value>
+            <label>Chaurus Reaper</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Juggernautbeetles"]/description</xpath>
+        <value>
+            <description>A giant, heavily-armoured Chaurus with a powerful bite. They are formidable opponents and are frequently found as hive defenders.</description>
+        </value>
+    </Operation>
+    <!-- SW_Grenadierworm ->  -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Grenadierworm"]/label</xpath>
+        <value>
+            <label>Chaurus Juggernaut</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/PawnKindDef[defName="SW_Grenadierworm"]/label</xpath>
+        <value>
+            <label>Chaurus Juggernaut</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Grenadierworm"]/description</xpath>
+        <value>
+            <description>A rare, towering Chaurus. They carry clutches of chitterlings for protection, but will weaponise the young hatchlings if threatened.</description>
+        </value>
+    </Operation>
+    <!-- SW_Emperorisopod ->  -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Emperorisopod"]/label</xpath>
+        <value>
+            <label>Chaurus Matron</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/PawnKindDef[defName="SW_Emperorisopod"]/label</xpath>
+        <value>
+            <label>Chaurus Matron</label>
+        </value>
+    </Operation>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="SW_Emperorisopod"]/description</xpath>
+        <value>
+            <description>The heart of a Charaus hive, the Charaus Matron is the most heavily armoued and formidable of all Chaurus, more than capable of defending the hive alone. It has an aggressive bioelectrical attack that can cover huge distances and cause lethal damage.</description>
+        </value>
+    </Operation>
+</Patch>
