@@ -134,4 +134,21 @@
     <pointsScaleable>false</pointsScaleable>
   </IncidentDef>
 
+  <!-- UndergroundShrine: an ancient altar in a domed chamber. FireOncePerGame = true. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanUndergroundShrine</defName>
+    <label>tunnel delay</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanUndergroundShrine</workerClass>
+    <baseChance>0.3</baseChance>
+    <minRefireDays>90</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>The tunnel opens into a domed chamber. At its centre stands a stone altar — old, silent, covered in offerings left by hands long dead.\n\nThe caravan has stopped. Nobody moves.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
 </Defs>
