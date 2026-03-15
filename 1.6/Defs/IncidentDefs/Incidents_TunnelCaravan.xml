@@ -18,4 +18,23 @@
     <minThreatPoints>300</minThreatPoints>
   </IncidentDef>
 
+
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanFactionAmbush</defName>
+    <label>tunnel ambush</label>
+    <category>ThreatBig</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanFactionAmbush</workerClass>
+    <baseChance>1.0</baseChance>
+    <minRefireDays>15</minRefireDays>
+    <letterLabel>Tunnel ambush!</letterLabel>
+    <!-- {0}=caravan name, {1}=faction pawn type plural, {2}=faction name (colored) -->
+    <letterText>{0} has been ambushed by {1} of the {2} in the underground passages!\n\nThe caravan must fight their way through the tunnels or be destroyed.</letterText>
+    <letterDef>ThreatBig</letterDef>
+    <pointsScaleable>true</pointsScaleable>
+    <minThreatPoints>300</minThreatPoints>
+  </IncidentDef>
+
 </Defs>
