@@ -5,57 +5,13 @@ using Verse.AI.Group;
 
 namespace DwarfFlavourPack;
 
-public class IncidentWorker_TunnelCaravanInsectAttack : IncidentWorker_Ambush
+/// <summary>
+/// Tunnel encounter: a swarm of insects blocks the passage.
+/// Extends IncidentWorker_TunnelCaravanSomethingHappened so the TunnelEncounterSetup
+/// capture and CanFireNowSub guard are handled by the base class.
+/// </summary>
+public class IncidentWorker_TunnelCaravanInsectAttack : IncidentWorker_TunnelCaravanSomethingHappened
 {
-    /// <summary>
-    /// Registers the TunnelCaravan in <see cref="TunnelEncounterSetup"/> before base
-    /// triggers map generation so that <see cref="MapComponent_TunnelCaravanState"/>
-    /// can capture the travel state inside its constructor (called during map gen).
-    /// The caravan is destroyed by CaravanEnterMapUtility.Enter during base execution,
-    /// so we must save the reference before that happens.
-    /// </summary>
-    protected override bool TryExecuteWorker(IncidentParms parms)
-    {
-        if (parms.target is TunnelCaravan tunnelCaravan)
-        {
-            // PendingCaravan is consumed by MapComponent_TunnelCaravanState's constructor.
-            TunnelEncounterSetup.PendingCaravan = tunnelCaravan;
-
-            // Also store data directly in statics so the reform patch can read it
-            // without depending on pawn.MapHeld being non-null or a specific overload.
-            TunnelEncounterSetup.HasActiveEncounter      = true;
-            TunnelEncounterSetup.ActiveEncounterTile     = tunnelCaravan.Tile;
-            TunnelEncounterSetup.ActiveOrigin            = tunnelCaravan.origin;
-            TunnelEncounterSetup.ActiveDestination       = tunnelCaravan.destination;
-            TunnelEncounterSetup.ActiveTunnel            = tunnelCaravan.tunnel;
-            TunnelEncounterSetup.ActiveTravelStartsAtTick = tunnelCaravan.travelStartsAtTick;
-            TunnelEncounterSetup.ActiveTravelEndsAtTick  = tunnelCaravan.travelEndsAtTick;
-        }
-
-        return base.TryExecuteWorker(parms);
-    }
-
-    protected override bool CanFireNowSub(IncidentParms parms)
-    {
-        if (parms.target is not TunnelCaravan tunnelCaravan)
-            return false;
-
-        if (tunnelCaravan.Spawned)
-            return false;
-
-        if (tunnelCaravan.PawnsListForReading.Count < 1)
-            return false;
-
-        int ticksGame = Find.TickManager.TicksGame;
-        if (ticksGame <= tunnelCaravan.travelStartsAtTick || ticksGame >= tunnelCaravan.travelEndsAtTick)
-            return false;
-
-        if (tunnelCaravan.done)
-            return false;
-
-        return base.CanFireNowSub(parms);
-    }
-
     protected override LordJob CreateLordJob(List<Pawn> generatedPawns, IncidentParms parms)
     {
         return new LordJob_AssaultColony(parms.faction, canTimeoutOrFlee: false);

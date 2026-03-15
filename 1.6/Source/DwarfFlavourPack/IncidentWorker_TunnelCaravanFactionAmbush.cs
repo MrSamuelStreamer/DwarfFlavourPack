@@ -10,21 +10,12 @@ public class IncidentWorker_TunnelCaravanFactionAmbush : IncidentWorker_Ambush_E
     /// Captures the TunnelCaravan's travel state into TunnelEncounterSetup statics before
     /// calling base.TryExecuteWorker. The caravan is destroyed by CaravanEnterMapUtility.Enter
     /// during base execution, so the capture must happen first.
+    /// Cannot inherit from IncidentWorker_TunnelCaravanSomethingHappened because this class
+    /// needs IncidentWorker_Ambush_EnemyFaction as its base for goodwill and faction naming.
     /// </summary>
     protected override bool TryExecuteWorker(IncidentParms parms)
     {
-        if (parms.target is TunnelCaravan tunnelCaravan)
-        {
-            TunnelEncounterSetup.PendingCaravan           = tunnelCaravan;
-            TunnelEncounterSetup.HasActiveEncounter       = true;
-            TunnelEncounterSetup.ActiveEncounterTile      = tunnelCaravan.Tile;
-            TunnelEncounterSetup.ActiveOrigin             = tunnelCaravan.origin;
-            TunnelEncounterSetup.ActiveDestination        = tunnelCaravan.destination;
-            TunnelEncounterSetup.ActiveTunnel             = tunnelCaravan.tunnel;
-            TunnelEncounterSetup.ActiveTravelStartsAtTick = tunnelCaravan.travelStartsAtTick;
-            TunnelEncounterSetup.ActiveTravelEndsAtTick   = tunnelCaravan.travelEndsAtTick;
-        }
-
+        IncidentWorker_TunnelCaravanSomethingHappened.CaptureEncounterSetup(parms);
         return base.TryExecuteWorker(parms);
     }
 
@@ -33,17 +24,7 @@ public class IncidentWorker_TunnelCaravanFactionAmbush : IncidentWorker_Ambush_E
         if (parms.target is not TunnelCaravan tunnelCaravan)
             return false;
 
-        if (tunnelCaravan.Spawned)
-            return false;
-
-        if (tunnelCaravan.PawnsListForReading.Count < 1)
-            return false;
-
-        int ticksGame = Find.TickManager.TicksGame;
-        if (ticksGame <= tunnelCaravan.travelStartsAtTick || ticksGame >= tunnelCaravan.travelEndsAtTick)
-            return false;
-
-        if (tunnelCaravan.done)
+        if (!IncidentWorker_TunnelCaravanSomethingHappened.MeetsCaravanGuard(tunnelCaravan))
             return false;
 
         return base.CanFireNowSub(parms);

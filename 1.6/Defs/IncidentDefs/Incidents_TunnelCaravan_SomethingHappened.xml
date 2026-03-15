@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- BrendaKillsBarbas: a mysterious woman executes her dog, then attacks the caravan.
+       Letter text is deliberately vague — the player discovers what happened on the map. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanBrendaKillsBarbas</defName>
+    <label>tunnel delay</label>
+    <category>ThreatBig</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_BrendaKillsBarbas</workerClass>
+    <baseChance>0.3</baseChance>
+    <minRefireDays>60</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>The tunnel caravan's minecarts have ground to a halt somewhere in the underground passages. Something is blocking the way ahead.\n\nThe caravan has been forced to stop and investigate.</letterText>
+    <letterDef>ThreatBig</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
+</Defs>
