@@ -290,4 +290,26 @@
       <li>AddictionResistant_MorrowRim_MoonSugar</li>
     </genes>
   </XenotypeDef>
+  <!-- Falmer (not degenerated) -->
+    <XenotypeDef>
+      <defName>MSSD_Falmer</defName>
+      <label>Falmer</label>
+      <description>Falmer</description>
+      <descriptionShort>Falmer</descriptionShort>
+      <iconPath>UI/Icons/Xenotypes/Custom/Piker_7</iconPath>
+      <inheritable>true</inheritable>
+      <genes>
+        <li MayRequire="redmattis.bigsmall.core">MinTemp_HugeDecrease</li>
+        <li>MaxTemp_SmallDecrease</li>
+        <li MayRequire="sarg.alphagenes">AG_ReducedFertile</li>
+        <li MayRequire="escp.racetools">ESCP_GeneInheritedBonus_Mer</li>
+        <li MayRequire="escp.falmer">ESCP_GeneInheritedBonus_Falmer</li>
+        <li>Ears_Pointed</li>
+        <li>Hair_SnowWhite</li>
+        <li MayRequire="redmattis.bigsmall.core">BS_Hair_TrueWhite</li>
+        <li MayRequire="redmattis.bigsmall.core">BS_Skin_Marble_White</li>
+        <li>Skin_SheerWhite</li>
+        <li MayRequire="void.charactereditor">SZBodySize_13</li>
+      </genes>
+  </XenotypeDef>
 </Defs>

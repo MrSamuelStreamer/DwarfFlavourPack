@@ -162,6 +162,21 @@ This plant is a key ingredient in making Tonal Weave.</description>
         </value>
     </Operation>
 
+    <!-- RF_Mercury (TECH LEVELS) -->
+    <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ResearchProjectDef[defName="RF_Research_Mercury"]/techLevel</xpath>
+    <value>
+      <techLevel>Medieval</techLevel>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="RF_Mercury"]/techLevel</xpath>
+    <value>
+      <techLevel>Medieval</techLevel>
+    </value>
+  </Operation>
+
     <!-- RF_ZirsCorruption -->
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/TraitDef[defName="RF_ZirsCorruption"]/degreeDatas/li/label</xpath>
