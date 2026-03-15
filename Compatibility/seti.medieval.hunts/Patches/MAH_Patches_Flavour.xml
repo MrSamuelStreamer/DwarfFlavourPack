@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<Patch>
+
+  <!-- General flavour -->
+
+
+
+  <!-- Webknecht/Wenechkt/Webknest/Webknect = Mountain Spider -->
+
+  <!-- Medieval Overhaul patches -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Webknecht"]/label</xpath>
+    <value>
+      <label>mountain spider</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Webknecht"]/description</xpath>
+    <value>
+      <description>The Mountain Spider is a large arachnid that lives in sizable colonies in the dark areas of forests throughout the world. It’s there that they spin their webs between trees to trap anything from bird to unwitting traveller, and anything in between.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Webknecht"]/label</xpath>
+    <value>
+      <label>mountain spider</label>
+    </value>
+  </Operation>
+
+<!-- Medieval Adventures: Hunts patches -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterwebbed"]/label</xpath>
+    <value>
+      <label>bloody letter (Mountain Spider)</label>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestA"]/label</xpath>
+    <value>
+      <label>Mountain Spider nest</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestA"]/description</xpath>
+    <value>
+      <description>A nest of Mountain Spiders.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestB"]/label</xpath>
+    <value>
+      <label>Mountain Spider nest</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestB"]/description</xpath>
+    <value>
+      <description>A nest of Mountain Spiders.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestC"]/label</xpath>
+    <value>
+      <label>Mountain Spider nest</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiwenechktnestC"]/description</xpath>
+    <value>
+      <description>A nest of Mountain Spiders.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatewebknest"]/label</xpath>
+    <value>
+      <label>Locate Mountain Spider</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatewebknest"]/description</xpath>
+    <value>
+      <description>Track down a Mountain Spider.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_webknechtquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> We tracked a nest of Mountain Spiders. They are extremely dangerous, and seldom have been matched by any humanoid. We should take great care.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_webknechtquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->bloody</li>
+				<li>complexAdj->sticky</li>
+				<li>complexAdj->hidden</li>
+				<li>complexAdj->dangerous</li>
+				<li>complexAdj->poisonous</li>
+				<li>complex->mountain spider nest</li>
+				<li>complex->mountain spider community</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <!-- Unhold = Ogre -->
+
+  <!-- Medieval Overhaul patches -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Unhold"]/label</xpath>
+    <value>
+      <label>Ogre</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Unhold"]/description</xpath>
+    <value>
+      <description>The Ogre is a towering giant, three times the size of a man, known for devouring sheep and draining ponds in a single gulp. Though tales paint them as destructive, they're not inherently malicious, preferring to scare off intruders with deafening roars rather than attacking. Usually solitary, Ogres are found alone or in small groups, fiercely defending their territory.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_UnholdSnow"]/label</xpath>
+    <value>
+      <label>ogre</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_UnholdSnow"]/description</xpath>
+    <value>
+      <description>The Ogre is a towering giant, three times the size of a man, known for devouring sheep and draining ponds in a single gulp. Though tales paint them as destructive, they're not inherently malicious, preferring to scare off intruders with deafening roars rather than attacking. Usually solitary, Ogres are found alone or in small groups, fiercely defending their territory.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_UnholdPlain"]/label</xpath>
+    <value>
+      <label>plains ogre</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_UnholdSwamp"]/label</xpath>
+    <value>
+      <label>swamp ogre</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_UnholdSnow"]/label</xpath>
+    <value>
+      <label>snow ogre</label>
+    </value>
+  </Operation>
+
+<!-- Medieval Adventures: Hunts patches -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterunhold"]/label</xpath>
+    <value>
+      <label>bloody letter (ogre)</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterunhold"]/description</xpath>
+    <value>
+      <description>An undelivered letter, could be valuable.
+		    \n\nTo the countess.
+			\nYour dear majesty
+            \nwe are progressing, even though somewhat slowly
+            \nThe Witch requires more silver for the materials
+            \nbut the first steps are done, she talked to them.
+
+            \n\nThe Ogres are... scaring me.
+            \nthey could break me with a single swipe of their arm
+            \nHow is she not scared? How can she just... talk with them?
+
+            \n\nI suggest you approve her request for silver.
+            \nI know I am but a servant, and it's a lot of silver
+            \nbut this could win us the war!
+            \nthis could make you an empress even.</description>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiunholdsA"]/label</xpath>
+    <value>
+      <label>Ogre's Wasteland</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiunholdsA"]/description</xpath>
+    <value>
+      <description>A small community of Ogres, these ones seem to prefer rocks.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiunholdsB"]/label</xpath>
+    <value>
+      <label>Ogre's Permafrost</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiunholdsB"]/description</xpath>
+    <value>
+      <description>A small community of Ogres, these ones seem to prefer the cold.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiunholdsC"]/label</xpath>
+    <value>
+      <label>Ogre's Swamp</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setiunholdsC"]/description</xpath>
+    <value>
+      <description>A small community of Ogres, these ones seem to prefer the swamps.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateunhold"]/label</xpath>
+    <value>
+      <label>Locate ogre</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateunhold"]/description</xpath>
+    <value>
+      <description>Track down ogre.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_unholdquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> We have tracked the location of a small community of ogres. Their reputation for ferocity is well-deserved; we'd best prepare well.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_unholdquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->isolated</li>
+				<li>complexAdj->defensive</li>
+				<li>complexAdj->aggressive</li>
+				<li>complexAdj->primitive</li>
+				<li>complexAdj->strong</li>
+				<li>complex->ogre community</li>
+				<li>complex->ogre grounds</li>
+				<li>complex->ogres</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <!-- Schrat = Spriggan -->
+
+  <!-- Medieval Overhaul patches -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Schrat"]/label</xpath>
+    <value>
+      <label>spriggan</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Schrat"]/description</xpath>
+    <value>
+      <description>A gnarled tangle of branches, roots and mud, roughly shaped after a human being.\n\nGifted with a twisted, sinister will, Spriggans slowly shuffle through the undergrowth in search of the living.\n\nIt’s said that Spriggans relish the blood of intrusive lumberjacks and overzealous hunters.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Schrat_Sapling"]/label</xpath>
+    <value>
+      <label>spriggan sapling</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Schrat_Dark"]/label</xpath>
+    <value>
+      <label>spriggan matriarch</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_SchratDark_Sapling"]/label</xpath>
+    <value>
+      <label>spriggan sapling</label>
+    </value>
+  </Operation>
+
+<!-- Medieval Adventures: Hunts patches -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterschrat"]/label</xpath>
+    <value>
+      <label>bloody letter (Spriggan Matriarch)</label>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairA"]/label</xpath>
+    <value>
+      <label>Spriggan Matriarch's Grove</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairA"]/description</xpath>
+    <value>
+      <description>A forest clearing dominated by an ancient Spriggan Matriarch.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairB"]/label</xpath>
+    <value>
+      <label>Spriggan Matriarch's Domain</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setischratlairB"]/description</xpath>
+    <value>
+      <description>The territory of a powerful Spriggan Matriarch.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateschrat"]/label</xpath>
+    <value>
+      <label>Locate Spriggan Matriarch</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateschrat"]/description</xpath>
+    <value>
+      <description>Track down Spriggan Matriarch.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_schratquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> We have found some angry Spriggans, good hunting.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_schratquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->green</li>
+				<li>complexAdj->angry</li>
+				<li>complexAdj->misty</li>
+				<li>complexAdj->dangerous</li>
+				<li>complexAdj->hidden</li>
+				<li>complex->Spriggan</li>
+				<li>complex->Spriggan's battlefield</li>
+				<li>complex->Spriggan's forest</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <!-- Lindwurm = Drake -->
+
+  <!-- Medieval Overhaul patches -->
+   <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_LindwurmForest"]/label</xpath>
+    <value>
+      <label>forest drake</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_LindwurmForest"]/description</xpath>
+    <value>
+      <description>An enormous reptile, halfway between serpents and dragons. One of the few creatures truly incapable of feeling fear. Any daredevil who manages to get past the mighty yet nimble tail and pierce a hardy scale will be splashed with corrosive blood. Drake blood is the most powerful acid known yet - dissolving even the thickest steel, eating through the flesh in seconds.</description>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_LindwurmCave"]/label</xpath>
+    <value>
+      <label>cave drake</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_LindwurmForest"]/label</xpath>
+    <value>
+      <label>forest drake</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_LindwurmCave"]/label</xpath>
+    <value>
+      <label>cave drake</label>
+    </value>
+  </Operation>
+
+<!-- Medieval Adventures: Hunts patches -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_lettervenomed"]/label</xpath>
+    <value>
+      <label>bloody letter (Drake)</label>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setilindwurmlairA"]/label</xpath>
+    <value>
+      <label>Drake ruins</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setilindwurmlairA"]/description</xpath>
+    <value>
+      <description>A ruin overtaken by an enormous Drake.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setilindwurmlairB"]/label</xpath>
+    <value>
+      <label>Drake cave</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setilindwurmlairB"]/description</xpath>
+    <value>
+      <description>An inconspicuous cave. A large Drake reportedly dwells inside.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setilindwurmlairC"]/label</xpath>
+    <value>
+      <label>Drake hatchery</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setilindwurmlairC"]/description</xpath>
+    <value>
+      <description>A large site which reportedly houses a hatchery for the terrifying Drake.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatelindwurm"]/label</xpath>
+    <value>
+      <label>Locate Drake</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatelindwurm"]/description</xpath>
+    <value>
+      <description>Track down a Drake.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_lindwurmquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> We tracked down a nest of the savage Drake. Incomprehensibly perilous, we should thoroughly prepare before proceeding. Drake venom, in particular, is extremely dangerous.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_lindwurmquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->bloody</li>
+				<li>complexAdj->venomous</li>
+				<li>complexAdj->dusty</li>
+				<li>complexAdj->dangerous</li>
+				<li>complexAdj->poisonous</li>
+				<li>complex->drake palace</li>
+				<li>complex->drake temple</li>
+				<li>complex->drake's subjects</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <!-- Ghoul = Draugr -->
+
+  <!-- Medieval Overhaul patches -->
+   <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Ghoul_Stage_One"]/label</xpath>
+    <value>
+      <label>Draugr Thrall</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Ghoul_Stage_One"]/description</xpath>
+    <value>
+      <description>Draugr are a form of ancient Nord dead, often associated with a bygone Dragon Cult.\nTheir bodies were mummified prior to reanimation, mostly protecting their bodies from the effects of decomposition.\n\nEven in undeath, they fanatically continue to serve their ancient masters by defending their place of burial.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Ghoul_Stage_Two"]/label</xpath>
+    <value>
+      <label>Draugr Scourge</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Ghoul_Stage_Two"]/description</xpath>
+    <value>
+      <description>Draugr are a form of ancient Nord dead, often associated with a bygone Dragon Cult.\nTheir bodies were mummified prior to reanimation, mostly protecting their bodies from the effects of decomposition.\n\nEven in undeath, they fanatically continue to serve their ancient masters by defending their place of burial.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Ghoul_Stage_Three"]/label</xpath>
+    <value>
+      <label>Hulking Draugr</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Ghoul_Stage_Three"]/description</xpath>
+    <value>
+      <description>Draugr are a form of ancient Nord dead, often associated with a bygone Dragon Cult.\nTheir bodies were mummified prior to reanimation, mostly protecting their bodies from the effects of decomposition.\n\nEven in undeath, they fanatically continue to serve their ancient masters by defending their place of burial.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Ghoul_Stage_One"]/label</xpath>
+    <value>
+      <label>draugr thrall</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Ghoul_Stage_One"]/labelPlural</xpath>
+    <value>
+      <labelPlural>draugr thrall</labelPlural>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Ghoul_Stage_Two"]/label</xpath>
+    <value>
+      <label>draugr scourge</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Ghoul_Stage_Two"]/labelPlural</xpath>
+    <value>
+      <labelPlural>draugr scourge</labelPlural>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Ghoul_Stage_Three"]/label</xpath>
+    <value>
+      <label>hulking draugr</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Ghoul_Stage_Three"]/labelPlural</xpath>
+    <value>
+      <labelPlural>hulking draugr</labelPlural>
+    </value>
+  </Operation>
+
+<!-- Medieval Adventures: Hunts patches -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterghoul"]/label</xpath>
+    <value>
+      <label>bloody letter (Draugr)</label>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setighoullocationA"]/label</xpath>
+    <value>
+      <label>Nordic Burial Site</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setighoullocationA"]/description</xpath>
+    <value>
+      <description>The location of an ancient Nordic burial site.\nThere are recent panicked reports from nearby settlements of undead activity.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setighoullocationB"]/label</xpath>
+    <value>
+      <label>Ancient Burial Grounds</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setighoullocationB"]/description</xpath>
+    <value>
+      <description>The site of ancient Nordic burial grounds.\nIt has been overrun by the undead.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setighoullocationC"]/label</xpath>
+    <value>
+      <label>Ancient Barrow</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setighoullocationC"]/description</xpath>
+    <value>
+      <description>A holy, consecrated burial place.\nScholars consider that this particular site was of importance to the ancient Dragon Cult.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateghoul"]/label</xpath>
+    <value>
+      <label>Locate Draugr</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocateghoul"]/description</xpath>
+    <value>
+      <description>Track down Draugr.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_ghoulquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> There are signs of undead activity around a Nordic burial site.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_ghoulquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->decaying</li>
+				<li>complexAdj->silent</li>
+				<li>complexAdj->hidden</li>
+				<li>complexAdj->haunted</li>
+				<li>complexAdj->dusty</li>
+        <li>complex->draugr activity</li>
+				<li>complex->Nord corpses</li>
+				<li>complex->Nordic dead</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <!-- Alp = Falmer -->
+
+  <!-- Medieval Overhaul patches -->
+   <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Alp"]/label</xpath>
+    <value>
+      <label>Falmer</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Alp"]/description</xpath>
+    <value>
+      <description>Falmer are blind, corrupted descendants of ancient Snow Elves that now live deep beneath the surface.\nThey are known to stalk and attack intruders, primarily in - but not limited to - underground Dwemer ruins.\n\nTheir ancestors, the Snow Elves, were betrayed in a deal for asylum they struck with the Dwemer, after having been displaced by invading Nords.\nThe Dwemer forced their wards to subsist only on toxic fungi which twisted them into what they are today.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Alp"]/label</xpath>
+    <value>
+      <label>Falmer</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Alp"]/labelPlural</xpath>
+    <value>
+      <labelPlural>Falmer</labelPlural>
+    </value>
+  </Operation>
+
+<!-- Medieval Adventures: Hunts patches -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letteralp"]/label</xpath>
+    <value>
+      <label>bloody letter (Falmer)</label>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setialpruinA"]/label</xpath>
+    <value>
+      <label>Ruined Farm</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setialpruinA"]/description</xpath>
+    <value>
+      <description>A large farm that was recently destroyed in an apparent raid. Settlements nearby have labelled the general area a no-go zone, as they have reportedly sent armed guards to investigate, but whom never returned.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setialpruinB"]/label</xpath>
+    <value>
+      <label>Ruined Tavern</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setialpruinB"]/description</xpath>
+    <value>
+      <description>A large, relatively-famous tavern that has been recently destroyed in an attack. A nearby settlement has reported seeing lit campfires around the site, and suggested that it must be the work of slavers, or bandits.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setialpruinC"]/label</xpath>
+    <value>
+      <label>Ruined site</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setialpruinC"]/description</xpath>
+    <value>
+      <description>A seemingly-abandoned trading camp, there have been recent reports of ambushes on travellers nearby.\nA nearby settlement has suggested bandits, but a hysterical travelling merchant has sworn to sightings of goblin-like creatures.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatealp"]/label</xpath>
+    <value>
+      <label>Locate mysterious bandits</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatealp"]/description</xpath>
+    <value>
+      <description>Track down sites of mysterious bandits causing chaos in the local area.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatealp"]/iconPath</xpath>
+    <value>
+      <iconPath>UI/DFP_Mystery</iconPath>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_alpquest"]/root/nodes/li[@Class="QuestEditor_Library.QuestNode_RandomCustomMap"]/siteIconPath</xpath>
+    <value>
+      <siteIconPath>UI/DFP_Mystery</siteIconPath>
+    </value>
+  </Operation>
+    <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_alpquest"]/root/nodes/li[@Class="QuestEditor_Library.QuestNode_RandomCustomMap"]/expandingIconPath</xpath>
+    <value>
+      <expandingIconPath>UI/DFP_Mystery</expandingIconPath>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_alpquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> Banditry has been reported by nearby settlements, who are unable to put a stop to it. We should go investigate.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_alpquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->bloody</li>
+				<li>complexAdj->screaming</li>
+				<li>complexAdj->hidden</li>
+				<li>complexAdj->haunted</li>
+				<li>complex->ruin</li>
+				<li>complex->community</li>
+				<li>complex->mysterious bandits</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <!-- Daer = Hircine's Aspect -->
+
+  <!-- Medieval Overhaul patches -->
+   <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Daer"]/label</xpath>
+    <value>
+      <label>Hircine's Aspect</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Daer"]/description</xpath>
+    <value>
+      <description>A strange tale whispered among commonfolk: a towering stag with the bulk and hunger of a great bear, said to roam the wilds as one of Hircine’s chosen aspects. Some claim it is the spirit of the hunt given flesh, others that it is a mortal beast twisted by the Daedric Prince’s will.\n\nWhatever its origin, those who cross its path quickly learn that prey and predator are merely roles in Hircine’s eternal game.\n\nThose who emerge victorious may discover the rich, invigorating meat, and after consumption, often feel the thrill of the chase lingering in their blood.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="DankPyon_Daer"]/label</xpath>
+    <value>
+      <label>Hircine's Aspect</label>
+    </value>
+  </Operation>
+
+<!-- Medieval Adventures: Hunts patches -->
+
+  <!-- bloody letter loot -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterdaer"]/label</xpath>
+    <value>
+      <label>bloody letter (Hircine's Aspect)</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Seti_loot_letterdaer"]/description</xpath>
+    <value>
+      <description>An undelivered letter, could be valuable.
+            \n\nTo your majesty.
+            \nThe reports were true.
+            \nThe hunters we sent were taken in the night.
+            \nWhat we believed to be some strange beast of the woods
+            \nis no mere animal.
+
+            \n\nI tracked the great stag to its cave.
+            \nAn elegant creature with great horns,
+            \nbut with the bulk and hunger of a bear.
+            \nThe locals whisper it is an aspect of the Great Hunt.
+
+            \n\nI watched it drag down a soldier, not ours.
+            \nThe creature did not eat him.
+            \nIt toyed with him... as if the hunt itself were the purpose.
+
+            \nHe is still alive.
+            \nI will attempt to save him
+            \nand learn what drives this beast
+            \nto hunt with such cruelty.</description>
+    </value>
+  </Operation>
+
+  <!-- map stuff -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setidaercaveA"]/label</xpath>
+    <value>
+      <label>Site of the Great Hunt</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setidaercaveA"]/description</xpath>
+    <value>
+      <description>A cave where an Aspect of the Huntsman is said to dwell.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setidaercaveB"]/label</xpath>
+    <value>
+      <label>Site of the Ritual of the Innocent Quarry</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setidaercaveB"]/description</xpath>
+    <value>
+      <description>A cave where an Aspect of the Lord of the Hunt is said to dwell.</description>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setidaercaveC"]/label</xpath>
+    <value>
+      <label>Site of the Sacred Hunt</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CustomMapDataDef[defName="setidaercaveC"]/description</xpath>
+    <value>
+      <description>A cave where an Aspect of the Master of the Chase is said to dwell.</description>
+    </value>
+  </Operation>
+
+  <!-- caravan actions -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatedaer"]/label</xpath>
+    <value>
+      <label>Locate Hircine's Aspect</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestEditor_Library.CaravanActionDef[defName="setilocatedaer"]/description</xpath>
+    <value>
+      <description>Track down an aspect of the Lord of the Hunt.</description>
+    </value>
+  </Operation>
+
+  <!-- quests -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_daerquest"]/questDescriptionRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questDescription -> A cave nearby is said by commonfolk to be host to the Great Hunt. Those seeking a worthy bounty should investigate.</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/QuestScriptDef[defName="seti_daerquest"]/questNameRules/rulesStrings</xpath>
+    <value>
+      <rulesStrings>
+        <li>questName(p=3)->[complexAdj] [complex]</li>
+				<li>questName->[complex]</li>
+				<li>complexAdj->bloody</li>
+				<li>complexAdj->old</li>
+				<li>complexAdj->hidden</li>
+				<li>complexAdj->mysterious</li>
+				<li>complex->lair of the Great Hunt</li>
+				<li>complex->lair of the Hunter's Game</li>
+				<li>complex->lair of the Huntsman</li>
+      </rulesStrings>
+    </value>
+  </Operation>
+
+</Patch>

@@ -19,5 +19,6 @@
 		<li IfModActive="ryuudra.constructvanillarockwalls">Compatibility/ryuudra.constructvanillarockwalls</li>
 		<li IfModActive="vanillaracesexpanded.saurid">Compatibility/vanillaracesexpanded.saurid</li>
 		<li IfModActive="who.vfee.isopodageneline">Compatibility/who.vfee.isopodageneline</li>
-	</v1.6>
+    	<li IfModActive="seti.medieval.hunts">Compatibility/seti.medieval.hunts</li>
+    	</v1.6>
 </loadFolders>
