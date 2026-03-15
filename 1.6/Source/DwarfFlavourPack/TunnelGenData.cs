@@ -42,6 +42,7 @@ public class TunnelGenData(World world) : WorldComponent(world)
   public Dictionary<PlanetLayer, List<PlanetTile>> tunnelNodes = new();
   public Dictionary<SurfaceTile, List<TunnelLink>> potentialTunnels = new();
   private Dictionary<int, HashSet<int>> reachableCache = new();
+  private bool tunnelNetworkReady = false;
 
   public HashSet<int> GetReachableTilesFrom(int startTile)
   {
@@ -232,6 +233,7 @@ public class TunnelGenData(World world) : WorldComponent(world)
       };
       potentialTunnels[toSurfaceTile].Add(fromTunnelLink);
       reachableCache.Clear();
+      tunnelNetworkReady = true;
     }
   }
 
@@ -251,6 +253,13 @@ public class TunnelGenData(World world) : WorldComponent(world)
   public override void WorldComponentTick()
   {
     base.WorldComponentTick();
+
+    if (!tunnelNetworkReady)
+    {
+      tunnelNetworkReady = true;
+      if (potentialTunnels.Count == 0)
+        new WorldGenStep_Tunnels().Regenerate(Find.WorldGrid.Surface);
+    }
 
     foreach (TunnelCaravan caravan in Find.WorldObjects.AllWorldObjects.OfType<TunnelCaravan>().Where(c => !c.done && !c.mapGenerating))
     {

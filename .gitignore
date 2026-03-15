@@ -1,3 +1,4 @@
+docs/
 *.dds
 ## Ignore built zips
 *.zip
