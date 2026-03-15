@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>MSSD_Research_TotallySafeDwemerFungus</defName>
+    <label>Dwemer fungus</label>
+    <description>Study cultivation methods of the Dwemer fungus. Despite its origins in the deep underground Dwemer settlements, the fungus proves surprisingly adaptable to surface farming conditions.</description>
+    <baseCost>900</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>1.00</researchViewX>
+    <researchViewY>2.80</researchViewY>
+  </ResearchProjectDef>
+
+  <ThingDef ParentName="CavePlantBase">
+    <defName>MSSD_Plant_TotallySafeDwemerFungus</defName>
+    <label>dwemer fungus</label>
+    <description>A curious, cultivable fungus that has never been seen outside of Dwemer settlements deep underground. Unlike common fungus, it can be grown while subject to any light.</description>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Nutrition>0.25</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Nutrifungus</texPath> <!-- needs updated when texture drawn by handsome individual -->
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.3, 0.13)</volume>
+        <offset>(-0.03,0,-0.44)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>14</pathCost>
+    <ingestible />
+    <plant>
+      <sowResearchPrerequisites>
+        <li>MSSD_Research_TotallySafeDwemerFungus</li>
+      </sowResearchPrerequisites>
+      <cavePlant>false</cavePlant>
+      <diesToLight>false</diesToLight>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.65</fertilitySensitivity>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>MSSD_TotallySafeDwemerFungus</harvestedThingDef>
+      <harvestYield>15</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+        <li>Hydroponic</li>
+      </sowTags>
+      <sowMinSkill>10</sowMinSkill>
+      <pollution>Any</pollution>
+      <topWindExposure>0</topWindExposure>
+      <growDays>5</growDays>
+      <cavePlantWeight>0</cavePlantWeight>
+      <visualSizeRange>0.3~0.65</visualSizeRange>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <maxMeshCount>9</maxMeshCount>
+    </plant>
+  </ThingDef>
+
+  <!-- note that it's been patched into CookMealBase>fixedIngredientFilter as a disallowedThingDef - intended only to be eaten raw -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>MSSD_TotallySafeDwemerFungus</defName>
+    <label>raw Dwemer fungus</label>
+    <description>Raw fungus commonly found in Dwemer settlements deep underground.\n\nIt is twice as filling as common fungus, but remarkably heat-resistant, surviving cooking temperatures that would destroy most organic matter and therefore cannot be cooked into meals.\nThe taste and texture is more akin to fruit than fungus.\n\nOnly the Dwemer are known to have any record of its culinary applications.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath> <!-- needs updated when texture drawn by handsome individual -->
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0</Flammability>
+    </statBases>
+    <ingestible>
+      <tasteThought>MSSD_Thought_TotallySafeDwemerFungus</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>MSSD_Hediff_TotallySafeDwemerFungus</hediffDef>
+          <severity>0.1</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>MSSD_Thought_TotallySafeDwemerFungus</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate Dwemer fungus</label>
+        <description>I ate raw Dwemer fungus.\n\nIt should have been utterly disgusting, but it wasn't bad at all. I want some more.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <HediffDef>
+    <defName>MSSD_Hediff_TotallySafeDwemerFungus</defName>
+    <label>parasitic fungal corruption</label>
+    <description>A parasitic fungus that corrupts and transforms the body.\n\nDwemer experts have categorically assured there are no unintended effects.\n\nThe fungus cannot further spread through the host body without repeated exposure, but will never recede until death of the host.\n\nThis complex fungal infection provides increasingly physical resilience to hosts, while dulling the mind and senses. Curiously, they also grow more docile towards those who hold power over them.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <chronic>true</chronic>
+    <allowMothballIfLowPriorityWorldPawn>true</allowMothballIfLowPriorityWorldPawn>
+    <initialSeverity>0.0</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+
+    <!-- one raw meal = 10% severity, so 10 raw meal occasions for max affliction (regardless of # eaten per meal). hediff cannot be tended, chronic illness = intended to never be cured -->
+
+      <!-- Stage 1 -->
+      <li>
+        <label>early fungal growth</label>
+        <minSeverity>0.0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <setMax>0.9</setMax>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.97</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>0.05</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>0.05</offset>
+          </li>
+          <li>
+            <capacity>Talking</capacity>
+            <setMax>0.9</setMax>
+          </li>
+        </capMods>
+        <statFactors>
+          <RestFallRateFactor>0.95</RestFallRateFactor>
+        </statFactors>
+        <statOffsets>
+          <ToxicResistance>0.1</ToxicResistance>
+          <ComfyTemperatureMax>5</ComfyTemperatureMax>
+          <SlaveSuppressionOffset>0.1</SlaveSuppressionOffset>
+        </statOffsets>
+      </li>
+
+      <!-- Stage 2 -->
+      <li>
+        <label>spreading fungal growth</label>
+        <minSeverity>0.4</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <setMax>0.6</setMax>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.95</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>0.1</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>0.1</offset>
+          </li>
+          <li>
+            <capacity>Talking</capacity>
+            <setMax>0.7</setMax>
+          </li>
+        </capMods>
+        <statFactors>
+          <RestFallRateFactor>0.9</RestFallRateFactor>
+        </statFactors>
+        <statOffsets>
+          <ToxicResistance>0.25</ToxicResistance>
+          <ComfyTemperatureMax>15</ComfyTemperatureMax>
+          <PawnBeauty>-1</PawnBeauty>
+          <SlaveSuppressionOffset>0.2</SlaveSuppressionOffset>
+        </statOffsets>
+      </li>
+
+      <!-- Stage 3 -->
+      <li>
+        <label>advanced fungal infestation</label>
+        <minSeverity>0.7</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <setMax>0.25</setMax>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.93</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>0.2</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>0.15</offset>
+          </li>
+          <li>
+            <capacity>Talking</capacity>
+            <setMax>0.35</setMax>
+          </li>
+        </capMods>
+        <statFactors>
+          <RestFallRateFactor>0.85</RestFallRateFactor>
+        </statFactors>
+        <statOffsets>
+          <ToxicResistance>0.5</ToxicResistance>
+          <ComfyTemperatureMax>25</ComfyTemperatureMax>
+          <PawnBeauty>-2</PawnBeauty>
+          <SlaveSuppressionOffset>0.35</SlaveSuppressionOffset>
+        </statOffsets>
+      </li>
+
+      <!-- Stage 4 -->
+      <li>
+        <label>total fungal colonisation</label>
+        <minSeverity>1.0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <setMax>0</setMax>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.9</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>0.35</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>0.2</offset>
+          </li>
+          <li>
+            <capacity>Talking</capacity>
+            <setMax>0.1</setMax>
+          </li>
+        </capMods>
+        <statFactors>
+          <RestFallRateFactor>0.8</RestFallRateFactor>
+        </statFactors>
+        <statOffsets>
+          <ToxicResistance>0.7</ToxicResistance>
+          <ComfyTemperatureMax>45</ComfyTemperatureMax>
+          <PawnBeauty>-3</PawnBeauty>
+          <SlaveSuppressionOffset>0.5</SlaveSuppressionOffset>
+        </statOffsets>
+      </li>
+
+    </stages>
+  </HediffDef>
+
+</Defs>

@@ -21,4 +21,13 @@
 		</value>
 	</Operation>
 
+  <Operation Class="PatchOperationAdd">
+		<xpath>Defs/RecipeDef[@Name="CookMealBase"]/fixedIngredientFilter</xpath>
+		<value>
+			<disallowedThingDefs>
+        <li>MSSD_TotallySafeDwemerFungus</li>
+      </disallowedThingDefs>
+		</value>
+	</Operation>
+
 </Patch>
