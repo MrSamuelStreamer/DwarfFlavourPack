@@ -97,6 +97,25 @@
   </IncidentDef>
 
 
+  <!-- TollCollector: a lone armed figure demands silver to let the caravan pass.
+       Non-combat by default; escalates to assault if the player refuses. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanTollCollector</defName>
+    <label>tunnel delay</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanTollCollector</workerClass>
+    <baseChance>0.4</baseChance>
+    <minRefireDays>40</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>The minecart's lights fall on a figure in the passage. They are armed and they are waiting.\n\nThey want payment to let the caravan pass. They seem prepared to enforce the toll.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
+
   <!-- AncientDefences: dormant mechanoid sentinels activate when the caravan passes.
        Combat event; mechanoids fight to destruction (no timeout or flee). -->
   <IncidentDef>

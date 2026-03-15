@@ -1,47 +1,20 @@
-using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.AI.Group;
 
 namespace DwarfFlavourPack;
 
 /// <summary>
 /// Incident: an abandoned supply cache is discovered in the tunnel.
-/// No combat — a ghost SpaceRefugee satisfies IncidentWorker_Ambush's non-empty
-/// pawn requirement. It is despawned on the next tick (via MapComponent_DespawnGhostNextTick)
-/// so the player never sees it wandering. Loot is spawned near the map centre.
+/// No combat — loot is spawned near the map centre. No ghost pawn required;
+/// IncidentWorker_TunnelCaravanNonCombat handles map setup and letter sending.
 /// </summary>
-public class IncidentWorker_TunnelCaravanAbandonedCache : IncidentWorker_TunnelCaravanSomethingHappened
+public class IncidentWorker_TunnelCaravanAbandonedCache : IncidentWorker_TunnelCaravanNonCombat
 {
-    private Pawn _witness;
-
-    protected override List<Pawn> GeneratePawns(IncidentParms parms)
+    protected override void PostSetupEncounterMap(Map map)
     {
-        parms.faction = null;
-        _witness = MakeGhostPawn();
-        return new List<Pawn> { _witness };
-    }
-
-    protected override void PostProcessGeneratedPawnsAfterSpawning(List<Pawn> generatedPawns)
-    {
-        Map map = _witness?.MapHeld;
-        if (map == null) return;
-
-        // Suppress the "Caravan battle won" letter — no enemies, so CheckWonBattle
-        // fires immediately without this component in place.
-        map.components.Add(new MapComponent_SuppressBattleWon(map));
-
-        // Despawn the ghost on the next tick — after DoExecute sends the letter
-        // (which needs the pawn spawned as look target), but before the player
-        // sees it wandering the map.
-        map.components.Add(new MapComponent_DespawnGhostNextTick(map, _witness));
-
         SpawnCacheItems(map);
     }
-
-    protected override LordJob CreateLordJob(List<Pawn> generatedPawns, IncidentParms parms)
-        => new LordJob_ExitMapBest();
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -64,7 +37,7 @@ public class IncidentWorker_TunnelCaravanAbandonedCache : IncidentWorker_TunnelC
         if (def == null) return;
         if (!CellFinder.TryFindRandomCellNear(map.Center, map, 10,
                 c => c.Standable(map) && !c.Fogged(map), out IntVec3 cell))
-            return; // map too blocked; skip this stack
+            return;
 
         Thing thing = ThingMaker.MakeThing(def);
         thing.stackCount = Mathf.Min(count, def.stackLimit);
