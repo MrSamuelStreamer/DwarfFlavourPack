@@ -96,4 +96,23 @@
     <pointsScaleable>false</pointsScaleable>
   </IncidentDef>
 
+
+  <!-- AncientDefences: dormant mechanoid sentinels activate when the caravan passes.
+       Combat event; mechanoids fight to destruction (no timeout or flee). -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanAncientDefences</defName>
+    <label>tunnel delay</label>
+    <category>ThreatSmall</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanAncientDefences</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>30</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>The minecart's lights sweep across worked stone — and something moves in the dark.\n\nDormant mechanoid sentinels, silent for centuries, have detected the caravan. They are activating.</letterText>
+    <letterDef>ThreatSmall</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
 </Defs>

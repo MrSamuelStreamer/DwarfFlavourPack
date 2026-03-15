@@ -20,6 +20,11 @@ public class MapComponent_DespawnGhostNextTick : MapComponent
 {
     private Pawn _ghost;
 
+    // Parameterless (Map-only) constructor required by RimWorld's reflection-based
+    // MapComponent auto-instantiation (Map.FillComponents). _ghost stays null and
+    // MapComponentTick does nothing until a real instance is added manually.
+    public MapComponent_DespawnGhostNextTick(Map map) : base(map) { }
+
     public MapComponent_DespawnGhostNextTick(Map map, Pawn ghost) : base(map)
     {
         _ghost = ghost;

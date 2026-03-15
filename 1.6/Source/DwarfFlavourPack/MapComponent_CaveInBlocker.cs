@@ -17,15 +17,26 @@ public class MapComponent_CaveInBlocker : MapComponent
 {
     private HashSet<Thing> _blockingThings = new HashSet<Thing>();
     private bool _cleared;
+    // True once TrackThing has been called at least once. Guards against
+    // RimWorld's reflection-based auto-instantiation of MapComponents on every
+    // map: without this flag, a freshly constructed (never-used) component
+    // would immediately fire "path cleared" on its first tick because
+    // _blockingThings starts empty.
+    private bool _active;
 
     public MapComponent_CaveInBlocker(Map map) : base(map) { }
 
     public bool IsCleared => _cleared;
 
-    public void TrackThing(Thing t) => _blockingThings.Add(t);
+    public void TrackThing(Thing t)
+    {
+        _blockingThings.Add(t);
+        _active = true;
+    }
 
     public override void MapComponentTick()
     {
+        if (!_active) return;
         if (_cleared) return;
         if (Find.TickManager.TicksGame % 60 != 0) return;
 
@@ -47,6 +58,7 @@ public class MapComponent_CaveInBlocker : MapComponent
     {
         Scribe_Collections.Look(ref _blockingThings, "blockingThings", LookMode.Reference);
         Scribe_Values.Look(ref _cleared, "cleared", false);
+        Scribe_Values.Look(ref _active, "active", false);
         _blockingThings ??= new HashSet<Thing>();
     }
 }
