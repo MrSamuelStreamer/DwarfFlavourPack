@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<!-- Deep drill too Pneumatic Drill -->
+    <Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="DeepDrill"]/label</xpath>
+		<value>
+			<label>Pneumatic Drill</label>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="DeepDrill"]/description</xpath>
+		<value>
+			<description>A steam-powered deep-crust pneumatic drilling rig for extracting tonally-resonant minerals from deep under the surface. Use a Subterranean Resonator to detect the resources. This drill will yield stone chunks if no resources are present. Can be repositioned freely.</description>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="DeepDrill"]/researchPrerequisites</xpath>
+		<value>
+			<researchPrerequisites>
+				<li>VR_BasicConstructTech</li>
+			</researchPrerequisites>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="DeepDrill"]/comps</xpath>
+		<value>
+			<comps>
+				<li Class="CompProperties_Forbiddable"/>
+				<li Class="CompProperties_DeepDrill" />
+				<li Class="CompProperties_CreatesInfestations" />
+				<li Class="PipeSystem.CompProperties_ResourceTrader">
+					<compClass>FantasyBiotech.CompResourceTrader_Steam</compClass>
+					<pipeNet>VR_SteamNet</pipeNet>
+					<consumptionPerTick>5</consumptionPerTick> <!-- Unsure how this functions-->
+					<idleConsumptionPerTick>5</idleConsumptionPerTick>
+				</li>
+				<li Class="CompProperties_Power"> <!-- Not sure what this does either but it was on the other buildings in the base mod -->
+					<transmitsPower>false</transmitsPower>	
+					<compClass>FantasyBiotech.CompPowerPlantNeedResource_Steam</compClass>
+					<basePowerConsumption>-1000</basePowerConsumption>
+				</li>
+			</comps>
+		</value>
+	</Operation>
+	<!-- Ground-Penetrating Scanner -->
+    <Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GroundPenetratingScanner"]/label</xpath>
+		<value>
+			<label>Subterranean Resonator</label>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GroundPenetratingScanner"]/description</xpath>
+		<value>
+			<description>A sonically attuned sensor unit used by harmonic engineers to detect seismic resonance deep within the planets crust. The chance to find a resource depends on the operator's research ability. It consumes a lot of steam. If you find a buried resource, you'll need to use pneumatic drills to extract it.</description>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GroundPenetratingScanner"]/researchPrerequisites</xpath>
+		<value>
+			<researchPrerequisites>
+				<li>VR_BasicConstructTech</li>
+			</researchPrerequisites>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GroundPenetratingScanner"]/placeWorkers</xpath>
+		<value>
+			<placeWorkers>
+				<li>PlaceWorker_NotUnderRoof</li>
+			</placeWorkers>
+		</value>
+	</Operation>
+	<Operation Class="PatchOperationReplace">
+		<xpath>Defs/ThingDef[defName="GroundPenetratingScanner"]/comps</xpath>
+		<value>
+			<comps>
+				<li Class="CompProperties_Forbiddable"/>
+				<li Class="CompProperties_ScannerMineralsDeep">
+					<scanSpeedStat>ResearchSpeed</scanSpeedStat>
+					<scanFindMtbDays>3</scanFindMtbDays>
+					<scanFindGuaranteedDays>6</scanFindGuaranteedDays>
+					<soundWorking>ScannerGroundPenetrating_Ambience</soundWorking>
+				</li>
+				<li Class="PipeSystem.CompProperties_ResourceTrader">
+					<compClass>FantasyBiotech.CompResourceTrader_Steam</compClass>
+					<pipeNet>VR_SteamNet</pipeNet>
+					<consumptionPerTick>15</consumptionPerTick> <!-- Unsure how this functions-->
+					<idleConsumptionPerTick>10</idleConsumptionPerTick>
+				</li>
+				<li Class="CompProperties_Power">	<!-- Not sure what this does either but it was on the other buildings in the base mod-->
+					<transmitsPower>false</transmitsPower>
+					<compClass>FantasyBiotech.CompPowerPlantNeedResource_Steam</compClass>
+					<basePowerConsumption>-1000</basePowerConsumption>
+				</li>
+			</comps>
+		</value>
+	</Operation>
+</Patch>
