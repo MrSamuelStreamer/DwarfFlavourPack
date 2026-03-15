@@ -63,6 +63,7 @@
     <label>raw Dwemer fungus</label>
     <description>Raw fungus commonly found in Dwemer settlements deep underground.\n\nIt is twice as filling as common fungus, but remarkably heat-resistant, surviving cooking temperatures that would destroy most organic matter and therefore cannot be cooked into meals.\nThe taste and texture is more akin to fruit than fungus.\n\nOnly the Dwemer are known to have any record of its culinary applications.</description>
     <possessionCount>10</possessionCount>
+    <tradeability>None</tradeability>
     <graphicData>
       <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath> <!-- needs updated when texture drawn by handsome individual -->
     </graphicData>
