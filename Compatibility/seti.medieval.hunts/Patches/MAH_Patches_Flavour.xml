@@ -698,7 +698,7 @@
 				<li>complexAdj->hidden</li>
 				<li>complexAdj->haunted</li>
 				<li>complexAdj->dusty</li>
-        <li>complex->draugr activity</li>
+        <li>complex->site of undead activity</li>
 				<li>complex->Nord corpses</li>
 				<li>complex->Nordic dead</li>
       </rulesStrings>
@@ -711,26 +711,26 @@
    <Operation Class="PatchOperationReplace">
     <xpath>/Defs/ThingDef[defName="DankPyon_Alp"]/label</xpath>
     <value>
-      <label>Falmer</label>
+      <label>ancestral Falmer</label>
     </value>
   </Operation>
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/ThingDef[defName="DankPyon_Alp"]/description</xpath>
     <value>
-      <description>Falmer are blind, corrupted descendants of ancient Snow Elves that now live deep beneath the surface.\nThey are known to stalk and attack intruders, primarily in - but not limited to - underground Dwemer ruins.\n\nTheir ancestors, the Snow Elves, were betrayed in a deal for asylum they struck with the Dwemer, after having been displaced by invading Nords.\nThe Dwemer forced their wards to subsist only on toxic fungi which twisted them into what they are today.</description>
+      <description>Ancestral Falmer are blind, corrupted descendants of ancient Snow Elves that now live deep beneath the surface.\nThey are known to stalk and attack intruders, primarily in - but not limited to - underground Dwemer ruins.\n\nTheir ancestors, the Snow Elves, were betrayed in a deal for asylum they struck with the Dwemer, after having been displaced by invading Nords.\nThe Dwemer forced their wards to subsist only on toxic fungi which twisted them into what they are today.\n\nThese particular Falmer are the result of generations of fungal corruption, and any trace of their elven heritage has long since been consumed.</description>
     </value>
   </Operation>
 
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/PawnKindDef[defName="DankPyon_Alp"]/label</xpath>
     <value>
-      <label>Falmer</label>
+      <label>ancestral Falmer</label>
     </value>
   </Operation>
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/PawnKindDef[defName="DankPyon_Alp"]/labelPlural</xpath>
     <value>
-      <labelPlural>Falmer</labelPlural>
+      <labelPlural>ancestral Falmer</labelPlural>
     </value>
   </Operation>
 
@@ -740,7 +740,7 @@
   <Operation Class="PatchOperationReplace">
     <xpath>/Defs/ThingDef[defName="Seti_loot_letteralp"]/label</xpath>
     <value>
-      <label>bloody letter (Falmer)</label>
+      <label>bloody letter (Ancestral Falmer)</label>
     </value>
   </Operation>
 
