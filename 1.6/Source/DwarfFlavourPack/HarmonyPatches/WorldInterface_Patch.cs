@@ -35,10 +35,13 @@ public static class WorldInterface_Patch
         if (Event.current.type == EventType.MouseDown)
         {
           Event.current.Use();
-          Find.WorldInterface.SelectedTile = caravan.Tile;
           Find.WorldSelector.ClearSelection();
           Find.WorldSelector.Select(caravan);
-          Find.WorldCameraDriver.JumpTo(Find.WorldGrid.GetTileCenter(Find.WorldInterface.SelectedTile));
+          if (caravan.Tile.Valid)
+          {
+            Find.WorldInterface.SelectedTile = caravan.Tile;
+            Find.WorldCameraDriver.JumpTo(Find.WorldGrid.GetTileCenter(Find.WorldInterface.SelectedTile));
+          }
         }
       }
 

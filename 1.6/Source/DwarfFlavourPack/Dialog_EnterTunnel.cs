@@ -138,7 +138,7 @@ public class Dialog_EnterTunnel : Window
   {
     if (tunnel.LoadInProgress && tunnel.leftToLoad.Any(trans => trans.things.Contains(t)))
       return;
-    TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatching(t, transferables, TransferAsOneMode.PodsOrCaravanPacking);
+    TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatchingDesperate(t, transferables, TransferAsOneMode.PodsOrCaravanPacking);
     if (transferableOneWay == null)
     {
       transferableOneWay = new TransferableOneWay();

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanInsectAttack</defName>
+    <label>tunnel insect attack</label>
+    <category>ThreatBig</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanInsectAttack</workerClass>
+    <baseChance>1.5</baseChance>
+    <minRefireDays>10</minRefireDays>
+    <letterLabel>Insect attack!</letterLabel>
+    <letterText>A tunnel caravan has encountered a swarm of hostile insects in the underground passages!\n\nThe caravan must fight their way through or find an escape route.</letterText>
+    <letterDef>ThreatBig</letterDef>
+    <pointsScaleable>true</pointsScaleable>
+    <minThreatPoints>300</minThreatPoints>
+  </IncidentDef>
+
+</Defs>

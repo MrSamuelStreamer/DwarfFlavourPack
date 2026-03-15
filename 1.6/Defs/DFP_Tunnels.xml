@@ -55,14 +55,121 @@
         <genStep Class="DwarfFlavourPack.GenStep_PlaceTunnelEntrance"/>
         <linkWithSite>DFP_TunnelEntranceSitePart</linkWithSite>
     </GenStepDef>
-    
+
+    <!-- Overrides biome terrain to cave floor + thick mountain roofing. Runs after Terrain (210). -->
+    <GenStepDef>
+        <defName>DFP_TunnelCaveSetup</defName>
+        <order>230</order>
+        <genStep Class="DwarfFlavourPack.GenStep_TunnelCaveSetup"/>
+    </GenStepDef>
+
+    <!--
+        Carves underground cave corridors into MapGenerator.Caves before
+        Underground_RocksFromGrid (order 200) runs.
+
+        Replicates TileMutatorWorker_UndergroundCave.GeneratePostElevationFertility,
+        which is normally triggered via pocketMapProperties.tileMutators. That path
+        only fires when isPocketMap=true; caravan attack maps use isPocketMap=false,
+        so no mutators are applied and MapGenerator.Caves stays all-zero without this step.
+    -->
+    <GenStepDef>
+        <defName>DFP_TunnelCaravanCaves</defName>
+        <order>15</order>
+        <genStep Class="DwarfFlavourPack.GenStep_TunnelCaravanCaves"/>
+    </GenStepDef>
+
     <MapGeneratorDef ParentName="MapCommonBase">
         <defName>DFP_TunnelEntrance</defName>
         <genSteps>
-            <li>DFP_PlaceTunnelEntrance</li> 
-            <li>RocksFromGrid_NoMinerals</li> <!-- This is ignored if we are landing via gravship -->
+            <!-- Dense rock blotches give an underground cave feel -->
+            <li>Underground_RocksFromGrid</li>
+            <!-- Override surface terrain to cave floor + thick roof everywhere -->
+            <li>DFP_TunnelCaveSetup</li>
+            <!-- Clear area and place the entrance building -->
+            <li>DFP_PlaceTunnelEntrance</li>
         </genSteps>
     </MapGeneratorDef>
+
+    <!--
+        Map generator for TunnelCaravan insect-attack encounters.
+        Produces a cave-like arena: rough stone floor, thick overhead rock,
+        and scattered rock formations for cover.
+
+        IMPORTANT: Do NOT add pocketMapProperties. pocketMapProperties use a different
+        creation path that requires isPocketMap=true, which caravan attack maps are NOT
+        (they sit on a real world tile). Adding pocketMapProperties causes an
+        InvalidCastException inside GetOrGenerateMap (previously documented as Issue 7).
+
+        Do NOT inherit from MapCommonBase — child genSteps append to the parent list,
+        so inheriting would silently run the entire surface pipeline before our steps.
+
+        Gen steps (sorted by order):
+          ElevationFertility (10)       — sets all cells to elevation 1.0 (all rock,
+                                          because isUnderground=true)
+          DFP_TunnelCaravanCaves (15)   — carves cave corridors into MapGenerator.Caves
+                                          by replicating TileMutatorWorker_UndergroundCave.
+                                          MutatorPostElevationFertility would do this via
+                                          tileMutators, but those only run for isPocketMap=true.
+          Underground_RocksFromGrid (200) — spawns rock Things on cells where Caves<=0
+          DFP_TunnelCaveSetup (230)     — overrides terrain to rough stone, all cells
+                                          get RoofRockThick
+          FindPlayerStartSpot (850)     — finds a walkable player entry point
+          RockChunks (970)              — loose chunks for cover and resources
+          MutatorFinal (1600)           — required cleanup pass
+          Fog                           — fog of war
+    -->
+    <MapGeneratorDef>
+        <defName>DFP_TunnelEncounter</defName>
+        <label>tunnel encounter</label>
+        <isUnderground>true</isUnderground>
+        <forceCaves>true</forceCaves>
+        <genSteps>
+            <li>ElevationFertility</li>
+            <!-- DFP_TunnelCaravanCaves (order 15) carves corridors into MapGenerator.Caves
+                 before Underground_RocksFromGrid (order 200) places rocks. Replaces
+                 MutatorPostElevationFertility, which does nothing here because
+                 isPocketMap=false means tileMutators are never applied. -->
+            <li>DFP_TunnelCaravanCaves</li>
+            <li>Underground_RocksFromGrid</li>
+            <li>DFP_TunnelCaveSetup</li>
+            <li>RockChunks</li>
+            <li>FindPlayerStartSpot</li>
+            <li>MutatorFinal</li>
+            <li>Fog</li>
+        </genSteps>
+        <customMapComponents>
+            <li>DwarfFlavourPack.MapComponent_TunnelCaravanState</li>
+        </customMapComponents>
+    </MapGeneratorDef>
+
+    <!--
+        Battlefield world object used as the map parent for TunnelCaravan insect-attack
+        encounters.
+
+        IMPORTANT: ParentName="Ambush" does NOT work — there is no abstract WorldObjectDef
+        named "Ambush" in vanilla XML, so the inheritance silently produces an empty def
+        with no worldObjectClass. This causes an InvalidCastException inside GetOrGenerateMap
+        because it casts the result to MapParent.
+
+        We explicitly mirror the vanilla AttackedNonPlayerCaravan def (worldObjectClass,
+        isTempIncidentMapOwner, FormCaravan + TimedDetectionRaids comps) and set our
+        own cave map generator.
+    -->
+    <WorldObjectDef ParentName="StaticWorldObjectBase">
+        <defName>DFP_TunnelEncounterSite</defName>
+        <label>tunnel encounter</label>
+        <worldObjectClass>CaravansBattlefield</worldObjectClass>
+        <mapGenerator>DFP_TunnelEncounter</mapGenerator>
+        <texture>UI/DFP_TunnelIcon</texture>
+        <expandingIconTexture>UI/DFP_TunnelIcon</expandingIconTexture>
+        <expandingIcon>true</expandingIcon>
+        <expandingIconPriority>80</expandingIconPriority>
+        <isTempIncidentMapOwner>true</isTempIncidentMapOwner>
+        <comps>
+            <li Class="WorldObjectCompProperties_FormCaravan" />
+            <li Class="WorldObjectCompProperties_TimedDetectionRaids" />
+        </comps>
+    </WorldObjectDef>
     
     <IncidentTargetTagDef>
         <defName>DFP_TunnelEntrance</defName>
@@ -115,6 +222,7 @@
         <expandingIcon>true</expandingIcon>
         <expandingIconPriority>100</expandingIconPriority>
         <expandMore>true</expandMore>
+        <mapGenerator>Encounter</mapGenerator>
         <allowCaravanIncidentsWhichGenerateMap>true</allowCaravanIncidentsWhichGenerateMap>
         <IncidentTargetTags>
             <li>DFP_TunnelEntrance</li>
