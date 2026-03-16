@@ -44,8 +44,15 @@ public static class CaravanIncidentUtility_Patch
         Caravan caravan,
         ref WorldObjectDef suggestedMapParentDef)
     {
-        if (caravan is TunnelCaravan)
-            suggestedMapParentDef = DefDatabase<WorldObjectDef>.GetNamed("DFP_TunnelEncounterSite");
+        if (caravan is not TunnelCaravan) return;
+
+        // Cave-in uses a dedicated WorldObjectDef whose MapGeneratorDef runs
+        // GenStep_TunnelCaveInLayout (deterministic tunnel + barrier layout).
+        // All other tunnel incidents use the generic DFP_TunnelEncounterSite
+        // (random cave corridors via GenStep_TunnelCaravanCaves).
+        suggestedMapParentDef = IncidentWorker_TunnelCaravanCaveIn.IsCaveIn
+            ? DefDatabase<WorldObjectDef>.GetNamed("DFP_TunnelCaveInSite")
+            : DefDatabase<WorldObjectDef>.GetNamed("DFP_TunnelEncounterSite");
     }
 
     // ── Part 1b ────────────────────────────────────────────────────────────
@@ -78,7 +85,8 @@ public static class MapParent_Patch{
     [HarmonyPostfix]
     public static void ClearActiveEncounterStateOnMapRemoval(MapParent __instance)
     {
-        if (__instance.def?.defName == "DFP_TunnelEncounterSite")
+        if (__instance.def?.defName == "DFP_TunnelEncounterSite"
+            || __instance.def?.defName == "DFP_TunnelCaveInSite")
             TunnelEncounterSetup.HasActiveEncounter = false;
     }
 }

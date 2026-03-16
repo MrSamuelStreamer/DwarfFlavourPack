@@ -1,58 +1,129 @@
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace DwarfFlavourPack;
 
 /// <summary>
-/// Incident: the tunnel ceiling collapses, scattering biome-matched rock walls across
-/// a chokepoint. The caravan cannot reform until all blocking debris is mined clear.
+/// Incident: a section of tunnel ceiling collapses, sealing the passage with fallen rock.
 ///
-///   - MapComponent_CaveInBlocker tracks the debris and fires "path cleared" when done.
-///   - CaveInReformBlocker_Patch (Harmony) blocks ExitMapAndCreateCaravan while
-///     MapComponent_CaveInBlocker.IsCleared is false.
-///   - MapComponent_SuppressBattleWon and map/letter setup handled by base class.
+/// Map layout (built by GenStep_TunnelCaveInLayout during map generation):
+///
+///   ┌─────────────────────────────┐
+///   │ solid rock   │ tunnel (5w) │ solid rock                         │
+///   │              │             │                                     │
+///   │              │  open       │  ← approach from south             │
+///   │              │             │                                     │
+///   │              │═════════════│  ← lower barrier (5 deep, @±20)    │
+///   │              │             │                                     │
+///   │              │  enclosed   │  ← pawns teleported here           │
+///   │              │  section    │    (CaravanEnterMapUtility places   │
+///   │              │             │     them at edge; PostSetup moves   │
+///   │              │             │     them to the enclosed section)   │
+///   │              │═════════════│  ← upper barrier (5 deep, @±20)    │
+///   │              │             │                                     │
+///   │              │  open       │  ← approach to north               │
+///   └─────────────────────────────┘
+///
+/// Gen pipeline (DFP_TunnelCaveIn MapGeneratorDef):
+///   ElevationFertility (10)       — elevation data
+///   DFP_TunnelCaveSetup (230)     — cave floor terrain + thick roof everywhere
+///   DFP_TunnelCaveInLayout (240)  — deterministic rock layout + loot scatter
+///   FindPlayerStartSpot (850)     — finds open cell in approach section
+///   RockChunks (970)              — loose debris for flavour
+///   MutatorFinal (1600) / Fog
+///
+/// IsCaveIn flag: set in DoNonCombatExecute (before SetupCaravanAttackMap),
+/// read by CaravanIncidentUtility_Patch.UsesCaveMapForTunnelCaravan to route
+/// this incident to DFP_TunnelCaveInSite (which uses the DFP_TunnelCaveIn generator)
+/// instead of the generic DFP_TunnelEncounterSite.
+///
+/// Success condition: all mobile player pawns have an unobstructed walking path to
+/// any map edge cell (checked by MapComponent_CaveInBlocker every 60 ticks).
+/// Reform is blocked by CaveInReformBlocker_Patch until IsCleared is true.
 /// </summary>
 public class IncidentWorker_TunnelCaravanCaveIn : IncidentWorker_TunnelCaravanNonCombat
 {
-    // FireOncePerGame is deliberately left at the default (false) — cave-ins recur.
+    /// <summary>
+    /// Set to true for the duration of DoNonCombatExecute so the Harmony prefix in
+    /// CaravanIncidentUtility_Patch can route this incident to DFP_TunnelCaveInSite
+    /// (which uses the DFP_TunnelCaveIn map generator) rather than the generic
+    /// DFP_TunnelEncounterSite used by all other tunnel incidents.
+    /// </summary>
+    public static bool IsCaveIn;
 
-    protected override void PostSetupEncounterMap(Map map)
+    /// <summary>
+    /// Wraps the base execute with the routing flag so SetupCaravanAttackMap sees it.
+    /// </summary>
+    protected override void DoNonCombatExecute(IncidentParms parms)
     {
-        var caveInBlocker = new MapComponent_CaveInBlocker(map);
-        map.components.Add(caveInBlocker);
-
-        ThingDef rockDef  = GetRockWallDef(map);
-        int chokeY        = Mathf.RoundToInt(map.Size.z * 0.35f);
-        int debrisCount   = Rand.RangeInclusive(4, 7);
-        int spawned       = 0;
-
-        for (int attempt = 0; attempt < debrisCount * 3 && spawned < debrisCount; attempt++)
+        IsCaveIn = true;
+        try
         {
-            IntVec3 cell = new IntVec3(
-                Rand.RangeInclusive(map.Size.x / 3, 2 * map.Size.x / 3),
-                0,
-                chokeY + Rand.RangeInclusive(-2, 2));
-
-            if (!cell.InBounds(map) || !cell.Standable(map))
-                continue;
-
-            Thing rock = GenSpawn.Spawn(ThingMaker.MakeThing(rockDef), cell, map);
-            caveInBlocker.TrackThing(rock);
-            spawned++;
+            base.DoNonCombatExecute(parms);
+        }
+        finally
+        {
+            IsCaveIn = false;
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
     /// <summary>
-    /// Returns a mineable rock-wall ThingDef matching the tile's biome rock types,
-    /// falling back to Sandstone if none is found.
+    /// Called after the encounter map is generated and CaravanEnterMapUtility.Enter
+    /// has placed pawns (via edge-entry) in the south approach section. Teleports all
+    /// player pawns into the enclosed centre section, then activates the blocker.
+    /// Layout and loot were already placed by GenStep_TunnelCaveInLayout.
     /// </summary>
-    private static ThingDef GetRockWallDef(Map map)
+    protected override void PostSetupEncounterMap(Map map)
     {
-        ThingDef rockType = Find.World.NaturalRockTypesIn(map.Tile).FirstOrDefault();
-        return rockType ?? ThingDef.Named("Sandstone");
+        int centreX = map.Size.x / 2;
+        int centreZ = map.Size.z / 2;
+
+        PlacePawnsInCentre(map, centreX, centreZ);
+
+        var blocker = new MapComponent_CaveInBlocker(map);
+        blocker.Activate();
+        map.components.Add(blocker);
+    }
+
+    // ── Pawn relocation ────────────────────────────────────────────────────────
+
+    private static void PlacePawnsInCentre(Map map, int centreX, int centreZ)
+    {
+        List<Pawn> playerPawns = map.mapPawns.AllPawnsSpawned
+            .Where(p => p.Faction != null && p.Faction == Faction.OfPlayer)
+            .ToList();
+
+        if (playerPawns.Count == 0) return;
+
+        // Enclosed section: tunnel cells between the inner edges of the two barriers.
+        // Uses the same geometry constants as GenStep_TunnelCaveInLayout.
+        int enclosedLo = centreZ - GenStep_TunnelCaveInLayout.BarrierOffset + 1;
+        int enclosedHi = centreZ + GenStep_TunnelCaveInLayout.BarrierOffset - 1;
+        int halfWidth  = GenStep_TunnelCaveInLayout.TunnelHalfWidth;
+
+        List<IntVec3> candidates = new List<IntVec3>();
+        for (int x = centreX - halfWidth; x <= centreX + halfWidth; x++)
+        for (int z = enclosedLo; z <= enclosedHi; z++)
+        {
+            var cell = new IntVec3(x, 0, z);
+            if (cell.InBounds(map))
+                candidates.Add(cell);
+        }
+        candidates.Shuffle();
+
+        int idx = 0;
+        foreach (Pawn pawn in playerPawns)
+        {
+            if (idx >= candidates.Count)
+            {
+                Log.Warning($"[DwarfFlavourPack] CaveIn: no candidate cell left for {pawn.LabelShort}");
+                break;
+            }
+
+            pawn.DeSpawn(DestroyMode.Vanish);
+            GenSpawn.Spawn(pawn, candidates[idx++], map, WipeMode.VanishOrMoveAside);
+        }
     }
 }

@@ -51,7 +51,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanCaveIn</workerClass>
-    <baseChance>0</baseChance>
+    <baseChance>0.5</baseChance>
     <minRefireDays>30</minRefireDays>
     <letterLabel>Tunnel collapse</letterLabel>
     <letterText>A deep crack and rumble shakes the tunnel. Rock and earth pour from the ceiling, sealing the passage ahead.\n\nThe caravan is trapped. The debris must be cleared before they can move on.</letterText>

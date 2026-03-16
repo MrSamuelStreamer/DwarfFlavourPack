@@ -67,7 +67,12 @@ public abstract class IncidentWorker_TunnelCaravanNonCombat : IncidentWorker_Tun
         return true;
     }
 
-    private void DoNonCombatExecute(IncidentParms parms)
+    /// <summary>
+    /// Performs the actual encounter-map setup. Promoted to protected virtual so
+    /// subclasses (e.g. the cave-in) can wrap it — e.g. to set a routing flag
+    /// before SetupCaravanAttackMap is called.
+    /// </summary>
+    protected virtual void DoNonCombatExecute(IncidentParms parms)
     {
         Map map = CaravanIncidentUtility.SetupCaravanAttackMap(
             (Caravan)parms.target,

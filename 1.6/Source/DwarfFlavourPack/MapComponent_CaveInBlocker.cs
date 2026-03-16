@@ -1,52 +1,66 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
 namespace DwarfFlavourPack;
 
 /// <summary>
-/// Tracks the debris Things spawned by a Cave-In encounter. Polls every 60 ticks;
-/// when all tracked Things are destroyed or despawned, fires a "path cleared" letter
-/// and sets IsCleared = true so the reform-blocking patch stops blocking.
+/// Monitors a Cave-In encounter map. Polls every 60 ticks; once every mobile player
+/// pawn has an unobstructed walking path to the map edge (debris mined clear), fires
+/// a "path cleared" letter and sets IsCleared = true so the reform-blocking patch
+/// stops blocking.
 ///
-/// Add this component in PostProcessGeneratedPawnsAfterSpawning before calling
-/// TrackThing. Added at runtime, it participates in MapComponentTick normally.
+/// Activate() must be called from PostSetupEncounterMap after the component is added
+/// to map.components. This guards against RimWorld's reflection-based auto-instantiation
+/// of MapComponents on every map — without the _active flag a freshly constructed
+/// (never-activated) component would fire "path cleared" on its very first tick
+/// because there are no uncleared things to block it.
+///
+/// Only mobile (alive, not downed) player pawns are checked; downed pawns can be
+/// carried by the others and are excluded so a single injured colonist doesn't
+/// permanently block reform.
+///
 /// Persisted across save/load via ExposeData.
 /// </summary>
 public class MapComponent_CaveInBlocker : MapComponent
 {
-    private HashSet<Thing> _blockingThings = new HashSet<Thing>();
     private bool _cleared;
-    // True once TrackThing has been called at least once. Guards against
-    // RimWorld's reflection-based auto-instantiation of MapComponents on every
-    // map: without this flag, a freshly constructed (never-used) component
-    // would immediately fire "path cleared" on its first tick because
-    // _blockingThings starts empty.
     private bool _active;
 
     public MapComponent_CaveInBlocker(Map map) : base(map) { }
 
-    // True when this map has no active cave-in blockage: either the component was
-    // never activated (no cave-in on this map — auto-instantiated by RimWorld's
-    // reflection but never had TrackThing called), or it was activated and all
-    // debris has been cleared. The CaveInReformBlocker_Patch checks this property;
-    // without the !_active guard it would block reform on every non-cave-in map.
+    /// <summary>
+    /// True when reform is allowed: either no cave-in is active on this map,
+    /// or it was active and the path to the edge has been cleared.
+    /// The CaveInReformBlocker_Patch checks this property.
+    /// </summary>
     public bool IsCleared => !_active || _cleared;
 
-    public void TrackThing(Thing t)
-    {
-        _blockingThings.Add(t);
-        _active = true;
-    }
+    /// <summary>
+    /// Marks this component as live. Call exactly once from PostSetupEncounterMap.
+    /// </summary>
+    public void Activate() => _active = true;
 
     public override void MapComponentTick()
     {
-        if (!_active) return;
-        if (_cleared) return;
+        if (!_active || _cleared) return;
         if (Find.TickManager.TicksGame % 60 != 0) return;
 
-        _blockingThings.RemoveWhere(t => t == null || t.Destroyed || !t.Spawned);
-        if (_blockingThings.Count == 0)
+        List<Pawn> mobilePawns = map.mapPawns.AllPawnsSpawned
+            .Where(p => p.Faction != null
+                        && p.Faction == Faction.OfPlayer
+                        && !p.Dead
+                        && !p.Downed)
+            .ToList();
+
+        // No mobile pawns means everyone is dead or incapacitated — don't fire.
+        if (mobilePawns.Count == 0) return;
+
+        bool allCanEscape = mobilePawns.All(p =>
+            map.reachability.CanReachMapEdge(p.Position, TraverseParms.For(p)));
+
+        if (allCanEscape)
             OnPathCleared();
     }
 
@@ -61,9 +75,7 @@ public class MapComponent_CaveInBlocker : MapComponent
 
     public override void ExposeData()
     {
-        Scribe_Collections.Look(ref _blockingThings, "blockingThings", LookMode.Reference);
         Scribe_Values.Look(ref _cleared, "cleared", false);
         Scribe_Values.Look(ref _active, "active", false);
-        _blockingThings ??= new HashSet<Thing>();
     }
 }

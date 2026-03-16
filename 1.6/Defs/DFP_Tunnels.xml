@@ -211,6 +211,87 @@
         <approachingReportString>Entering {0}.</approachingReportString>
     </SitePartDef>
 
+    <!--
+        GenStep for the Cave-In encounter: builds the deterministic tunnel + barrier
+        rock layout and scatters loot. Runs after DFP_TunnelCaveSetup (230) so terrain
+        and roofing are already set, and before FindPlayerStartSpot (850) so the start
+        spot is found inside the open approach section.
+
+        Used only by DFP_TunnelCaveIn — NOT included in DFP_TunnelEncounter.
+    -->
+    <GenStepDef>
+        <defName>DFP_TunnelCaveInLayout</defName>
+        <order>240</order>
+        <genStep Class="DwarfFlavourPack.GenStep_TunnelCaveInLayout"/>
+    </GenStepDef>
+
+    <!--
+        Map generator for the Cave-In encounter.
+        Produces a fully deterministic layout: 100% solid rock outside a 5-wide
+        central tunnel, with two 5-deep barrier bands ~20 cells either side of the
+        Z-centre. The enclosed centre section and both approach sections are clear.
+
+        Intentionally omits DFP_TunnelCaravanCaves and Underground_RocksFromGrid —
+        random cave carving is not needed because GenStep_TunnelCaveInLayout builds
+        the complete rock layout directly.
+
+        Do NOT inherit from MapCommonBase — child genSteps append to the parent list
+        and would silently run the entire surface pipeline.
+
+        Gen steps (sorted by order):
+          ElevationFertility (10)       — elevation data (required for isUnderground)
+          DFP_TunnelCaveSetup (230)     — cave floor terrain + thick roof everywhere
+          DFP_TunnelCaveInLayout (240)  — deterministic rock layout + loot scatter
+          FindPlayerStartSpot (850)     — finds open cell in south approach section
+          RockChunks (970)              — loose debris for flavour / resources
+          MutatorFinal (1600)           — required cleanup pass
+          Fog                           — fog of war
+    -->
+    <MapGeneratorDef>
+        <defName>DFP_TunnelCaveIn</defName>
+        <label>tunnel cave-in</label>
+        <isUnderground>true</isUnderground>
+        <forceCaves>true</forceCaves>
+        <genSteps>
+            <li>ElevationFertility</li>
+            <li>DFP_TunnelCaveSetup</li>
+            <li>DFP_TunnelCaveInLayout</li>
+            <li>FindPlayerStartSpot</li>
+            <li>RockChunks</li>
+            <li>MutatorFinal</li>
+            <li>Fog</li>
+        </genSteps>
+        <customMapComponents>
+            <li>DwarfFlavourPack.MapComponent_TunnelCaravanState</li>
+        </customMapComponents>
+    </MapGeneratorDef>
+
+    <!--
+        World object for the Cave-In encounter map. Mirrors DFP_TunnelEncounterSite
+        but points at the DFP_TunnelCaveIn map generator.
+
+        CaravanIncidentUtility_Patch.UsesCaveMapForTunnelCaravan routes to this def
+        when IncidentWorker_TunnelCaravanCaveIn.IsCaveIn is true.
+
+        Also handles Notify_MyMapRemoved cleanup — the patch checks for both
+        DFP_TunnelEncounterSite and DFP_TunnelCaveInSite defNames.
+    -->
+    <WorldObjectDef ParentName="StaticWorldObjectBase">
+        <defName>DFP_TunnelCaveInSite</defName>
+        <label>tunnel cave-in</label>
+        <worldObjectClass>CaravansBattlefield</worldObjectClass>
+        <mapGenerator>DFP_TunnelCaveIn</mapGenerator>
+        <texture>UI/DFP_TunnelIcon</texture>
+        <expandingIconTexture>UI/DFP_TunnelIcon</expandingIconTexture>
+        <expandingIcon>true</expandingIcon>
+        <expandingIconPriority>80</expandingIconPriority>
+        <isTempIncidentMapOwner>true</isTempIncidentMapOwner>
+        <comps>
+            <li Class="WorldObjectCompProperties_FormCaravan" />
+            <li Class="WorldObjectCompProperties_TimedDetectionRaids" />
+        </comps>
+    </WorldObjectDef>
+
     <WorldObjectDef>
         <defName>DFP_TunnelCaravanWorldObject</defName>
         <label>tunnel caravan</label>
