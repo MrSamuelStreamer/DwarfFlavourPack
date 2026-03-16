@@ -56,4 +56,74 @@
     </value>
   </Operation> -->
 
+  <!-- Site incidents -->
+
+  <!-- Toxic spewer -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/QuestScriptDef[defName="Util_GenerateSite"]/root/singleSitePartRules/rulesStrings/li[contains(text(), 'sitePart==ToxicSpewer')]</xpath>
+    <value>
+      <li>root(priority=1,sitePart==ToxicSpewer)->there's (*Threat)a mysterious blight(/Threat) originating there blanketing the whole region in poison</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="ToxicSpewer"]/size</xpath>
+    <value>
+      <size>(5,5)</size>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="ToxicSpewer"]/graphicData/drawOffset</xpath>
+    <value>
+      <drawOffset>(0,0,-0.2)</drawOffset>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="ToxicSpewer"]/label</xpath>
+    <value>
+      <label>Cauldron of miasma</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="ToxicSpewer"]/description</xpath>
+    <value>
+      <description>An enormous ritual cauldron.\n\nA festering substance brewis within, releasing a toxic miasma that poisons everything across the region.</description>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="ToxicSpewer"]/graphicData/texPath</xpath>
+    <value>
+      <texPath>Things/Building/Production/Pot/SlopPot_south</texPath>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/GameConditionDef[defName="ToxicSpewer"]/label</xpath>
+    <value>
+      <label>mysterious blight</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/GameConditionDef[defName="ToxicSpewer"]/description</xpath>
+    <value>
+      <description>A mysterious blight nearby is blanketing this whole region with poison.</description>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/GameConditionDef[defName="ToxicSpewer"]/letterText</xpath>
+    <value>
+      <letterText>A mysterious blight has begun blanketing the whole region with poison.</letterText>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/SitePartDef[defName="ToxicSpewer"]/label</xpath>
+    <value>
+      <label>mysterious blight</label>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/SitePartDef[defName="ToxicSpewer"]/description</xpath>
+    <value>
+      <description>A mysterious blight.</description>
+    </value>
+  </Operation>
+
 </Patch>
