@@ -151,4 +151,24 @@
     <pointsScaleable>false</pointsScaleable>
   </IncidentDef>
 
+
+  <!-- VoiceInTheDark: a random colonist hears a distant voice shout "Can I get a hoo-ya
+       in tunnel system?" followed by booming laughter. No combat, no reward, no NPCs.
+       The caravan can reform immediately. Recurring flavour event. -->
+  <IncidentDef>
+    <defName>DFP_TunnelCaravanVoiceInTheDark</defName>
+    <label>tunnel delay</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>DFP_TunnelEntrance</li>
+    </targetTags>
+    <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanVoiceInTheDark</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>30</minRefireDays>
+    <letterLabel>Tunnel delay</letterLabel>
+    <letterText>The caravan comes to a halt in the dark. One of the travellers freezes, listening. Something has been heard in the rock.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <pointsScaleable>false</pointsScaleable>
+  </IncidentDef>
+
 </Defs>

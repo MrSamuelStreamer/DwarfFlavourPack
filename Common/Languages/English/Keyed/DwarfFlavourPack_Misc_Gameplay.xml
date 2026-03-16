@@ -16,6 +16,15 @@ The caravan's leader stands at the entrance.</DFP_ShrineDialogText>
   <DFP_ShrineNeutralMsg>The leader stood at the altar for a long moment. Nothing happened. Or nothing that could be seen.</DFP_ShrineNeutralMsg>
   <DFP_ShrineCursedMsg>Something shifted in the stone as the leader touched the altar. Everyone felt it — a pressure behind the eyes, a sound too low to hear. One of them stumbled.</DFP_ShrineCursedMsg>
 
+  <!-- Voice in the Dark encounter strings -->
+  <DFP_TunnelVoiceInTheDark_Letter>{PAWN} stops short. From somewhere deep in the rock — distant at first, then booming — a voice echoes through the tunnel walls:
+
+"Can I get a hoo-ya in tunnel system?"
+
+Booming laughter follows. Then silence.
+
+No one can explain it.</DFP_TunnelVoiceInTheDark_Letter>
+
   <!-- Toll Collector encounter strings -->
   <DFP_TollCollectorDialogText>A figure stands in the passage ahead, one hand resting on their weapon. Their eyes move over the caravan without hurry.
 
