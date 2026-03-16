@@ -15,6 +15,10 @@
         be unforbidden.
     </ForbiddenItemsInLoadoutWarning>
 
+    <!-- Tunnel caravan reform dialog: mass bar replacement -->
+    <DFP_TunnelReform_NoWeightLimit>No weight limit</DFP_TunnelReform_NoWeightLimit>
+    <DFP_TunnelReform_NoWeightLimitTip>Tunnel caravans travel through underground passages on minecart rails. They are not limited by the weight of their cargo.</DFP_TunnelReform_NoWeightLimitTip>
+
     <PsycastNeurotrainerLabel>tome ({0})</PsycastNeurotrainerLabel>
     <PsycastNeurotrainerUseLabel>Use tome to learn {0} spell</PsycastNeurotrainerUseLabel>
     <PsycastNeurotrainerDescription>A magical tome written by a powerful mage containing all things to know about a specific spell.\n\n{PSYCAST_label}\n\n{PSYCASTDESCRIPTION}</PsycastNeurotrainerDescription>

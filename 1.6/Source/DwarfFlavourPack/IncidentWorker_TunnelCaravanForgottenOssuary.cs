@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.AI.Group;
 
 namespace DwarfFlavourPack;
 
@@ -11,40 +9,15 @@ namespace DwarfFlavourPack;
 /// before whatever shrine they came to serve. A non-combat discovery event —
 /// no enemies, only the scene and whatever loot the dead carried.
 ///
-/// A single "Last Witness" ghost pawn satisfies IncidentWorker_Ambush's non-empty
-/// pawn guard (it bails before creating a map if GeneratePawns returns empty).
-/// The witness is despawned on the next tick (via MapComponent_DespawnGhostNextTick)
-/// so the player never sees it wandering. It must remain spawned until after DoExecute
-/// sends the letter — an unspawned pawn grays out the "Jump to location" button.
+/// Map setup and letter sending are handled by IncidentWorker_TunnelCaravanNonCombat.
+/// No ghost pawn required.
 /// </summary>
-public class IncidentWorker_TunnelCaravanForgottenOssuary : IncidentWorker_TunnelCaravanSomethingHappened
+public class IncidentWorker_TunnelCaravanForgottenOssuary : IncidentWorker_TunnelCaravanNonCombat
 {
     protected override bool FireOncePerGame => true;
 
-    private Pawn _witness;
-
-    protected override List<Pawn> GeneratePawns(IncidentParms parms)
+    protected override void PostSetupEncounterMap(Map map)
     {
-        parms.faction = null;
-        _witness = MakeGhostPawn();
-        return new List<Pawn> { _witness };
-    }
-
-    protected override void PostProcessGeneratedPawnsAfterSpawning(List<Pawn> generatedPawns)
-    {
-        Map map = _witness?.MapHeld;
-        if (map == null)
-            return;
-
-        // Suppress the "Caravan battle won" letter — this is a non-combat encounter
-        // so there are never any hostile threats and CheckWonBattle fires immediately.
-        map.components.Add(new MapComponent_SuppressBattleWon(map));
-
-        // Despawn the ghost on the next tick — after DoExecute sends the letter
-        // (which needs the pawn spawned as look target), but before the player
-        // sees it wandering the map.
-        map.components.Add(new MapComponent_DespawnGhostNextTick(map, _witness));
-
         IntVec3 shrineCell = FindCellNearCenter(map);
 
         // Spawn shrine — Reliquary if Ideology is active, otherwise NatureShrine_Large.
@@ -98,9 +71,6 @@ public class IncidentWorker_TunnelCaravanForgottenOssuary : IncidentWorker_Tunne
             GenSpawn.Spawn(RandomShrineOffering(), lootCell, map, Rot4.Random);
         }
     }
-
-    protected override LordJob CreateLordJob(List<Pawn> generatedPawns, IncidentParms parms)
-        => new LordJob_ExitMapBest();
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 

@@ -3,18 +3,17 @@ using Verse;
 namespace DwarfFlavourPack;
 
 /// <summary>
-/// Despawns a ghost witness pawn on the very next map tick.
+/// DEPRECATED — kept only for save-game compatibility.
 ///
-/// Timeline for non-combat tunnel incidents:
-///   PostProcessGeneratedPawnsAfterSpawning  ← add this component here
-///   ↓
-///   IncidentWorker_Ambush.DoExecute sends the letter (ghost still spawned → look target valid)
-///   ↓
-///   Next MapComponentTick() → DeSpawn ghost → lord dissolves → ghost never visibly wanders
+/// Non-combat tunnel incidents no longer use a ghost pawn. They now extend
+/// IncidentWorker_TunnelCaravanNonCombat, which bypasses IncidentWorker_Ambush.DoExecute
+/// entirely, sets up the map with an empty enemy list, and sends the letter with
+/// map.Parent as the look target. No ghost is required.
 ///
-/// The ghost must remain spawned until after DoExecute's SendStandardLetter call, because
-/// generatedEnemies[0] is the letter's look target — an unspawned pawn grays out
-/// the "Jump to location" button. This component handles the deferred cleanup.
+/// This class is retained in the assembly so that saves created before the refactor
+/// (which serialised this component on encounter maps) can still be loaded without error.
+/// On the first MapComponentTick the _ghost field is null, so the component does nothing
+/// except remove itself from the map.
 /// </summary>
 public class MapComponent_DespawnGhostNextTick : MapComponent
 {

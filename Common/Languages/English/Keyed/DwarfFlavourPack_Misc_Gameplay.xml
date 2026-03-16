@@ -6,4 +6,25 @@
   <DFP_CaveInClearedLabel>Path cleared</DFP_CaveInClearedLabel>
   <DFP_CaveInClearedText>The caravan has broken through the cave-in. The passage ahead is open — the journey can continue.</DFP_CaveInClearedText>
 
+  <!-- Underground Shrine encounter strings -->
+  <DFP_ShrineDialogText>The altar is worked stone, very old. Offerings lie at its base — coins, bones, scraps of cloth. Whoever left them, they are gone. The shrine remains.
+
+The caravan's leader stands at the entrance.</DFP_ShrineDialogText>
+  <DFP_ShrinePrayOption>Approach and pray.</DFP_ShrinePrayOption>
+  <DFP_ShrineLeaveOption>Leave it undisturbed.</DFP_ShrineLeaveOption>
+  <DFP_ShrineBlessedMsg>The caravan's leader placed something at the base of the altar. For a moment, everything felt very still. The caravan feels — lighter, somehow.</DFP_ShrineBlessedMsg>
+  <DFP_ShrineNeutralMsg>The leader stood at the altar for a long moment. Nothing happened. Or nothing that could be seen.</DFP_ShrineNeutralMsg>
+  <DFP_ShrineCursedMsg>Something shifted in the stone as the leader touched the altar. Everyone felt it — a pressure behind the eyes, a sound too low to hear. One of them stumbled.</DFP_ShrineCursedMsg>
+
+  <!-- Toll Collector encounter strings -->
+  <DFP_TollCollectorDialogText>A figure stands in the passage ahead, one hand resting on their weapon. Their eyes move over the caravan without hurry.
+
+"Nothing passes without a toll. One hundred and fifty silver."
+
+They seem prepared to wait.</DFP_TollCollectorDialogText>
+  <DFP_TollCollectorPayOption>Pay {0} silver.</DFP_TollCollectorPayOption>
+  <DFP_TollCollectorRefuseOption>Refuse. Prepare to fight.</DFP_TollCollectorRefuseOption>
+  <DFP_TollCollectorNotEnoughSilver>Not enough silver ({0} available).</DFP_TollCollectorNotEnoughSilver>
+  <DFP_TollPaidMsg>The toll collector pockets the silver and steps aside without a word.</DFP_TollPaidMsg>
+
 </LanguageData>

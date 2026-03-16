@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
-using Verse.AI.Group;
 
 namespace DwarfFlavourPack;
 
@@ -66,25 +65,6 @@ public abstract class IncidentWorker_TunnelCaravanSomethingHappened : IncidentWo
         if (tunnelCaravan.done) return false;
         return true;
     }
-
-    /// <summary>
-    /// Generates a single harmless SpaceRefugee whose only role is to satisfy
-    /// IncidentWorker_Ambush's non-empty pawn requirement and trigger map creation.
-    /// Use MapComponent_DespawnGhostNextTick to despawn this pawn after DoExecute
-    /// has sent the letter. Do NOT despawn in PostProcessGeneratedPawnsAfterSpawning —
-    /// that runs before SendStandardLetter captures generatedEnemies[0] as look target,
-    /// so an unspawned pawn at that point grays out the "Jump to location" button.
-    /// </summary>
-    protected static Pawn MakeGhostPawn() => PawnGenerator.GeneratePawn(
-        new PawnGenerationRequest(
-            PawnKindDefOf.SpaceRefugee,
-            faction:                  null,
-            context:                  PawnGenerationContext.NonPlayer,
-            forceGenerateNewPawn:     true,
-            allowDead:                false,
-            allowDowned:              false,
-            canGeneratePawnRelations: false,
-            mustBeCapableOfViolence:  false));
 
     /// <summary>
     /// Returns a standable, unfogged cell near the map centre.

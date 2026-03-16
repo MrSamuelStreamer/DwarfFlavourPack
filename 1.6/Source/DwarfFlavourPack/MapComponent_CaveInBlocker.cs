@@ -26,7 +26,12 @@ public class MapComponent_CaveInBlocker : MapComponent
 
     public MapComponent_CaveInBlocker(Map map) : base(map) { }
 
-    public bool IsCleared => _cleared;
+    // True when this map has no active cave-in blockage: either the component was
+    // never activated (no cave-in on this map — auto-instantiated by RimWorld's
+    // reflection but never had TrackThing called), or it was activated and all
+    // debris has been cleared. The CaveInReformBlocker_Patch checks this property;
+    // without the !_active guard it would block reform on every non-cave-in map.
+    public bool IsCleared => !_active || _cleared;
 
     public void TrackThing(Thing t)
     {
