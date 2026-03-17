@@ -37,14 +37,14 @@ Makes for robust tools, weapons and armor, at the cost of beauty and constructio
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="RF_Copper"]/label</xpath>
         <value>
-            <label>Forged Copper</label>
+            <label>Deep Copper</label>
         </value>
     </Operation>
 
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="RF_Copper"]/description</xpath>
         <value>
-            <description>Forged copper crafted with Dwemer techniques. Great for alloying with other metals, but a reasonable material for construction or tools in this pure state.
+            <description>Deep copper, extracted with Dwemer techniques. Great for alloying with other metals, but a reasonable material for construction or tools in this pure state.
 However, it is very malleable, making it fast to work with.</description>
         </value>
     </Operation>
@@ -133,7 +133,7 @@ It's strength allows to to be forged into wickedly sharp bladed weapons, but the
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="RF_Tin"]/label</xpath>
         <value>
-            <label>Deeptin</label>
+            <label>Deep Tin</label>
         </value>
     </Operation>
 
