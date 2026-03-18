@@ -13,10 +13,42 @@
         <value>
             <costList>
                 <Steel>500</Steel>
+                <RF_Bronze>500</RF_Bronze>
                 <ComponentIndustrial>5</ComponentIndustrial>
-                <RF_GildedPlasteel>150</RF_GildedPlasteel>
-                <RF_Staballoy>50</RF_Staballoy>
             </costList>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="LavaGenerator"]/graphicData/drawSize</xpath>
+        <value>
+           <drawSize>(3,3)</drawSize>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="LavaGenerator"]/size</xpath>
+        <value>
+           <size>(3,3)</size>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="LavaGenerator"]/rotatable</xpath>
+        <value>
+           <rotatable>false</rotatable>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="LavaGenerator"]/comps</xpath>
+        <value>
+           <comps>
+            <li Class="CompProperties_Glower">
+                <glowRadius>6</glowRadius>
+                <glowColor>(255,248,214,255)</glowColor>
+            </li>
+            </comps>
         </value>
     </Operation>
 </Patch>
