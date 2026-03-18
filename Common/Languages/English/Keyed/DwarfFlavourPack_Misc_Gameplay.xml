@@ -36,4 +36,17 @@ They seem prepared to wait.</DFP_TollCollectorDialogText>
   <DFP_TollCollectorNotEnoughSilver>Not enough silver ({0} available).</DFP_TollCollectorNotEnoughSilver>
   <DFP_TollPaidMsg>The toll collector pockets the silver and steps aside without a word.</DFP_TollPaidMsg>
 
+
+  <!-- Quest site radius settings -->
+  <DwarfFlavourPack_Settings_QuestSiteRadius>Quest site radius: {0}</DwarfFlavourPack_Settings_QuestSiteRadius>
+  <DwarfFlavourPack_Settings_QuestSiteRadius_Vanilla>Vanilla</DwarfFlavourPack_Settings_QuestSiteRadius_Vanilla>
+  <DwarfFlavourPack_Settings_QuestSiteRadius_4x>4×</DwarfFlavourPack_Settings_QuestSiteRadius_4x>
+  <DwarfFlavourPack_Settings_QuestSiteRadius_8x>8×</DwarfFlavourPack_Settings_QuestSiteRadius_8x>
+  <DwarfFlavourPack_Settings_QuestSiteRadius_16x>16×</DwarfFlavourPack_Settings_QuestSiteRadius_16x>
+  <DwarfFlavourPack_Settings_QuestSiteRadius_Unlimited>Unlimited</DwarfFlavourPack_Settings_QuestSiteRadius_Unlimited>
+  <DwarfFlavourPack_Settings_QuestSiteRadius_Desc>Expands the maximum world-tile distance at which quests can generate sites. Vanilla caps vary by quest type (7–85 tiles). 4× through 16× multiply those caps; Unlimited allows sites anywhere on the planet.</DwarfFlavourPack_Settings_QuestSiteRadius_Desc>
+
+  <DwarfFlavourPack_Settings_QuestSiteMinRadius>Quest site min radius: {0}</DwarfFlavourPack_Settings_QuestSiteMinRadius>
+  <DwarfFlavourPack_Settings_QuestSiteMinRadius_Desc>Expands the minimum world-tile distance at which quests can generate sites, pushing sites further from your colony. Capped at 16×. Cannot exceed the max radius multiplier.</DwarfFlavourPack_Settings_QuestSiteMinRadius_Desc>
+
 </LanguageData>
