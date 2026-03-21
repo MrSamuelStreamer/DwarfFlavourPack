@@ -144,4 +144,20 @@
     </value>
   </Operation>
 
+  <!-- Space drone -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="Spacedrone"]/comps/li[@Class="CompProperties_Hackable"]/notHackedInspectString</xpath>
+    <value>
+      <notHackedInspectString>Use magical attunement to commune with the beast.</notHackedInspectString>
+    </value>
+  </Operation>
+
+  <!-- Hacking speed -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/StatDef[defName="HackingSpeed"]/label</xpath>
+    <value>
+      <label>attunement proficiency</label>
+    </value>
+  </Operation>
+
 </Patch>
