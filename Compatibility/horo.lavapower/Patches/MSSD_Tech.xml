@@ -40,14 +40,20 @@
         </value>
     </Operation>
 
-    <Operation Class="PatchOperationAdd">
+    <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="LavaGenerator"]/comps</xpath>
         <value>
            <comps>
             <li Class="CompProperties_Glower">
-                <glowRadius>6</glowRadius>
+                <glowRadius>8</glowRadius>
                 <glowColor>(255,248,214,255)</glowColor>
             </li>
+            <li Class="CompProperties_Power">
+                <compClass>LavaPower.CompPowerPlantLava</compClass>
+                <basePowerConsumption>-800</basePowerConsumption>
+                <transmitsPower>true</transmitsPower>
+            </li>
+            <li Class="CompProperties_Breakdownable"/>
             </comps>
         </value>
     </Operation>

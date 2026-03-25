@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+	<ThingDef ParentName="ApparelMakeableBase">
+		<defName>MSSD_Wraithguard</defName>
+		<label>Wraithguard</label>
+		<description>One of the three legendary tools of Kagrenac. Wraithguard protects the user from the power harnessed or redirected when used by the other two tools of Kagrenac - Sunder and Keening.</description>
+		<graphicData>
+			<texPath>Things/Item/Equipment/WeaponMelee/Wraithguard</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+		</graphicData>
+		<recipeMaker Inherit="False" IsNull="True" />
+		<smeltable>false</smeltable>
+		<statBases>
+			<Mass>2</Mass>
+		</statBases>
+		<uiIconScale>1.15</uiIconScale>
+		<equippedAngleOffset>70</equippedAngleOffset>
+		<equippedStatOffsets>
+			<WorkSpeedGlobal>1.50</WorkSpeedGlobal>
+		</equippedStatOffsets>
+		<thingCategories Inherit="False">
+			<li>DankPyon_Handwear</li>
+		</thingCategories>
+		<apparel>
+			<bodyPartGroups>
+				<li>Hands</li>
+			</bodyPartGroups>
+			<layers>
+				<li>Middle</li>
+			</layers>
+			<tags>
+				<li>MSSD_KagrenacTools</li>
+			</tags>
+		</apparel>
+	</ThingDef>
+</Defs>

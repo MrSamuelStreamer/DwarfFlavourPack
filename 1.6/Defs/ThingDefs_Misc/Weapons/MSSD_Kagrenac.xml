@@ -13,26 +13,19 @@
 			<graphicClass>Graphic_Single</graphicClass>
 			<shaderType>CutoutComplex</shaderType>
 		</graphicData>
-
-    <!-- added 09-03 chrtis B -->
-    <recipeMaker Inherit="False" IsNull="True" />
-    <smeltable>false</smeltable>
-    <statBases>
-      <Mass>2</Mass>
-    </statBases>
-    <!-- added 09-03 chrtis B -->
-
+		<recipeMaker Inherit="False" IsNull="True" />
+		<smeltable>false</smeltable>
+		<statBases>
+			<Mass>2</Mass>
+		</statBases>
 		<uiIconScale>1.15</uiIconScale>
 		<equippedAngleOffset>70</equippedAngleOffset>
-
 		<equippedStatOffsets>
 			<GeneralLaborSpeed>1.25</GeneralLaborSpeed>
 		</equippedStatOffsets>
-
 		<weaponTags>
-			<li>MedievalMeleeBasic</li>
+			<li>MSSD_KagrenacTools</li>
 		</weaponTags>
-
 		<tools>
 			<li>
 				<label>handle</label>
@@ -66,21 +59,16 @@
 			<graphicClass>Graphic_Single</graphicClass>
 			<shaderType>CutoutComplex</shaderType>
 		</graphicData>
-
-    <!-- added 09-03 chrtis B -->
-    <recipeMaker Inherit="False" IsNull="True" />
-    <smeltable>false</smeltable>
-    <statBases>
-      <Mass>2</Mass>
-    </statBases>
-    <!-- added 09-03 chrtis B -->
-
+		<recipeMaker Inherit="False" IsNull="True" />
+		<smeltable>false</smeltable>
+		<statBases>
+		<Mass>2</Mass>
+		</statBases>
 		<equippedAngleOffset>10</equippedAngleOffset>
-
 		<weaponTags>
 			<li>MedievalMeleeDecent</li>
+			<li>MSSD_KagrenacTools</li>
 		</weaponTags>
-
 		<tools>
 			<li>
 				<label>handle</label>
