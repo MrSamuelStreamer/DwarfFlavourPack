@@ -17,6 +17,12 @@ public class TunnelEntrance: Site, INameableWorldObject
 
     public override bool HasName => !nameInt.NullOrEmpty();
     
+    public override bool ShouldRemoveMapNow(out bool alsoRemoveWorldObject)
+    {
+        alsoRemoveWorldObject = false;
+        return base.ShouldRemoveMapNow(out _);
+    }
+
     public override void ExposeData()
     {
         base.ExposeData();
