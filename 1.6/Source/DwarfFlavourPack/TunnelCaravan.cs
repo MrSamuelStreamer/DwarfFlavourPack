@@ -106,6 +106,7 @@ public class TunnelCaravan : Caravan
             
             if (Tile != currentTileId)
             {
+                ModLog.Debug($"[TunnelCaravan] Tile advance: {Tile} → {currentTileId} (index={index}, progress={progress:F3})");
                 Tile = currentTileId;
                 // If we changed tiles, we might need to refresh the path to ensure it starts at the new tile
                 // and correctly shows progress on the map.
@@ -116,6 +117,45 @@ public class TunnelCaravan : Caravan
     }
 
     base.Tick();
+
+    if (Find.TickManager.TicksGame % 1000 == 0)
+      TryFireTunnelIncidents();
+  }
+
+  private void TryFireTunnelIncidents()
+  {
+    if (!IncidentWorker_TunnelCaravanSomethingHappened.MeetsCaravanGuard(this, out var reason))
+    {
+      ModLog.Debug($"[TunnelCaravan] TryFireTunnelIncidents: guard failed (done={done}, spawned={Spawned}, pawns={PawnsListForReading.Count}, reason={reason})");
+      return;
+    }
+
+    ModLog.Debug($"[TunnelCaravan] TryFireTunnelIncidents: guard passed, checking categories");
+    TryFireCategory(IncidentCategoryDefOf.ThreatBig, 5f);
+    TryFireCategory(IncidentCategoryDefOf.ThreatSmall, 4f);
+    TryFireCategory(IncidentCategoryDefOf.Misc, 2f);
+  }
+
+  private void TryFireCategory(IncidentCategoryDef category, float mtbDays)
+  {
+    if (!Rand.MTBEventOccurs(mtbDays, 60000f, 1000f))
+    {
+      ModLog.Debug($"[TunnelCaravan] TryFireCategory {category.defName}: MTB check failed (mtbDays={mtbDays})");
+      return;
+    }
+
+    IncidentParms parms = StorytellerUtility.DefaultParmsNow(category, this);
+
+    List<IncidentDef> candidates = DefDatabase<IncidentDef>.AllDefsListForReading
+      .Where(d => d.category == category && d.TargetAllowed(this) && d.Worker.CanFireNow(parms))
+      .ToList();
+
+    ModLog.Debug($"[TunnelCaravan] TryFireCategory {category.defName}: MTB passed, {candidates.Count} candidate(s): [{string.Join(", ", candidates.Select(d => d.defName))}]");
+
+    IncidentDef chosen = candidates.RandomElementByWeightWithFallback(d => d.baseChance);
+
+    ModLog.Debug($"[TunnelCaravan] TryFireCategory {category.defName}: chose {chosen?.defName ?? "none"}");
+    chosen?.Worker.TryExecute(parms);
   }
 
   public string TimeToGo => (travelEndsAtTick - Find.TickManager.TicksGame).ToStringTicksToPeriod();

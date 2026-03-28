@@ -48,21 +48,37 @@ public abstract class IncidentWorker_TunnelCaravanSomethingHappened : IncidentWo
         TunnelEncounterSetup.ActiveTravelEndsAtTick   = tunnelCaravan.travelEndsAtTick;
     }
 
+    internal static bool MeetsCaravanGuard(TunnelCaravan tunnelCaravan)
+    {
+        return MeetsCaravanGuard(tunnelCaravan, out _);
+    }
+    
     /// <summary>
     /// Shared CanFireNowSub guard for all tunnel-caravan incidents.
     /// Returns false if the target is not an in-transit, non-spawned TunnelCaravan.
     /// Does NOT call base.CanFireNowSub — callers are responsible for that.
     /// </summary>
-    internal static bool MeetsCaravanGuard(TunnelCaravan tunnelCaravan)
+    internal static bool MeetsCaravanGuard(TunnelCaravan tunnelCaravan, out string reason)
     {
-        if (tunnelCaravan.Spawned) return false;
-        if (tunnelCaravan.PawnsListForReading.Count < 1) return false;
+        if (tunnelCaravan.PawnsListForReading.Count < 1)
+        {
+            reason = "Caravan has no pawns";
+            return false;
+        }
 
         int t = Find.TickManager.TicksGame;
         if (t <= tunnelCaravan.travelStartsAtTick || t >= tunnelCaravan.travelEndsAtTick)
+        {
+            reason = "Caravan is not in transit";
             return false;
+        }
 
-        if (tunnelCaravan.done) return false;
+        if (tunnelCaravan.done)
+        {
+            reason = "Caravan has already arrived";
+            return false;
+        }
+        reason = "";
         return true;
     }
 
