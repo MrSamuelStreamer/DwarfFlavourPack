@@ -31,7 +31,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanForgottenOssuary</workerClass>
-    <baseChance>0.5</baseChance>
+    <baseChance>2.0</baseChance>
     <minRefireDays>30</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>The tunnel caravan's minecarts have ground to a halt somewhere in the underground passages. Something is blocking the way ahead.\n\nThe caravan has been forced to stop and investigate.</letterText>
@@ -51,7 +51,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanCaveIn</workerClass>
-    <baseChance>0.5</baseChance>
+    <baseChance>2.0</baseChance>
     <minRefireDays>30</minRefireDays>
     <letterLabel>Tunnel collapse</letterLabel>
     <letterText>A deep crack and rumble shakes the tunnel. Rock and earth pour from the ceiling, sealing the passage ahead.\n\nThe caravan is trapped. The debris must be cleared before they can move on.</letterText>
@@ -70,7 +70,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanTradingCaravan</workerClass>
-    <baseChance>1.5</baseChance>
+    <baseChance>6.0</baseChance>
     <minRefireDays>15</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>Muffled voices drift through the tunnel walls ahead. The minecart slows.\n\nA trading outfit has stopped to rest in a wider chamber deeper in the passage. They seem friendly — and they have goods to sell.</letterText>
@@ -88,7 +88,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanAbandonedCache</workerClass>
-    <baseChance>1.0</baseChance>
+    <baseChance>4.0</baseChance>
     <minRefireDays>25</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>The minecart rolls to a stop. Something is blocking the passage — or rather, something was left there long ago.\n\nAbandoned cargo sits in a natural alcove. Whoever left it is gone. The supplies remain.</letterText>
@@ -107,7 +107,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanTollCollector</workerClass>
-    <baseChance>0.4</baseChance>
+    <baseChance>1.6</baseChance>
     <minRefireDays>40</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>The minecart's lights fall on a figure in the passage. They are armed and they are waiting.\n\nThey want payment to let the caravan pass. They seem prepared to enforce the toll.</letterText>
@@ -126,7 +126,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanAncientDefences</workerClass>
-    <baseChance>0.5</baseChance>
+    <baseChance>2.0</baseChance>
     <minRefireDays>30</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>The minecart's lights sweep across worked stone — and something moves in the dark.\n\nDormant mechanoid sentinels, silent for centuries, have detected the caravan. They are activating.</letterText>
@@ -143,7 +143,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanUndergroundShrine</workerClass>
-    <baseChance>0.3</baseChance>
+    <baseChance>1.2</baseChance>
     <minRefireDays>90</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>The tunnel opens into a domed chamber. At its centre stands a stone altar — old, silent, covered in offerings left by hands long dead.\n\nThe caravan has stopped. Nobody moves.</letterText>
@@ -163,7 +163,7 @@
       <li>DFP_TunnelEntrance</li>
     </targetTags>
     <workerClass>DwarfFlavourPack.IncidentWorker_TunnelCaravanVoiceInTheDark</workerClass>
-    <baseChance>0.5</baseChance>
+    <baseChance>2.0</baseChance>
     <minRefireDays>30</minRefireDays>
     <letterLabel>Tunnel delay</letterLabel>
     <letterText>The caravan comes to a halt in the dark. One of the travellers freezes, listening. Something has been heard in the rock.</letterText>
