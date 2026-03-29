@@ -4,11 +4,11 @@
   	<ThingDef ParentName="DoorBase">
 		<defName>MSSD_8x1_VFEM2_4x1CastleDoor</defName>
 		<label>castle door (ridiculous)</label>
-		<description>An incredibly resistant door made out of oversized stone blocks. Very slow to build. It’s a good choice if you want to keep the enemies out - or in. The door requires walls on either side to function.</description>
+		<description>An incredibly resistant door made out of oversized stone blocks. Very slow to build. It’s a good choice if you want to keep the enemies out - or in. The door requires walls on either side to function.\n\nThe local lord who requested these larger doors made conflicting statements about the desired width, baffling his workers.</description>
 		<thingClass>Building_MultiTileDoor</thingClass>
 		<statBases>
 			<WorkToBuild>20700</WorkToBuild>
-			<MaxHitPoints>3200</MaxHitPoints>
+			<MaxHitPoints>2800</MaxHitPoints>
 			<DoorOpenSpeed>0.8</DoorOpenSpeed>
 		</statBases>
 		<graphicData>
@@ -20,7 +20,7 @@
 		</graphicData>
 		<uiIconPath>Things/Building/Doors/CastleDoor4x1_MenuIcon_south</uiIconPath>
 		<useBlueprintGraphicAsGhost>true</useBlueprintGraphicAsGhost>
-		<size>(8,1)</size>
+		<size>(7,1)</size>
 		<rotatable>true</rotatable>
 		<costStuffCount>700</costStuffCount>
 		<stuffCategories Inherit="False">
@@ -32,19 +32,19 @@
 				<texPath>Things/Building/Doors/CastleDoor4x1_MenuIcon</texPath>
 				<graphicClass>Graphic_Multi</graphicClass>
 				<shaderType>EdgeDetect</shaderType>
-				<drawSize>(8.6, 5.1)</drawSize>
+				<drawSize>(7.6, 5.1)</drawSize>
         <drawOffset>(0,0,0.4)</drawOffset>
 			</blueprintGraphicData>
 			<isSupportDoor>true</isSupportDoor>
 			<doorTopGraphic>
 				<texPath>Things/Building/Doors/CastleDoor4x1_Top</texPath>
 				<graphicClass>Graphic_Multi</graphicClass>
-				<drawSize>(9.1, 2.3)</drawSize>
+				<drawSize>(8.1, 2.3)</drawSize>
 			</doorTopGraphic>
 			<doorSupportGraphic>
 				<texPath>Things/Building/Doors/CastleDoor4x1_Support</texPath>
 				<graphicClass>Graphic_Multi</graphicClass>
-				<drawSize>(9.1, 2.3)</drawSize>
+				<drawSize>(8.1, 2.3)</drawSize>
 			</doorSupportGraphic>
 			<soundDoorOpenManual>VFEM2_CastleGate_OpenManual</soundDoorOpenManual>
 			<soundDoorCloseManual>VFEM2_CastleGate_CloseManual</soundDoorCloseManual>
@@ -60,11 +60,11 @@
   <ThingDef ParentName="DoorBase">
 		<defName>MSSD_8x1_VFEM2_4x1CastleGate</defName>
 		<label>castle gate (ridiculous)</label>
-		<description>An incredibly resistant door made out of oversized stone blocks, with a latticed grille protecting the passage. Very slow to build. It’s a good choice if you want to keep the enemies out - or in. The door requires walls on either side to function. Castle gates take a long time to open.</description>
+		<description>An incredibly resistant door made out of oversized stone blocks, with a latticed grille protecting the passage. Very slow to build. It’s a good choice if you want to keep the enemies out - or in. The door requires walls on either side to function. Castle gates take a long time to open.\n\nThe local lord who requested these larger gates made conflicting statements about the desired width, baffling his workers.</description>
 		<thingClass>VFEMedieval.CastleGate</thingClass>
 		<statBases>
 			<WorkToBuild>17000</WorkToBuild>
-			<MaxHitPoints>3300</MaxHitPoints>
+			<MaxHitPoints>2900</MaxHitPoints>
 			<DoorOpenSpeed>0.5</DoorOpenSpeed>
 		</statBases>
 		<graphicData>
@@ -76,7 +76,7 @@
 		</graphicData>
 		<uiIconPath>Things/Building/Doors/CastleGate4x1_MenuIcon_south</uiIconPath>
 		<useBlueprintGraphicAsGhost>true</useBlueprintGraphicAsGhost>
-		<size>(8,1)</size>
+		<size>(7,1)</size>
 		<rotatable>true</rotatable>
 		<costStuffCount>700</costStuffCount>
 		<stuffCategories Inherit="False">
@@ -91,19 +91,19 @@
 				<texPath>Things/Building/Doors/CastleGate4x1_MenuIcon</texPath>
 				<graphicClass>Graphic_Multi</graphicClass>
 				<shaderType>EdgeDetect</shaderType>
-				<drawSize>(8.6, 5.1)</drawSize>
+				<drawSize>(7.6, 5.1)</drawSize>
         <drawOffset>(0,0,0.4)</drawOffset>
 			</blueprintGraphicData>
 			<isSupportDoor>true</isSupportDoor>
 			<doorTopGraphic>
 				<texPath>Things/Building/Doors/CastleDoor4x1_Top</texPath>
 				<graphicClass>Graphic_Multi</graphicClass>
-				<drawSize>(9.1, 2.3)</drawSize>
+				<drawSize>(8.1, 2.3)</drawSize>
 			</doorTopGraphic>
 			<doorSupportGraphic>
 				<texPath>Things/Building/Doors/CastleDoor4x1_Support</texPath>
 				<graphicClass>Graphic_Multi</graphicClass>
-				<drawSize>(9.1, 2.3)</drawSize>
+				<drawSize>(8.1, 2.3)</drawSize>
 			</doorSupportGraphic>
 			<soundDoorOpenManual>VFEM2_CastleGate_OpenManual</soundDoorOpenManual>
 			<soundDoorCloseManual>VFEM2_CastleGate_CloseManual</soundDoorCloseManual>
