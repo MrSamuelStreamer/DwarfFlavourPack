@@ -221,7 +221,7 @@
 			</thingDefs>
 		</fixedIngredientFilter>
 		<products>
-			<MSSD_Sunder>1</MSSD_Sunder>
+			<MSSD_Keening>1</MSSD_Keening>
 		</products>
 	</RecipeDef>
 </Defs>

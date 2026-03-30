@@ -13,6 +13,11 @@
 			<graphicClass>Graphic_Single</graphicClass>
 			<shaderType>CutoutComplex</shaderType>
 		</graphicData>
+		<comps>
+			<li Class="CompProperties_SelfhealHitpoints">
+				<ticksPerHeal>2000</ticksPerHeal>
+			</li>
+		</comps>
 		<recipeMaker Inherit="False" IsNull="True" />
 		<smeltable>false</smeltable>
 		<statBases>
@@ -43,7 +48,7 @@
 				</capacities>
 				<power>22.5</power>
 				<cooldownTime>1.6</cooldownTime>
-				<armorPenetration>0.75</armorPenetration>
+				<armorPenetration>0.85</armorPenetration>
 			</li>
 		</tools>
 	</ThingDef>
@@ -59,12 +64,21 @@
 			<graphicClass>Graphic_Single</graphicClass>
 			<shaderType>CutoutComplex</shaderType>
 		</graphicData>
+		<comps>
+			<li Class="CompProperties_SelfhealHitpoints">
+				<ticksPerHeal>2000</ticksPerHeal>
+			</li>
+		</comps>
 		<recipeMaker Inherit="False" IsNull="True" />
 		<smeltable>false</smeltable>
 		<statBases>
 		<Mass>2</Mass>
 		</statBases>
 		<equippedAngleOffset>10</equippedAngleOffset>
+		<equippedStatOffsets>
+      		<PsychicSensitivityOffset>1.5</PsychicSensitivityOffset>
+      		<PsychicEntropyRecoveryRate>0.55</PsychicEntropyRecoveryRate>
+		</equippedStatOffsets>
 		<weaponTags>
 			<li>MedievalMeleeDecent</li>
 			<li>MSSD_KagrenacTools</li>
@@ -76,7 +90,7 @@
 					<li>Poke</li>
 				</capacities>
 				<power>14</power>
-				<cooldownTime>1.8</cooldownTime>
+				<cooldownTime>1.2</cooldownTime>
 			</li>
 			<li>
 				<label>edge</label>
@@ -85,8 +99,8 @@
 					<li>Cut</li>
 				</capacities>
 				<power>32.25</power>
-				<cooldownTime>1.75</cooldownTime>
-				<armorPenetration>0.55</armorPenetration>
+				<cooldownTime>1.4</cooldownTime>
+				<armorPenetration>0.45</armorPenetration>
 			</li>
 		</tools>
 	</ThingDef>
