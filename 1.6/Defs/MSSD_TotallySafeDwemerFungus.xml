@@ -55,12 +55,6 @@
       <humanFoodPlant>true</humanFoodPlant>
       <maxMeshCount>9</maxMeshCount>
     </plant>
-    <comps>
-      <li Class="CompProperties_Glower">
-        <glowRadius>3.9</glowRadius>
-        <glowColor>(60,140,255,0)</glowColor>
-      </li>
-    </comps>
   </ThingDef>
 
   <!-- note that it's been patched into CookMealBase>fixedIngredientFilter as a disallowedThingDef - intended only to be eaten raw -->

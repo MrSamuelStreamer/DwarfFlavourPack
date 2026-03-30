@@ -7,7 +7,7 @@
 	<ThingDef ParentName="DankPyon_Base_Blunt_NormalSize">
 		<defName>MSSD_Sunder</defName>
 		<label>Sunder</label>
-		<description>One of the three legendary tools of Kagrenac. Sunder is said to be resonate at a divine frequency, and it's blows always harmonise to exactly the power needed to achieve its purpose.</description>
+		<description>One of the three legendary tools of Kagrenac. Sunder is said to resonate at a divine frequency, and it's blows always harmonise to exactly the power needed to achieve its purpose.</description>
 		<graphicData>
 			<texPath>Things/Item/Equipment/WeaponMelee/Sunder</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
