@@ -69,4 +69,12 @@
             </graphicData>
         </value>
     </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]</xpath>
+        <value>
+            <thingClass>DwarfFlavourPack.Building_Annunciator</thingClass>
+        </value>
+    </Operation>
+
 </Patch>
