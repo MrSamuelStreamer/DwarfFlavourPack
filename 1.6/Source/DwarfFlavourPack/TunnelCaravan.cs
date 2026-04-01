@@ -20,6 +20,8 @@ public class TunnelCaravan : Caravan
   public bool mapGenerating;
   public bool done;
 
+  private int _lastIncidentTileIndex = -1;
+
   public override void ExposeData()
   {
     base.ExposeData();
@@ -41,7 +43,7 @@ public class TunnelCaravan : Caravan
         return base.DrawPos;
 
       if (!pather.MovingNow)
-          return base.DrawPos;
+        return base.DrawPos;
 
       // When we are using the vanilla-managed pather, the caravan is always moving from Tile to pather.nextTile.
       Vector3 startPos = Find.WorldGrid.GetTileCenter(Tile);
@@ -50,27 +52,27 @@ public class TunnelCaravan : Caravan
       // pather.nextTileCostLeft decreases from pather.nextTileCostTotal down to 0 as we move between tiles.
       // But wait, TunnelCaravan doesn't use the vanilla movement cost logic for speed.
       // We force it through ticksToTravel.
-      
+
       // Let's recalculate progress between the CURRENT tile and the NEXT tile based on time.
-      float totalProgress = Mathf.Clamp01((float)(Find.TickManager.TicksGame - travelStartsAtTick) / (travelEndsAtTick - travelStartsAtTick));
-      
+      float totalProgress = Mathf.Clamp01((float) (Find.TickManager.TicksGame - travelStartsAtTick) / (travelEndsAtTick - travelStartsAtTick));
+
       TunnelGenData tunnelGenData = TunnelGenData.Instance;
       if (tunnelGenData != null)
       {
-          List<int> nodes = tunnelGenData.FindTunnelPath(origin, destination);
-          if (nodes != null && nodes.Count > 1)
+        List<int> nodes = tunnelGenData.FindTunnelPath(origin, destination);
+        if (nodes != null && nodes.Count > 1)
+        {
+          float floatIndex = totalProgress * (nodes.Count - 1);
+          int index = Mathf.FloorToInt(floatIndex);
+          float t = floatIndex - index;
+
+          if (index < nodes.Count - 1)
           {
-              float floatIndex = totalProgress * (nodes.Count - 1);
-              int index = Mathf.FloorToInt(floatIndex);
-              float t = floatIndex - index;
-              
-              if (index < nodes.Count - 1)
-              {
-                  Vector3 s = Find.WorldGrid.GetTileCenter(nodes[index]);
-                  Vector3 e = Find.WorldGrid.GetTileCenter(nodes[index + 1]);
-                  return FinalizePoint(Vector3.Slerp(s, e, t));
-              }
+            Vector3 s = Find.WorldGrid.GetTileCenter(nodes[index]);
+            Vector3 e = Find.WorldGrid.GetTileCenter(nodes[index + 1]);
+            return FinalizePoint(Vector3.Slerp(s, e, t));
           }
+        }
       }
 
       return base.DrawPos;
@@ -92,34 +94,37 @@ public class TunnelCaravan : Caravan
 
     // Update Tile based on progress.
     // This will cause the pather to consume nodes if the current Tile changes.
-    float progress = Mathf.Clamp01((float)(Find.TickManager.TicksGame - travelStartsAtTick) / (travelEndsAtTick - travelStartsAtTick));
-    
+    float progress = Mathf.Clamp01((float) (Find.TickManager.TicksGame - travelStartsAtTick) / (travelEndsAtTick - travelStartsAtTick));
+
     // We want to know which tile we are "on" according to our progress.
     TunnelGenData tunnelGenData = TunnelGenData.Instance;
     if (tunnelGenData != null)
     {
-        List<int> nodes = tunnelGenData.FindTunnelPath(origin, destination);
-        if (nodes != null && nodes.Count > 0)
+      List<int> nodes = tunnelGenData.FindTunnelPath(origin, destination);
+      if (nodes != null && nodes.Count > 0)
+      {
+        int index = Mathf.FloorToInt(progress * (nodes.Count - 1));
+        int currentTileId = nodes[Mathf.Clamp(index, 0, nodes.Count - 1)];
+
+        if (Tile != currentTileId)
         {
-            int index = Mathf.FloorToInt(progress * (nodes.Count - 1));
-            int currentTileId = nodes[Mathf.Clamp(index, 0, nodes.Count - 1)];
-            
-            if (Tile != currentTileId)
-            {
-                ModLog.Debug($"[TunnelCaravan] Tile advance: {Tile} → {currentTileId} (index={index}, progress={progress:F3})");
-                Tile = currentTileId;
-                // If we changed tiles, we might need to refresh the path to ensure it starts at the new tile
-                // and correctly shows progress on the map.
-                pather.Notify_Teleported_Int(); // Clears current path state safely
-                pather.StartPath(destination.tileId, null, true);
-            }
+          ModLog.Debug($"[TunnelCaravan] Tile advance: {Tile} → {currentTileId} (index={index}, progress={progress:F3})");
+          Tile = currentTileId;
+          // If we changed tiles, we might need to refresh the path to ensure it starts at the new tile
+          // and correctly shows progress on the map.
+          pather.Notify_Teleported_Int(); // Clears current path state safely
+          pather.StartPath(destination.tileId, null, true);
         }
+
+        if (index != _lastIncidentTileIndex)
+        {
+          _lastIncidentTileIndex = index;
+          TryFireTunnelIncidents();
+        }
+      }
     }
 
     base.Tick();
-
-    if (Find.TickManager.TicksGame % 1000 == 0)
-      TryFireTunnelIncidents();
   }
 
   private void TryFireTunnelIncidents()
@@ -131,16 +136,18 @@ public class TunnelCaravan : Caravan
     }
 
     ModLog.Debug($"[TunnelCaravan] TryFireTunnelIncidents: guard passed, checking categories");
-    TryFireCategory(IncidentCategoryDefOf.ThreatBig, 5f);
-    TryFireCategory(IncidentCategoryDefOf.ThreatSmall, 4f);
-    TryFireCategory(IncidentCategoryDefOf.Misc, 2f);
+    // MTB values are in tiles (once per tile check), not days.
+    // At 130 tiles (cross-globe): ThreatBig ~48%, ThreatSmall ~74%, Misc ~96% chance of ≥1 fire.
+    TryFireCategory(IncidentCategoryDefOf.ThreatBig, 200f);
+    TryFireCategory(IncidentCategoryDefOf.ThreatSmall, 80f);
+    TryFireCategory(IncidentCategoryDefOf.Misc, 40f);
   }
 
-  private void TryFireCategory(IncidentCategoryDef category, float mtbDays)
+  private void TryFireCategory(IncidentCategoryDef category, float mtbTiles)
   {
-    if (!Rand.MTBEventOccurs(mtbDays, 60000f, 1000f))
+    if (!Rand.MTBEventOccurs(mtbTiles, 1f, 1f))
     {
-      ModLog.Debug($"[TunnelCaravan] TryFireCategory {category.defName}: MTB check failed (mtbDays={mtbDays})");
+      ModLog.Debug($"[TunnelCaravan] TryFireCategory {category.defName}: MTB check failed (mtbTiles={mtbTiles})");
       return;
     }
 
@@ -168,9 +175,7 @@ public class TunnelCaravan : Caravan
     {
       if (gizmo is Command command)
       {
-        if (command.defaultLabel == "CommandSettle".Translate() ||
-            command.defaultLabel == "CommandSetupCamp".Translate() ||
-            command.defaultLabel == "CommandPauseCaravan".Translate())
+        if (command.defaultLabel == "CommandSettle".Translate() || command.defaultLabel == "CommandSetupCamp".Translate() || command.defaultLabel == "CommandPauseCaravan".Translate())
         {
           continue;
         }
