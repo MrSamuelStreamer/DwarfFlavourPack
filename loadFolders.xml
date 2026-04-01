@@ -19,7 +19,8 @@
 		<li IfModActive="ryuudra.constructvanillarockwalls">Compatibility/ryuudra.constructvanillarockwalls</li>
 		<li IfModActive="vanillaracesexpanded.saurid">Compatibility/vanillaracesexpanded.saurid</li>
 		<li IfModActive="who.vfee.isopodageneline">Compatibility/who.vfee.isopodageneline</li>
-    <li IfModActive="seti.medieval.hunts">Compatibility/seti.medieval.hunts</li>
-    <li IfModActive="oskarpotocki.vfe.medieval2">Compatibility/oskarpotocki.vfe.medieval2</li>
+    	<li IfModActive="seti.medieval.hunts">Compatibility/seti.medieval.hunts</li>
+    	<li IfModActive="oskarpotocki.vfe.medieval2">Compatibility/oskarpotocki.vfe.medieval2</li>
+		<li IfModActive="haplo.miscellaneous.endgame">Compatibility/haplo.miscellaneous.endgame</li>
   </v1.6>
 </loadFolders>
