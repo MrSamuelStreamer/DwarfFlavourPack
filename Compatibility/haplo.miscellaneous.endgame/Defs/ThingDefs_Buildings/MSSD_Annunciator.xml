@@ -29,8 +29,11 @@
       <deconstructible>false</deconstructible>
     </building>
     <comps>
+      <li>
+        <compClass>EndGame.CompEndGame</compClass>
+      </li>      
       <li Class="CompProperties_Glower">
-        <glowRadius>5.9</glowRadius>
+        <glowRadius>10</glowRadius>
         <glowColor>(81,6,13,0)</glowColor>
       </li>
     </comps>

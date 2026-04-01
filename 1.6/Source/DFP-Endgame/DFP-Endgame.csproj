@@ -1,27 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
         <OutputType>Library</OutputType>
         <LangVersion>preview</LangVersion>
-        <RootNamespace>DwarfFlavourPack</RootNamespace>
-        <AssemblyName>DwarfFlavourPack</AssemblyName>
-        <OutputPath>../../Assemblies/</OutputPath>
+        <RootNamespace>DwarfFlavourPack.Endgame</RootNamespace>
+        <AssemblyName>DFP.Endgame</AssemblyName>
+        <OutputPath>../../../Compatibility/haplo.miscellaneous.endgame/Assemblies</OutputPath>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <SteamModsPath>$(RIMWORLD_STEAM_MODS_PATH)</SteamModsPath>
-        <TargetFramework>net48</TargetFramework>
     </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <Optimize>false</Optimize>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>portable</DebugType>
     </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <DebugType>portable</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <Optimize>true</Optimize>
     </PropertyGroup>
-  <ItemGroup>
+    <ItemGroup>
         <Reference Include="Assembly-CSharp">
             <HintPath Condition="Exists('../../../../../RimWorldWin64_Data/Managed/Assembly-CSharp.dll')">../../../../../RimWorldWin64_Data/Managed/Assembly-CSharp.dll</HintPath>
             <HintPath Condition="Exists('../../../../../RimWorldLinux_Data/Managed/Assembly-CSharp.dll')">../../../../../RimWorldLinux_Data/Managed/Assembly-CSharp.dll</HintPath>
@@ -46,39 +46,28 @@
             <HintPath Condition="Exists('../../../../../Contents/Resources/Data/Managed/UnityEngine.TextRenderingModule.dll')">../../../../../Contents/Resources/Data/Managed/UnityEngine.TextRenderingModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="UnityEngine.InputLegacyModule">
-            <HintPath Condition="Exists('../../../../../RimWorldWin64_Data/Managed/UnityEngine.InputLegacyModule.dll')">../../../../../RimWorldWin64_Data/Managed/UnityEngine.InputLegacyModule.dll</HintPath>
-            <HintPath Condition="Exists('../../../../../RimWorldLinux_Data/Managed/UnityEngine.InputLegacyModule.dll')">../../../../../RimWorldLinux_Data/Managed/UnityEngine.InputLegacyModule.dll</HintPath>
-            <HintPath Condition="Exists('../../../../../Contents/Resources/Data/Managed/UnityEngine.InputLegacyModule.dll')">../../../../../Contents/Resources/Data/Managed/UnityEngine.InputLegacyModule.dll</HintPath>
+        <Reference Include="EndGame">
+            <HintPath Condition="Exists('../../../../1750618143/1.6/Assemblies/EndGame.dll')">../../../../1750618143/1.6/Assemblies/EndGame.dll</HintPath>
+            <HintPath Condition="Exists('../../../../../../../../workshop/content/294100/1750618143/1.6/Assemblies/EndGame.dll')">../../../../../../../../workshop/content/294100/1750618143/1.6/Assemblies/EndGame.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
-  <ItemGroup>
+    <ItemGroup>
         <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    </ItemGroup>  <ItemGroup>
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Lib.Harmony" Version="2.*" ExcludeAssets="runtime" />
-    </ItemGroup>  <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
+    </ItemGroup>
+    <ItemGroup Condition="'@(Reference->WithMetadataValue('Identity', 'Assembly-CSharp')->Metadata('HintPath')->Exists())' == ''">
         <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6-*" />
     </ItemGroup>
-  <PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\DwarfFlavourPack\DwarfFlavourPack.csproj">
+            <Private>false</Private>
+        </ProjectReference>
+    </ItemGroup>
+    <PropertyGroup>
         <StartAction>Program</StartAction>
         <StartProgram>$(SolutionDir)../../../../RimWorldWin64.exe</StartProgram>
     </PropertyGroup>
-  <ItemGroup>
-        <ReleaseFiles Include="../../../1.*/**" Exclude="../../../1.*/Source/**" />
-    <AboutFiles Include="../../../About/**" Exclude="../../../About/*.png~" />
-    <CommonFiles Include="../../../Common/**" />
-      <CompatibilityFiles Include="../../../Compatibility/**" />  
-      
-      <ExtraFiles Include="../../../loadFolders.xml;../../../LICENSE;../../../README.md" />  
-      <DocsFiles Include="../../../docs/**"/>
-      <CompatibilityFiles Update="..\..\..\Compatibility\haplo.miscellaneous.endgame\Assemblies\DFP.Endgame.dll">
-        <Link>DwarfFlavourPack\Compatibility\haplo.miscellaneous.endgame\Assemblies\DFP.Endgame.dll</Link>
-      </CompatibilityFiles>  
-      <CompatibilityFiles Update="..\..\..\Compatibility\haplo.miscellaneous.endgame\Assemblies\DFP.Endgame.pdb">
-        <Link>DwarfFlavourPack\Compatibility\haplo.miscellaneous.endgame\Assemblies\DFP.Endgame.pdb</Link>
-      </CompatibilityFiles>
-
-      
-    </ItemGroup>
 </Project>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <SoundDef>
+        <defName>DFP_Explosion</defName>
+        <context>MapOnly</context>
+        <maxSimultaneous>4</maxSimultaneous>
+        <subSounds>
+            <li>
+                <grains>
+                    <li Class="AudioGrain_Clip">
+                        <clipPath>DFP_Explode</clipPath>
+                    </li>
+                </grains>
+                <pitchRange>0.8~1.2</pitchRange>
+                <volumeRange>30~50</volumeRange>
+            </li>
+        </subSounds>
+    </SoundDef>
+</Defs>

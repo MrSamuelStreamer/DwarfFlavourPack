@@ -27,6 +27,8 @@ public static class DwarfFlavourPackDefOf
 
   public static ResearchProjectDef DFP_Minecarts;
 
+  public static SoundDef DFP_Explosion;
+
 
   static DwarfFlavourPackDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(DwarfFlavourPackDefOf));
 }
