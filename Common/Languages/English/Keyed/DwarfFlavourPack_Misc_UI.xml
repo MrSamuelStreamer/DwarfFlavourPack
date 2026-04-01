@@ -23,4 +23,7 @@
     <PsycastNeurotrainerUseLabel>Use tome to learn {0} spell</PsycastNeurotrainerUseLabel>
     <PsycastNeurotrainerDescription>A magical tome written by a powerful mage containing all things to know about a specific spell.\n\n{PSYCAST_label}\n\n{PSYCASTDESCRIPTION}</PsycastNeurotrainerDescription>
     <AbilityNeurotrainerUsed>{USER_labelShort} used tome to learn the {1} spell.</AbilityNeurotrainerUsed>
+
+    <DFP_RubyVeinGlint>A faint red glint catches the eye further along the tunnel walls.</DFP_RubyVeinGlint>
+    <DFP_Settings_RubyVeinChance>Ruby vein spawn chance: {0}%</DFP_Settings_RubyVeinChance>
 </LanguageData>

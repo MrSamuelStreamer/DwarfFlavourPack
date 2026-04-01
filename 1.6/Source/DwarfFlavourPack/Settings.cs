@@ -8,6 +8,7 @@ public class Settings : ModSettings
   public float DefaultTilesPerHour = 3f;
   public float ResearchedTilesPerHour = 12f;
   public float MechFormingSpeedBaseValue = 1f;
+  public float RubyVeinSpawnChance = 0.25f;
 
   // Step index: 0 = Vanilla (no-op), 1 = 4×, 2 = 8×, 3 = 16×, 4 = Unlimited
   public int QuestSiteRadiusStep = 1;
@@ -18,11 +19,7 @@ public class Settings : ModSettings
 
   private static readonly string[] StepLabels =
   {
-    "DwarfFlavourPack_Settings_QuestSiteRadius_Vanilla",
-    "DwarfFlavourPack_Settings_QuestSiteRadius_4x",
-    "DwarfFlavourPack_Settings_QuestSiteRadius_8x",
-    "DwarfFlavourPack_Settings_QuestSiteRadius_16x",
-    "DwarfFlavourPack_Settings_QuestSiteRadius_Unlimited",
+    "DwarfFlavourPack_Settings_QuestSiteRadius_Vanilla", "DwarfFlavourPack_Settings_QuestSiteRadius_4x", "DwarfFlavourPack_Settings_QuestSiteRadius_8x", "DwarfFlavourPack_Settings_QuestSiteRadius_16x", "DwarfFlavourPack_Settings_QuestSiteRadius_Unlimited",
   };
 
   public void DoWindowContents(Rect wrect)
@@ -40,9 +37,14 @@ public class Settings : ModSettings
     options.Label($"Base gestation cycle time: {48f * MechFormingSpeedBaseValue:0.#}h");
     options.Gap();
 
+    RubyVeinSpawnChance = options.SliderLabeled(
+      "DFP_Settings_RubyVeinChance".Translate(Mathf.RoundToInt(RubyVeinSpawnChance * 100)),
+      RubyVeinSpawnChance, 0f, 1f);
+    options.Gap();
+
     float step = QuestSiteRadiusStep;
     step = options.SliderLabeled(
-      "DwarfFlavourPack_Settings_QuestSiteRadius".Translate(StepLabels[(int)step].Translate()),
+      "DwarfFlavourPack_Settings_QuestSiteRadius".Translate(StepLabels[(int) step].Translate()),
       step, 0f, 4f);
     QuestSiteRadiusStep = Mathf.RoundToInt(step);
     options.Label("DwarfFlavourPack_Settings_QuestSiteRadius_Desc".Translate());
@@ -55,8 +57,8 @@ public class Settings : ModSettings
 
     float minStep = QuestSiteMinRadiusStep;
     minStep = options.SliderLabeled(
-      "DwarfFlavourPack_Settings_QuestSiteMinRadius".Translate(StepLabels[(int)minStep].Translate()),
-      minStep, 0f, (float)maxStepForMin);
+      "DwarfFlavourPack_Settings_QuestSiteMinRadius".Translate(StepLabels[(int) minStep].Translate()),
+      minStep, 0f, (float) maxStepForMin);
     QuestSiteMinRadiusStep = Mathf.RoundToInt(minStep);
     options.Label("DwarfFlavourPack_Settings_QuestSiteMinRadius_Desc".Translate());
     options.Gap();
@@ -69,6 +71,7 @@ public class Settings : ModSettings
     Scribe_Values.Look(ref DefaultTilesPerHour, "DefaultTilesPerHour", 3);
     Scribe_Values.Look(ref ResearchedTilesPerHour, "ResearchedTilesPerHour", 12);
     Scribe_Values.Look(ref MechFormingSpeedBaseValue, "MechFormingSpeedBaseValue", 1f);
+    Scribe_Values.Look(ref RubyVeinSpawnChance, "RubyVeinSpawnChance", 0.25f);
     Scribe_Values.Look(ref QuestSiteRadiusStep, "QuestSiteRadiusStep", 1);
     Scribe_Values.Look(ref QuestSiteMinRadiusStep, "QuestSiteMinRadiusStep", 1);
   }

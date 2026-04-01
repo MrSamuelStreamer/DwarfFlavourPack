@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
 
 namespace DwarfFlavourPack;
@@ -21,103 +20,114 @@ namespace DwarfFlavourPack;
 /// </summary>
 public abstract class IncidentWorker_TunnelCaravanSomethingHappened : IncidentWorker_Ambush
 {
-    /// <summary>
-    /// Return true to prevent this incident from firing more than once per save game.
-    /// </summary>
-    protected virtual bool FireOncePerGame => false;
+  /// <summary>
+  /// Return true to prevent this incident from firing more than once per save game.
+  /// </summary>
+  protected virtual bool FireOncePerGame => false;
 
-    // ── Shared helpers ────────────────────────────────────────────────────────
+  // ── Shared helpers ────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Captures the TunnelCaravan's travel state into TunnelEncounterSetup statics.
-    /// Called by TryExecuteWorker here and also exposed for workers that extend a
-    /// different base class (e.g. IncidentWorker_TunnelCaravanFactionAmbush).
-    /// </summary>
-    internal static void CaptureEncounterSetup(IncidentParms parms)
+  /// <summary>
+  /// Captures the TunnelCaravan's travel state into TunnelEncounterSetup statics.
+  /// Called by TryExecuteWorker here and also exposed for workers that extend a
+  /// different base class (e.g. IncidentWorker_TunnelCaravanFactionAmbush).
+  /// </summary>
+  internal static void CaptureEncounterSetup(IncidentParms parms)
+  {
+    if (parms.target is not TunnelCaravan tunnelCaravan)
+      return;
+
+    TunnelEncounterSetup.PendingCaravan = tunnelCaravan;
+    TunnelEncounterSetup.HasActiveEncounter = true;
+    TunnelEncounterSetup.ActiveEncounterTile = tunnelCaravan.Tile;
+    TunnelEncounterSetup.ActiveOrigin = tunnelCaravan.origin;
+    TunnelEncounterSetup.ActiveDestination = tunnelCaravan.destination;
+    TunnelEncounterSetup.ActiveTunnel = tunnelCaravan.tunnel;
+    TunnelEncounterSetup.ActiveTravelStartsAtTick = tunnelCaravan.travelStartsAtTick;
+    TunnelEncounterSetup.ActiveTravelEndsAtTick = tunnelCaravan.travelEndsAtTick;
+  }
+
+  internal static bool MeetsCaravanGuard(TunnelCaravan tunnelCaravan)
+  {
+    return MeetsCaravanGuard(tunnelCaravan, out _);
+  }
+
+  /// <summary>
+  /// Shared CanFireNowSub guard for all tunnel-caravan incidents.
+  /// Returns false if the target is not an in-transit, non-spawned TunnelCaravan.
+  /// Does NOT call base.CanFireNowSub — callers are responsible for that.
+  /// </summary>
+  internal static bool MeetsCaravanGuard(TunnelCaravan tunnelCaravan, out string reason)
+  {
+    if (tunnelCaravan.PawnsListForReading.Count < 1)
     {
-        if (parms.target is not TunnelCaravan tunnelCaravan)
-            return;
-
-        TunnelEncounterSetup.PendingCaravan           = tunnelCaravan;
-        TunnelEncounterSetup.HasActiveEncounter       = true;
-        TunnelEncounterSetup.ActiveEncounterTile      = tunnelCaravan.Tile;
-        TunnelEncounterSetup.ActiveOrigin             = tunnelCaravan.origin;
-        TunnelEncounterSetup.ActiveDestination        = tunnelCaravan.destination;
-        TunnelEncounterSetup.ActiveTunnel             = tunnelCaravan.tunnel;
-        TunnelEncounterSetup.ActiveTravelStartsAtTick = tunnelCaravan.travelStartsAtTick;
-        TunnelEncounterSetup.ActiveTravelEndsAtTick   = tunnelCaravan.travelEndsAtTick;
+      reason = "Caravan has no pawns";
+      return false;
     }
 
-    internal static bool MeetsCaravanGuard(TunnelCaravan tunnelCaravan)
+    int t = Find.TickManager.TicksGame;
+    if (t <= tunnelCaravan.travelStartsAtTick || t >= tunnelCaravan.travelEndsAtTick)
     {
-        return MeetsCaravanGuard(tunnelCaravan, out _);
-    }
-    
-    /// <summary>
-    /// Shared CanFireNowSub guard for all tunnel-caravan incidents.
-    /// Returns false if the target is not an in-transit, non-spawned TunnelCaravan.
-    /// Does NOT call base.CanFireNowSub — callers are responsible for that.
-    /// </summary>
-    internal static bool MeetsCaravanGuard(TunnelCaravan tunnelCaravan, out string reason)
-    {
-        if (tunnelCaravan.PawnsListForReading.Count < 1)
-        {
-            reason = "Caravan has no pawns";
-            return false;
-        }
-
-        int t = Find.TickManager.TicksGame;
-        if (t <= tunnelCaravan.travelStartsAtTick || t >= tunnelCaravan.travelEndsAtTick)
-        {
-            reason = "Caravan is not in transit";
-            return false;
-        }
-
-        if (tunnelCaravan.done)
-        {
-            reason = "Caravan has already arrived";
-            return false;
-        }
-        reason = "";
-        return true;
+      reason = "Caravan is not in transit";
+      return false;
     }
 
-    /// <summary>
-    /// Returns a standable, unfogged cell near the map centre.
-    /// Falls back to a random nearby cell if map.Center itself is blocked.
-    /// </summary>
-    protected static IntVec3 FindCellNearCenter(Map map, int radius = 15)
+    if (tunnelCaravan.done)
     {
-        IntVec3 cell = map.Center;
-        if (!cell.Standable(map))
-            CellFinder.TryFindRandomCellNear(map.Center, map, radius,
-                c => c.Standable(map) && !c.Fogged(map), out cell);
-        return cell;
+      reason = "Caravan has already arrived";
+      return false;
     }
+    reason = "";
+    return true;
+  }
 
-    protected override bool TryExecuteWorker(IncidentParms parms)
-    {
-        CaptureEncounterSetup(parms);
+  /// <summary>
+  /// Returns a standable, unfogged cell near the map centre.
+  /// Falls back to a random nearby cell if map.Center itself is blocked.
+  /// </summary>
+  protected static IntVec3 FindCellNearCenter(Map map, int radius = 15)
+  {
+    IntVec3 cell = map.Center;
+    if (!cell.Standable(map))
+      CellFinder.TryFindRandomCellNear(map.Center, map, radius,
+        c => c.Standable(map) && !c.Fogged(map), out cell);
+    return cell;
+  }
 
-        bool result = base.TryExecuteWorker(parms);
+  // Called after combat pawns are spawned on the encounter map.
+  // NonCombat incidents seal this method, so this only fires for combat
+  // variants (InsectAttack, AncientDefences) that go through base.TryExecuteWorker.
+  protected override void PostProcessGeneratedPawnsAfterSpawning(List<Pawn> generatedPawns)
+  {
+    base.PostProcessGeneratedPawnsAfterSpawning(generatedPawns);
+    Map map = generatedPawns.Count > 0 ? generatedPawns[0].Map : null;
+    if (map != null)
+      TunnelUtilities.TrySpawnRubyVeins(map);
+  }
 
-        if (result && FireOncePerGame)
-            GameComponent_OncePerGameIncidents.Instance?.MarkFired(def.defName);
+  protected override bool TryExecuteWorker(IncidentParms parms)
+  {
+    CaptureEncounterSetup(parms);
 
-        return result;
-    }
+    bool result = base.TryExecuteWorker(parms);
 
-    protected override bool CanFireNowSub(IncidentParms parms)
-    {
-        if (parms.target is not TunnelCaravan tunnelCaravan)
-            return false;
+    if (result && FireOncePerGame)
+      GameComponent_OncePerGameIncidents.Instance?.MarkFired(def.defName);
 
-        if (!MeetsCaravanGuard(tunnelCaravan))
-            return false;
+    return result;
+  }
 
-        if (FireOncePerGame && (GameComponent_OncePerGameIncidents.Instance?.HasFired(def.defName) ?? false))
-            return false;
+  protected override bool CanFireNowSub(IncidentParms parms)
+  {
+    if (parms.target is not TunnelCaravan tunnelCaravan)
+      return false;
 
-        return base.CanFireNowSub(parms);
-    }
+    if (!MeetsCaravanGuard(tunnelCaravan))
+      return false;
+
+    if (FireOncePerGame && (GameComponent_OncePerGameIncidents.Instance?.HasFired(def.defName) ?? false))
+      return false;
+
+    return base.CanFireNowSub(parms);
+  }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -360,6 +361,109 @@ public static class TunnelUtilities
     {
       if (tunnel.Map.lordManager.lords[index].LordJob is LordJob_LoadAndEnterTunnel lordJob && lordJob.tunnel == tunnel && tunnel.Map.lordManager.lords[index] != lord)
         tunnel.Map.lordManager.RemoveLord(tunnel.Map.lordManager.lords[index]);
+    }
+  }
+
+  // ── Ruby vein spawning ────────────────────────────────────────────────────
+
+  /// <summary>
+  /// 25% chance to scatter 2–4 small veins of DankPyon_MineableRuby in the
+  /// tunnel wall, adjacent to the open corridor so they're immediately minable.
+  /// Silently skips if the DankPyon mod is not loaded.
+  /// </summary>
+  public static void TrySpawnRubyVeins(Map map)
+  {
+    if (!Rand.Chance(DwarfFlavourPackMod.settings.RubyVeinSpawnChance)) return;
+
+    ThingDef rubyDef = ThingDef.Named("DankPyon_MineableRuby");
+    if (rubyDef == null) return;
+
+    // Candidate seeds: rock-wall cells on the tunnel boundary (adjacent to
+    // at least one standable corridor cell), not too close to the spawn centre.
+    List<IntVec3> candidates = map.AllCells
+      .Where(c => IsSurfaceRockCell(c, map) && c.DistanceTo(map.Center) > 5f)
+      .ToList();
+
+    candidates.Shuffle();
+
+    int veinCount = Rand.RangeInclusive(2, 4);
+    var used = new HashSet<IntVec3>();
+    IntVec3 firstCell = IntVec3.Invalid;
+
+    foreach (IntVec3 seed in candidates)
+    {
+      if (veinCount <= 0) break;
+      if (used.Contains(seed)) continue;
+
+      int lumpSize = Rand.RangeInclusive(2, 4);
+      List<IntVec3> lump = GrowRubyLump(seed, map, lumpSize);
+      foreach (IntVec3 c in lump)
+        used.Add(c);
+
+      SpawnRubyLump(lump, map, rubyDef);
+
+      if (!firstCell.IsValid)
+        firstCell = lump[0];
+
+      veinCount--;
+    }
+
+    if (firstCell.IsValid)
+      Messages.Message("DFP_RubyVeinGlint".Translate(),
+        new LookTargets(new GlobalTargetInfo(firstCell, map)),
+        MessageTypeDefOf.NeutralEvent);
+  }
+
+  // A cell qualifies as a surface rock cell if it is non-standable, has a
+  // building (natural rock), and is immediately adjacent to an open corridor cell.
+  // BFS is restricted to these cells so every block of every vein is visible
+  // on the wall face without any strip-mining.
+  private static bool IsSurfaceRockCell(IntVec3 c, Map map)
+  {
+    if (c.Standable(map) || c.GetFirstBuilding(map) == null) return false;
+    foreach (IntVec3 d in GenAdj.CardinalDirections)
+    {
+      IntVec3 n = c + d;
+      if (n.InBounds(map) && n.Standable(map)) return true;
+    }
+    return false;
+  }
+
+  private static List<IntVec3> GrowRubyLump(IntVec3 seed, Map map, int size)
+  {
+    var result = new List<IntVec3>
+    {
+      seed
+    };
+    var frontier = new Queue<IntVec3>();
+    frontier.Enqueue(seed);
+
+    while (frontier.Count > 0 && result.Count < size)
+    {
+      IntVec3 current = frontier.Dequeue();
+      var neighbours = GenAdj.CardinalDirections
+        .Select(d => current + d)
+        .Where(n => n.InBounds(map) && IsSurfaceRockCell(n, map) && !result.Contains(n))
+        .InRandomOrder()
+        .ToList();
+
+      foreach (IntVec3 n in neighbours)
+      {
+        if (result.Count >= size) break;
+        result.Add(n);
+        frontier.Enqueue(n);
+      }
+    }
+
+    return result;
+  }
+
+  private static void SpawnRubyLump(List<IntVec3> cells, Map map, ThingDef rubyDef)
+  {
+    foreach (IntVec3 c in cells)
+    {
+      c.GetFirstBuilding(map)?.DeSpawn();
+      GenSpawn.Spawn(ThingMaker.MakeThing(rubyDef), c, map);
     }
   }
 }
