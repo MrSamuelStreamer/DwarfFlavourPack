@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>Annunciator</defName>
+    <label>annunciator</label>
+    <description>A test annunciator building.</description>
+    <thingClass>DwarfFlavourPack.Building_Annunciator</thingClass>
+    <drawerType>RealtimeOnly</drawerType>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Buildings/EndGame_Annunciator_Base</texPath>
+      <drawSize>(3.5,3.5)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Mass>30</Mass>
+      <MarketValue>2000</MarketValue>
+    </statBases>
+    <size>(3,3)</size>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>0.6</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>20</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <building>
+      <ai_neverTrashThis>true</ai_neverTrashThis>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>5.9</glowRadius>
+        <glowColor>(81,6,13,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>
