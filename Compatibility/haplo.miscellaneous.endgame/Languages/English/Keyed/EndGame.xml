@@ -9,7 +9,7 @@
 	<CommandStartEndGame_DisabledReason>The process cannot be started currently.</CommandStartEndGame_DisabledReason>
 
 	<DFP_HeartChamberDeath_Label>Struck down by the Heart</DFP_HeartChamberDeath_Label>
-	<DFP_HeartChamberDeath_Text>{PAWN_nameFull} reached out to touch the Heart of Lorkhan without the protection of Wraithguard. The raw divine power of the dead god's heart lashed out, sundering {PAWN_pronoun} body in an instant.\n\nThe Heart does not suffer the unworthy.</DFP_HeartChamberDeath_Text>
+	<DFP_HeartChamberDeath_Text>{PAWN_nameFull} reached out to touch the Heart of Lorkhan without the protection of Wraithguard. The raw divine power of the dead god's heart lashed out, sundering their body in an instant.\n\nThe Heart does not suffer the unworthy.</DFP_HeartChamberDeath_Text>
 	
 	<EndGame_Victory>Through unfathomable Dwemer ingenuity, the Heart's power is fully harnessed by the High Craftlords who direct the embers of the divinity of Lorkhan into their own apotheosis, ascending above the mortal realm, and looking to forge their own bronze Aurbis, taking their rightful place as masters of their own destiny...</EndGame_Victory>
 	
