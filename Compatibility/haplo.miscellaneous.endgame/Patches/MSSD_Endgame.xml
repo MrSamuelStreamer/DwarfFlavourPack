@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-    <Operation Class="PatchOperationReplace">
-        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/researchPrerequisites</xpath>
-        <value>
-            <researchPrerequisites>
-			    <li>VHGE_GasExtraction</li>
-		    </researchPrerequisites>
-        </value>
-    </Operation>
+    <!-- Main structure with operational Gizmo -->
+    <!-- Label -->
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/label</xpath>
         <value>
             <label>Heart Chamber</label>
         </value>
     </Operation>
+    <!-- Description -->
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/description</xpath>
         <value>
             <description>An advanced tonal resonation chamber containing a reconstituted Heart of Lorkhan. It's divine power is immense and immeasurable, and can only be harnessed by a user wielding Sunder and Keening, with Wraithguard's protection.\n\nThe process of disabling the safeguards to harness the heart's power would be lengthy, and 15 days would be needed before the full power would be accessible. The magicka eminated during this process would be felt across the continent, and many would seek to control it. Preparations for a constant assault would be necessary.</description>
         </value>
     </Operation>
+    <!-- Cost Change -->
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/costList</xpath>
         <value>
@@ -35,6 +31,38 @@
             </costList>
         </value>
     </Operation>
+    <!-- Research -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/researchPrerequisites</xpath>
+        <value>
+            <researchPrerequisites>
+			    <li>VHGE_GasExtraction</li>
+		    </researchPrerequisites>
+        </value>
+    </Operation>
+    <!-- Skill Increase -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/constructionSkillPrerequisite</xpath>
+        <value>
+            <constructionSkillPrerequisite>18</constructionSkillPrerequisite>
+        </value>
+    </Operation>
+    <!-- Large 3 x 3 base unit texture repath, NOT the Heart texture that floats -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/graphicData</xpath>
+        <value>
+            <graphicData>
+                <texPath>Things/Building/HeartChamberBase</texPath>
+                <graphicClass>Graphic_Single</graphicClass>
+                <drawSize>(4.0, 4.0)</drawSize>
+                <shadowData>
+                    <volume>(2.6, 1.5, 2.4)</volume>
+                    <offset>(0.0, 0.0, -0.1)</offset>
+                </shadowData>
+            </graphicData>
+        </value>
+    </Operation>
+    <!-- Comp Replacement -->
     <Operation Class="PatchOperationReplace">
         <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/comps</xpath>
         <value>
@@ -49,32 +77,11 @@
             </comps>
         </value>
     </Operation>
-    <Operation Class="PatchOperationReplace">
-        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/constructionSkillPrerequisite</xpath>
-        <value>
-            <constructionSkillPrerequisite>18</constructionSkillPrerequisite>
-        </value>
-    </Operation>
-    <Operation Class="PatchOperationReplace">
-        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/graphicData</xpath>
-        <value>
-            <graphicData>
-                <texPath>Things/Building/EndGame_Annunciator</texPath>
-                <graphicClass>Graphic_Single</graphicClass>
-                <drawSize>(4.0, 4.0)</drawSize>
-                <shadowData>
-                    <volume>(2.6, 1.5, 2.4)</volume>
-                    <offset>(0.0, 0.0, -0.1)</offset>
-                </shadowData>
-            </graphicData>
-        </value>
-    </Operation>
-
+    <!-- ThingClass addition -->
     <Operation Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]</xpath>
         <value>
             <thingClass>DwarfFlavourPack.Building_Annunciator</thingClass>
         </value>
     </Operation>
-
 </Patch>
