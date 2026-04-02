@@ -42,6 +42,12 @@ public class JobDriver_ActivateHeartChamber : JobDriver
                 if (!pawn.Dead)
                     pawn.Kill(null);
 
+                Find.LetterStack.ReceiveLetter(
+                    "DFP_HeartChamberDeath_Label".Translate(pawn.Named("PAWN")),
+                    "DFP_HeartChamberDeath_Text".Translate(pawn.Named("PAWN")),
+                    LetterDefOf.Death,
+                    new LookTargets(pawn));
+
                 return;
             }
 

@@ -78,8 +78,8 @@
         </value>
     </Operation>
     <!-- ThingClass addition -->
-    <Operation Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]</xpath>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/thingClass</xpath>
         <value>
             <thingClass>DwarfFlavourPack.Building_Annunciator</thingClass>
         </value>
