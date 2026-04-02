@@ -52,7 +52,7 @@
         <xpath>Defs/ThingDef[defName="EndGame_Annunciator"]/graphicData</xpath>
         <value>
             <graphicData>
-                <texPath>Things/Building/HeartChamberBase</texPath>
+                <texPath>Things/Buildings/HeartChamberBase</texPath>
                 <graphicClass>Graphic_Single</graphicClass>
                 <drawSize>(4.0, 4.0)</drawSize>
                 <shadowData>
