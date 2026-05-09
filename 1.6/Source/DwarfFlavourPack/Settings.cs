@@ -7,7 +7,6 @@ public class Settings : ModSettings
 {
   public float DefaultTilesPerHour = 3f;
   public float ResearchedTilesPerHour = 12f;
-  public float MechFormingSpeedBaseValue = 1f;
   public float RubyVeinSpawnChance = 0.25f;
 
   // Step index: 0 = Vanilla (no-op), 1 = 4×, 2 = 8×, 3 = 16×, 4 = Unlimited
@@ -32,11 +31,7 @@ public class Settings : ModSettings
 
     ResearchedTilesPerHour = options.SliderLabeled("DwarfFlavourPack_Settings_ResearchedTilesPerHour".Translate(ResearchedTilesPerHour), ResearchedTilesPerHour, 0f, 100f);
     options.Gap();
-
-    MechFormingSpeedBaseValue = options.SliderLabeled("MSSFP_MechGestationTime".Translate(MechFormingSpeedBaseValue.ToString("0.0")), MechFormingSpeedBaseValue, 0.1f, 5f);
-    options.Label($"Base gestation cycle time: {48f * MechFormingSpeedBaseValue:0.#}h");
-    options.Gap();
-
+    
     RubyVeinSpawnChance = options.SliderLabeled(
       "DFP_Settings_RubyVeinChance".Translate(Mathf.RoundToInt(RubyVeinSpawnChance * 100)),
       RubyVeinSpawnChance, 0f, 1f);
@@ -70,7 +65,6 @@ public class Settings : ModSettings
   {
     Scribe_Values.Look(ref DefaultTilesPerHour, "DefaultTilesPerHour", 3);
     Scribe_Values.Look(ref ResearchedTilesPerHour, "ResearchedTilesPerHour", 12);
-    Scribe_Values.Look(ref MechFormingSpeedBaseValue, "MechFormingSpeedBaseValue", 1f);
     Scribe_Values.Look(ref RubyVeinSpawnChance, "RubyVeinSpawnChance", 0.25f);
     Scribe_Values.Look(ref QuestSiteRadiusStep, "QuestSiteRadiusStep", 1);
     Scribe_Values.Look(ref QuestSiteMinRadiusStep, "QuestSiteMinRadiusStep", 1);

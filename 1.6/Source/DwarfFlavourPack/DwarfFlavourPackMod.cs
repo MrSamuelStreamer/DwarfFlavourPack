@@ -19,28 +19,16 @@ public class DwarfFlavourPackMod : Mod
 #endif
         Harmony harmony = new Harmony("MrSamuelStreamer.rimworld.DwarfFlavourPack.main");	
         harmony.PatchAll();
-        
-        LongEventHandler.ExecuteWhenFinished(ApplySettingsToDefs);
     }
 
     public override void DoSettingsWindowContents(Rect inRect)
     {
         base.DoSettingsWindowContents(inRect);
         settings.DoWindowContents(inRect);
-        ApplySettingsToDefs();
     }
 
     public override string SettingsCategory()
     {
         return "DwarfFlavourPack_SettingsCategory".Translate();
-    }
-    
-    private static void ApplySettingsToDefs()
-    {
-        StatDef statDef = StatDef.Named("MechFormingSpeed");
-        if (statDef != null)
-        {
-            statDef.defaultBaseValue = 1f/settings.MechFormingSpeedBaseValue;
-        }
     }
 }

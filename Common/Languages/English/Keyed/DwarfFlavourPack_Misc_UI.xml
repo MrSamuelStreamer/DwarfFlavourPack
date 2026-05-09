@@ -7,7 +7,6 @@
     <DwarfFlavourPack_CaravanProgress>{PAWN_nameDef}'s caravan: {0} to go</DwarfFlavourPack_CaravanProgress>
     <DwarfFlavourPack_TunnelMap>Generating Map</DwarfFlavourPack_TunnelMap>
     <DwarfFlavourPack_TunnelRegen>Regenerating Tunnel Network</DwarfFlavourPack_TunnelRegen>
-    <MSSFP_MechGestationTime>Mech gestation time: ×{0}</MSSFP_MechGestationTime>
     <ItemsToLoad>Items to load</ItemsToLoad>
     <LoadedItems>Loaded items</LoadedItems>
     <RemoveAll>Remove all</RemoveAll>
